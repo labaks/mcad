@@ -1,46 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import React from 'react'
+import { StyleSheet, View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
 import { Logo } from './components/logo';
 
-
-export const LoginScreen = ({ navigation }) => {
+export const SignUpScreen = ({ navigation }) => {
     return (
-        <View style={styles.container}>
+        <View style={styles.signUpScreenContainer}>
             <ImageBackground
-                source={require('./../assets/loginBg.png')}
+                source={require('./../assets/signUpBg.png')}
                 style={styles.bgImage}>
                 <View style={styles.contentWrapper}>
                     <Logo />
-                    <View style={styles.mainText}>
-                        <Text style={styles.welcomeBackText}>Welcome back,</Text>
-                        <Text>Sign in to continue</Text>
+                    <View>
+                        <Text>Hello!</Text>
+                        <Text>Create an account to continue</Text>
                     </View>
-                    <View style={styles.inputView} >
+                    <View style={styles.inputView}>
+                        <Text style={styles.inputLabel}>URL</Text>
+                        <TextInput
+                            style={styles.inputText}
+                            placeholder="URL..."
+                            placeholderTextColor="#003f5c" />
+                    </View>
+                    <View style={styles.inputView}>
                         <Text style={styles.inputLabel}>Login</Text>
                         <TextInput
                             style={styles.inputText}
-                            placeholder="Email..."
-                            placeholderTextColor="#003f5c"
-                            onChangeText={text => this.setState({ email: text })} />
+                            placeholder="Login..."
+                            placeholderTextColor="#003f5c" />
                     </View>
-                    <View style={styles.inputView} >
+                    <View style={styles.inputView}>
                         <Text style={styles.inputLabel}>Password</Text>
                         <TextInput
                             secureTextEntry
                             style={styles.inputText}
                             placeholder="Password..."
-                            placeholderTextColor="#003f5c"
-                            onChangeText={text => this.setState({ password: text })} />
+                            placeholderTextColor="#003f5c" />
                     </View>
                     <TouchableOpacity style={styles.mainBtn}>
-                        <Text style={styles.mainBtnText}>Log In</Text>
+                        <Text style={styles.mainBtnText}>Sign Up</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.signUpLink}
-                        onPress={() => navigation.navigate('SignUp')}>
-                        <Text>New user?</Text>
-                        <Text style={styles.signUpColored}>Sign up</Text>
+                        onPress={() => navigation.navigate('Login')}>
+                        <Text>Log In</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -50,27 +52,18 @@ export const LoginScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    signUpScreenContainer: {
+        flex: 1
     },
     bgImage: {
         flex: 1,
-        width: '100%',
-        // height: '100%',
+        width: '100%'
     },
     contentWrapper: {
         flex: 1,
         paddingHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    mainText: {
-        width: '100%',
-        marginBottom: 30
-    },
-    welcomeBackText: {
-        fontSize: 26,
-        color: 'green',
     },
     inputView: {
         width: '100%',
@@ -100,11 +93,4 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16
     },
-    signUpLink: {
-        flexDirection: 'row'
-    },
-    signUpColored: {
-        marginLeft: 5,
-        color: 'green'
-    }
-});
+})
