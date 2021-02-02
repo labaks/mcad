@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { StyleSheet, View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
-import { Logo } from './components/logo';
+import { Logo } from './components/Logo';
 
 export const SignUpScreen = ({ navigation }) => {
     return (

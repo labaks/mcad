@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     logo: {
         resizeMode: 'cover',
         marginBottom: 40,
-        width: 70,
+        width: 71,
         height: 70
     }
 })

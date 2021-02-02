@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
-import { Logo } from './components/logo';
+import { Logo } from './components/Logo';
 
 
 export const LoginScreen = ({ navigation }) => {
@@ -21,8 +21,7 @@ export const LoginScreen = ({ navigation }) => {
                         <TextInput
                             style={styles.inputText}
                             placeholder="Email..."
-                            placeholderTextColor="#003f5c"
-                            onChangeText={text => this.setState({ email: text })} />
+                            placeholderTextColor="#003f5c" />
                     </View>
                     <View style={styles.inputView} >
                         <Text style={styles.inputLabel}>Password</Text>
@@ -30,8 +29,7 @@ export const LoginScreen = ({ navigation }) => {
                             secureTextEntry
                             style={styles.inputText}
                             placeholder="Password..."
-                            placeholderTextColor="#003f5c"
-                            onChangeText={text => this.setState({ password: text })} />
+                            placeholderTextColor="#003f5c"/>
                     </View>
                     <TouchableOpacity style={styles.mainBtn}>
                         <Text style={styles.mainBtnText}>Log In</Text>
@@ -71,6 +69,7 @@ const styles = StyleSheet.create({
     welcomeBackText: {
         fontSize: 26,
         color: 'green',
+        // fontFamily: 'Dessau'
     },
     inputView: {
         width: '100%',
