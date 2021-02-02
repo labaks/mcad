@@ -1,7 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
 import { StyleSheet, View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
+import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
+import { MainBtn } from './components/MainBtn';
+import { TitleText } from './components/TitleText';
 
 export const SignUpScreen = ({ navigation }) => {
     return (
@@ -11,38 +14,17 @@ export const SignUpScreen = ({ navigation }) => {
                 style={styles.bgImage}>
                 <View style={styles.contentWrapper}>
                     <Logo />
-                    <View>
-                        <Text>Hello!</Text>
-                        <Text>Create an account to continue</Text>
+                    <View style={styles.mainText}>
+                        <TitleText text='Hello!' />
+                        <Text style={styles.fontFamilySF}>Create an account to continue</Text>
                     </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputLabel}>URL</Text>
-                        <TextInput
-                            style={styles.inputText}
-                            placeholder="URL..."
-                            placeholderTextColor="#003f5c" />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputLabel}>Login</Text>
-                        <TextInput
-                            style={styles.inputText}
-                            placeholder="Login..."
-                            placeholderTextColor="#003f5c" />
-                    </View>
-                    <View style={styles.inputView}>
-                        <Text style={styles.inputLabel}>Password</Text>
-                        <TextInput
-                            secureTextEntry
-                            style={styles.inputText}
-                            placeholder="Password..."
-                            placeholderTextColor="#003f5c" />
-                    </View>
-                    <TouchableOpacity style={styles.mainBtn}>
-                        <Text style={styles.mainBtnText}>Sign Up</Text>
-                    </TouchableOpacity>
+                    <InputView label='URL' />
+                    <InputView label='Login' />
+                    <InputView label='Password' />
+                    <MainBtn text='Sign Up' />
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Login')}>
-                        <Text>Log In</Text>
+                        <Text style={styles.fontFamilySF}>Log In</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -65,32 +47,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    inputView: {
-        width: '100%',
-        marginBottom: 10
+    mainText: {
+        marginBottom: 30,
+        alignSelf: 'flex-start'
     },
-    inputLabel: {
-        color: '#999'
-    },
-    inputText: {
-        fontSize: 16,
-        borderBottomColor: '#999',
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        paddingTop: 10
-    },
-    mainBtn: {
-        width: "100%",
-        backgroundColor: '#282C34',
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 30,
-        marginBottom: 10
-    },
-    mainBtnText: {
-        color: 'white',
-        fontSize: 16
-    },
+    fontFamilySF: {
+        fontFamily: 'SF'
+    }
 })

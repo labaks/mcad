@@ -1,7 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
+import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
+import { MainBtn } from './components/MainBtn';
+import { TitleText } from './components/TitleText';
 
 
 export const LoginScreen = ({ navigation }) => {
@@ -13,32 +16,17 @@ export const LoginScreen = ({ navigation }) => {
                 <View style={styles.contentWrapper}>
                     <Logo />
                     <View style={styles.mainText}>
-                        <Text style={styles.welcomeBackText}>Welcome back,</Text>
-                        <Text>Sign in to continue</Text>
+                        <TitleText text='Welcome back,' />
+                        <Text style={styles.fontFamilySF}>Sign in to continue</Text>
                     </View>
-                    <View style={styles.inputView} >
-                        <Text style={styles.inputLabel}>Login</Text>
-                        <TextInput
-                            style={styles.inputText}
-                            placeholder="Email..."
-                            placeholderTextColor="#003f5c" />
-                    </View>
-                    <View style={styles.inputView} >
-                        <Text style={styles.inputLabel}>Password</Text>
-                        <TextInput
-                            secureTextEntry
-                            style={styles.inputText}
-                            placeholder="Password..."
-                            placeholderTextColor="#003f5c"/>
-                    </View>
-                    <TouchableOpacity style={styles.mainBtn}>
-                        <Text style={styles.mainBtnText}>Log In</Text>
-                    </TouchableOpacity>
+                    <InputView label='Login' />
+                    <InputView label='Password' />
+                    <MainBtn text='Log in' />
                     <TouchableOpacity
                         style={styles.signUpLink}
                         onPress={() => navigation.navigate('SignUp')}>
-                        <Text>New user?</Text>
-                        <Text style={styles.signUpColored}>Sign up</Text>
+                        <Text style={styles.fontFamilySF}>New user?</Text>
+                        <Text style={[styles.signUpColored, styles.fontFamilySF]}>Sign up</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -63,47 +51,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     mainText: {
-        width: '100%',
-        marginBottom: 30
-    },
-    welcomeBackText: {
-        fontSize: 26,
-        color: 'green',
-        // fontFamily: 'Dessau'
-    },
-    inputView: {
-        width: '100%',
-        marginBottom: 10
-    },
-    inputLabel: {
-        color: '#999'
-    },
-    inputText: {
-        fontSize: 16,
-        borderBottomColor: '#999',
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        paddingTop: 10
-    },
-    mainBtn: {
-        width: "100%",
-        backgroundColor: '#282C34',
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 30,
-        marginBottom: 10
-    },
-    mainBtnText: {
-        color: 'white',
-        fontSize: 16
+        marginBottom: 30,
+        alignSelf: 'flex-start'
     },
     signUpLink: {
         flexDirection: 'row'
     },
     signUpColored: {
         marginLeft: 5,
-        color: 'green'
+        color: '#4A6E49'
+    },
+    fontFamilySF: {
+        fontFamily: 'SF'
     }
 });

@@ -12,7 +12,8 @@ import { SignUpScreen } from './src/SignUpScreen';
 const Stack = createStackNavigator();
 
 let customFonts = {
-  'SF': require('./assets/fonts/SFProDisplay.ttf')
+  'SF': require('./assets/fonts/SFProDisplay.ttf'),
+  'Dessau': require('./assets/fonts/Dessau.ttf'),
 }
 
 export default class App extends React.Component {
@@ -41,7 +42,6 @@ export default class App extends React.Component {
               component={SignUpScreen}
               options={{ headerShown: false }} />
           </Stack.Navigator>
-          <Text style={{ fontFamily: 'SF' }}>Some text</Text>
         </NavigationContainer>
       )
     } else {
