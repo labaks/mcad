@@ -20,7 +20,7 @@ export const LoginScreen = ({ navigation }) => {
                         <Text style={styles.fontFamilySF}>Sign in to continue</Text>
                     </View>
                     <InputView label='Login' />
-                    <InputView label='Password' />
+                    <InputView label='Password' secure={true} />
                     <MainBtn text='Log in' />
                     <TouchableOpacity
                         style={styles.signUpLink}

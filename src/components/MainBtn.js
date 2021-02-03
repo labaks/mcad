@@ -3,7 +3,9 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 export const MainBtn = (props) => {
     return (
-        <TouchableOpacity style={styles.mainBtn}>
+        <TouchableOpacity
+            style={styles.mainBtn}
+            activeOpacity={.5}>
             <Text style={styles.mainBtnText}>{props.text}</Text>
         </TouchableOpacity>
     )

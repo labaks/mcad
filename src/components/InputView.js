@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 export const InputView = (props) => {
+    const [isFocused, setIsFocused] = useState(false)
     return (
         <View style={styles.inputView}>
             <Text style={styles.inputLabel}>{props.label}</Text>
             <TextInput
-                // TODO: {props.secure ? secureTextEntry : ''}
-                style={styles.inputText} />
+                secureTextEntry={props.secure}
+                style={[styles.inputText, isFocused && styles.isFocused]}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)} />
         </View>
     )
 }
@@ -27,5 +30,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingVertical: 10,
         fontFamily: 'SF'
+    },
+    isFocused: {
+        borderBottomColor: 'black'
     }
 })

@@ -20,7 +20,7 @@ export const SignUpScreen = ({ navigation }) => {
                     </View>
                     <InputView label='URL' />
                     <InputView label='Login' />
-                    <InputView label='Password' />
+                    <InputView label='Password' secure={true} />
                     <MainBtn text='Sign Up' />
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Login')}>
