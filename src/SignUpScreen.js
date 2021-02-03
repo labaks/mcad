@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react'
-import { StyleSheet, View, Text, ImageBackground, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';

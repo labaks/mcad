@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler'
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import AppLoading from 'expo-app-loading'
@@ -49,9 +48,3 @@ export default class App extends React.Component {
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  }
-})
