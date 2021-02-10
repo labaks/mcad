@@ -5,7 +5,8 @@ export const MainBtn = (props) => {
     return (
         <TouchableOpacity
             style={styles.mainBtn}
-            activeOpacity={.5}>
+            activeOpacity={.5}
+            onPress={props.onPress}>
             <Text style={styles.mainBtnText}>{props.text}</Text>
         </TouchableOpacity>
     )

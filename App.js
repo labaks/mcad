@@ -7,6 +7,7 @@ import * as Font from 'expo-font'
 
 import { LoginScreen } from './src/LoginScreen'
 import { SignUpScreen } from './src/SignUpScreen';
+import { Content } from './src/Content';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,9 @@ export default class App extends React.Component {
               name="SignUp"
               component={SignUpScreen}
               options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Content"
+              component={Content} />
           </Stack.Navigator>
         </NavigationContainer>
       )

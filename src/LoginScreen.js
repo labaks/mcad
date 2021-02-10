@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
@@ -8,6 +8,41 @@ import { TitleText } from './components/TitleText';
 
 
 export const LoginScreen = ({ navigation }) => {
+    const [isLoading, setLoading] = useState(true);
+    const [data, setData] = useState([]);
+
+    let dataToSend = {
+        "login": "labaks",
+        "password": "123456789",
+        "ip": "78.130.215.103"
+    }
+    // let formBody = [];
+    // for (let key in dataToSend) {
+    //   let encodedKey = encodeURIComponent(key);
+    //   let encodedValue = encodeURIComponent(dataToSend[key]);
+    //   formBody.push(encodedKey + '=' + encodedValue);
+    // }
+    // formBody = formBody.join('&');
+
+    const handleLoginPress = () => {
+        fetch('https://194.28.165.32', {
+            method: 'POST',
+            // body: formBody,
+            body: dataToSend,
+            headers: {
+                //Header Defination
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+            },
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                setData(json);
+                navigation.navigate('Content', { data: data });
+            })
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground
@@ -21,7 +56,9 @@ export const LoginScreen = ({ navigation }) => {
                     </View>
                     <InputView label='Login' />
                     <InputView label='Password' secure={true} />
-                    <MainBtn text='Log in' />
+                    <MainBtn
+                        text='Log in'
+                        onPress={handleLoginPress} />
                     <TouchableOpacity
                         style={styles.signUpLink}
                         onPress={() => navigation.navigate('SignUp')}>
