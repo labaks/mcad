@@ -28,7 +28,7 @@ export const Content = (props) => {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log("---users_get request", json)
+                console.log("---users_get response", json)
                 setRequestData(json);
             })
             .catch((error) => console.error(error))

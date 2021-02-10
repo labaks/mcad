@@ -32,7 +32,7 @@ export const LoginScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((json) => {
                 setData(json);
-                console.log("---login request", data)
+                console.log("---login response", data)
                 navigation.navigate('Content', { data: data });
             })
             .catch((error) => console.error(error))
