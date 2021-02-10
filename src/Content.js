@@ -6,7 +6,7 @@ import { MainBtn } from './components/MainBtn';
 
 export const Content = (props) => {
     const { data } = props.route.params;
-    const [requestData, setRequestData] = useState([]);
+    const [responseData, setResponseData] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const hadleGetUsersPress = () => {
@@ -29,7 +29,7 @@ export const Content = (props) => {
             .then((response) => response.json())
             .then((json) => {
                 console.log("---users_get response", json)
-                setRequestData(json);
+                setResponseData(json);
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
