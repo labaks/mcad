@@ -8,35 +8,31 @@ import { TitleText } from './components/TitleText';
 
 
 export const LoginScreen = ({ navigation }) => {
-    const [isLoading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [userLogin, setUserLogin] = useState('');
+    const [userPassword, setUserPassword] = useState('');
     const [data, setData] = useState([]);
 
-    let dataToSend = {
-        "login": "labaks",
-        "password": "123456789",
-        "ip": "78.130.215.103"
-    }
-    // let formBody = [];
-    // for (let key in dataToSend) {
-    //   let encodedKey = encodeURIComponent(key);
-    //   let encodedValue = encodeURIComponent(dataToSend[key]);
-    //   formBody.push(encodedKey + '=' + encodedValue);
-    // }
-    // formBody = formBody.join('&');
-
     const handleLoginPress = () => {
-        fetch('https://194.28.165.32', {
+
+        setLoading(true);
+        let dataToSend = {
+            "login": "labaks",
+            "password": "123456789",
+            "ip": "127.0.0.1"
+        }
+        fetch('http://194.28.165.32:8070/api/login/', {
             method: 'POST',
-            // body: formBody,
-            body: dataToSend,
+            body: JSON.stringify(dataToSend),
             headers: {
-                //Header Defination
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
         })
             .then((response) => response.json())
             .then((json) => {
                 setData(json);
+                console.log("---login request", data)
                 navigation.navigate('Content', { data: data });
             })
             .catch((error) => console.error(error))
@@ -54,8 +50,13 @@ export const LoginScreen = ({ navigation }) => {
                         <TitleText text='Welcome back,' />
                         <Text style={styles.fontFamilySF}>Sign in to continue</Text>
                     </View>
-                    <InputView label='Login' />
-                    <InputView label='Password' secure={true} />
+                    <InputView
+                        label='Login'
+                        onChangeText={(userLogin) => setUserLogin(userLogin)} />
+                    <InputView
+                        label='Password'
+                        onChangeText={(userPassword) => setUserPassword(userPassword)}
+                        secure={true} />
                     <MainBtn
                         text='Log in'
                         onPress={handleLoginPress} />

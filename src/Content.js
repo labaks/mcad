@@ -1,11 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react'
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, FlatList } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, View, ImageBackground } from 'react-native'
 import { Logo } from './components/Logo';
+import { MainBtn } from './components/MainBtn';
 
 export const Content = (props) => {
     const { data } = props.route.params;
-    console.log(data);
+    const [requestData, setRequestData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const hadleGetUsersPress = () => {
+        let dataToSend = {
+            "session_id": data.session_id,
+            "data": {
+                // "sort_by": [{ "name": "" }],
+                "fields": ["name"]
+            }
+        }
+        console.log("DataToSend", dataToSend);
+        fetch('http://194.28.165.32:8070/api/users_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            // headers: {
+            //     Accept: 'application/json',
+            //     'Content-Type': 'application/json',
+            // },
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log("---users_get request", json)
+                setRequestData(json);
+            })
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
+    }
     return (
         <View style={styles.container}>
             <ImageBackground
@@ -13,13 +41,9 @@ export const Content = (props) => {
                 style={styles.bgImage}>
                 <View style={styles.contentWrapper}>
                     <Logo />
-                    <FlatList
-                        data={data}
-                        keyExtractor={({ id }, index) => id}
-                        renderItem={({ item }) => (
-                            <Text>{item.title}, {item.releaseYear}</Text>
-                        )}
-                    />
+                    <MainBtn
+                        text='Get users'
+                        onPress={hadleGetUsersPress} />
                 </View>
             </ImageBackground>
             <StatusBar style="auto" />
