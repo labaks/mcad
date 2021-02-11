@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';
+import { PasswordField } from './components/PasswordField';
 import { TitleText } from './components/TitleText';
 
 
@@ -32,7 +33,8 @@ export const LoginScreen = ({ navigation }) => {
             .then((response) => response.json())
             .then((json) => {
                 setData(json);
-                console.log("---login response", data)
+                console.log("---login response json", json);
+                console.log("---login response", data);
                 navigation.navigate('Content', { data: data });
             })
             .catch((error) => console.error(error))
@@ -53,10 +55,8 @@ export const LoginScreen = ({ navigation }) => {
                     <InputView
                         label='Login'
                         onChangeText={(userLogin) => setUserLogin(userLogin)} />
-                    <InputView
-                        label='Password'
-                        onChangeText={(userPassword) => setUserPassword(userPassword)}
-                        secure={true} />
+                    <PasswordField
+                        onChangeText={(userPassword) => setUserPassword(userPassword)} />
                     <MainBtn
                         text='Log in'
                         onPress={handleLoginPress} />

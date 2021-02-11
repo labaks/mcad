@@ -7,7 +7,6 @@ export const InputView = (props) => {
         <View style={styles.inputView}>
             <Text style={styles.inputLabel}>{props.label}</Text>
             <TextInput
-                secureTextEntry={props.secure}
                 style={[styles.inputText, isFocused && styles.isFocused]}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)} />

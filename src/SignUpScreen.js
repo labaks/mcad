@@ -4,6 +4,7 @@ import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';
+import { PasswordField } from './components/PasswordField';
 import { TitleText } from './components/TitleText';
 
 export const SignUpScreen = ({ navigation }) => {
@@ -20,7 +21,7 @@ export const SignUpScreen = ({ navigation }) => {
                     </View>
                     <InputView label='URL' />
                     <InputView label='Login' />
-                    <InputView label='Password' secure={true} />
+                    <PasswordField />
                     <MainBtn text='Sign Up' />
                     <TouchableOpacity
                         onPress={() => navigation.navigate('Login')}>
