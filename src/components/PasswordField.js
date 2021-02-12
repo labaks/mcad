@@ -6,9 +6,6 @@ export const PasswordField = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [showPass, setShowPass] = useState(false);
 
-    const toggleSwitch = () => {
-        setShowPass(!showPass);
-    }
     return (
         <View style={styles.inputView}>
             <Text style={[styles.inputLabel, isFocused && styles.focused]}>Password</Text>
@@ -21,7 +18,7 @@ export const PasswordField = () => {
                 <Icon
                     style={styles.icon}
                     name={showPass ? 'eye' : 'eye-off'}
-                    onPress={toggleSwitch} />
+                    onPress={() => setShowPass(!showPass)} />
             </View>
         </View>
     )
