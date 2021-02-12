@@ -22,12 +22,13 @@ export const LoginScreen = ({ navigation }) => {
             "password": "123456789",
             "ip": "127.0.0.1"
         }
-        fetch('http://194.28.165.32:8070/api/login/', {
+        fetch('https://mcapp.mcore.solutions/api/login/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'Host': 'testing.mcore.solutions'
             },
         })
             .then((response) => response.json())

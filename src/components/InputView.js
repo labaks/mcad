@@ -5,9 +5,9 @@ export const InputView = (props) => {
     const [isFocused, setIsFocused] = useState(false)
     return (
         <View style={styles.inputView}>
-            <Text style={styles.inputLabel}>{props.label}</Text>
+            <Text style={[styles.inputLabel, isFocused && styles.focused]}>{props.label}</Text>
             <TextInput
-                style={[styles.inputText, isFocused && styles.isFocused]}
+                style={[styles.inputText, isFocused && styles.focused]}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)} />
         </View>
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         fontFamily: 'SF'
     },
-    isFocused: {
-        borderBottomColor: 'black'
+    focused: {
+        color: '#4B4B52',
+        borderBottomColor: '#4B4B52'
     }
 })

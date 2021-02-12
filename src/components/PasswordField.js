@@ -11,8 +11,8 @@ export const PasswordField = () => {
     }
     return (
         <View style={styles.inputView}>
-            <Text style={styles.inputLabel}>Password</Text>
-            <View style={[styles.inputWrapper, isFocused && styles.isFocused]}>
+            <Text style={[styles.inputLabel, isFocused && styles.focused]}>Password</Text>
+            <View style={[styles.inputWrapper, isFocused && styles.focused]}>
                 <TextInput
                     secureTextEntry={!showPass}
                     style={styles.inputText}
@@ -48,9 +48,11 @@ const styles = StyleSheet.create({
         fontFamily: 'SF',
     },
     icon: {
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        color: '#4B4B52'
     },
-    isFocused: {
-        borderBottomColor: 'black'
+    focused: {
+        color: '#4B4B52',
+        borderBottomColor: '#4B4B52'
     }
 })
