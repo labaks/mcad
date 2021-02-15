@@ -2,14 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 export const InputView = (props) => {
-    const [isFocused, setIsFocused] = useState(false)
+    const [isFocused, setIsFocused] = useState(false);
+
     return (
         <View style={styles.inputView}>
             <Text style={[styles.inputLabel, isFocused && styles.focused]}>{props.label}</Text>
             <TextInput
                 style={[styles.inputText, isFocused && styles.focused]}
                 onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)} />
+                // onBlur={() => setIsFocused(false)}
+                onChange={(event) =>
+                    props.handleFormValueChange(
+                        props.formKey,
+                        event.nativeEvent.text
+                    )
+                }
+                {...props.textInputProps} />
         </View>
     )
 }

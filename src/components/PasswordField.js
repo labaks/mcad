@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Icon } from 'native-base';
 
-export const PasswordField = () => {
+export const PasswordField = (props) => {
     const [isFocused, setIsFocused] = useState(false);
     const [showPass, setShowPass] = useState(false);
 
@@ -14,7 +14,14 @@ export const PasswordField = () => {
                     secureTextEntry={!showPass}
                     style={styles.inputText}
                     onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)} />
+                    // onBlur={() => setIsFocused(false)} 
+                    onChange={(event) =>
+                        props.handleFormValueChange(
+                            props.formKey,
+                            event.nativeEvent.text
+                        )
+                    }
+                    {...props.textInputProps} />
                 <Icon
                     style={styles.icon}
                     name={showPass ? 'eye' : 'eye-off'}

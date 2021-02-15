@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
@@ -7,20 +7,23 @@ import { MainBtn } from './components/MainBtn';
 import { PasswordField } from './components/PasswordField';
 import { TitleText } from './components/TitleText';
 
+import { FormData } from './helpers/FormData';
+
 export const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-    const [userLogin, setUserLogin] = useState('');
-    const [userPassword, setUserPassword] = useState('');
 
-    console.log("userLogin", userLogin);
+    const [formValues, handleFormValueChange, setFormValues] = FormData({
+        login: '',
+        password: ''
+    })
 
     const handleLoginPress = () => {
 
         setLoading(true);
         let dataToSend = {
-            "login": "labaks",
-            "password": "123456789",
-            "ip": "127.0.0.1"
+            "login": formValues.login,
+            "password": formValues.password,
+            "ip": "127.0.0.1" //TODO: get my ip
         }
         fetch('https://mcapp.mcore.solutions/api/login/', {
             method: 'POST',
@@ -33,6 +36,7 @@ export const LoginScreen = ({ navigation }) => {
         })
             .then((response) => response.json())
             .then((json) => {
+                //TODO: if (no errors from api)
                 navigation.navigate('Content', { token: json.session_id });
             })
             .catch((error) => console.error(error))
@@ -52,9 +56,13 @@ export const LoginScreen = ({ navigation }) => {
                     </View>
                     <InputView
                         label='Login'
-                        onChangeText={(userLogin) => setUserLogin(userLogin)} />
+                        formKey='login'
+                        textInputProps={{ autoCapitalize: 'none' }}
+                        handleFormValueChange={handleFormValueChange} />
                     <PasswordField
-                        onChangeText={(userPassword) => setUserPassword(userPassword)} />
+                        formKey='password'
+                        textInputProps={{ autoCapitalize: 'none' }}
+                        handleFormValueChange={handleFormValueChange} />
                     <MainBtn
                         text='Log in'
                         onPress={handleLoginPress} />
