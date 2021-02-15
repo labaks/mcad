@@ -7,12 +7,12 @@ import { MainBtn } from './components/MainBtn';
 import { PasswordField } from './components/PasswordField';
 import { TitleText } from './components/TitleText';
 
-
 export const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
     const [userLogin, setUserLogin] = useState('');
     const [userPassword, setUserPassword] = useState('');
-    const [data, setData] = useState([]);
+
+    console.log("userLogin", userLogin);
 
     const handleLoginPress = () => {
 
@@ -26,17 +26,14 @@ export const LoginScreen = ({ navigation }) => {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
-                Accept: 'application/json',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Host': 'testing.mcore.solutions'
             },
         })
             .then((response) => response.json())
             .then((json) => {
-                setData(json);
-                console.log("---login response json", json);
-                console.log("---login response", data);
-                navigation.navigate('Content', { data: data });
+                navigation.navigate('Content', { token: json.session_id });
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));

@@ -5,26 +5,27 @@ import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';
 
 export const Content = (props) => {
-    const { data } = props.route.params;
+    const token = props.route.params.token;
     const [responseData, setResponseData] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const hadleGetUsersPress = () => {
         let dataToSend = {
-            "session_id": data.session_id,
+            "session_id": token,
             "data": {
-                // "sort_by": [{ "name": "" }],
+                "sort_by": [{ "name": "" }],
                 "fields": ["name"]
             }
         }
         console.log("DataToSend", dataToSend);
-        fetch('http://194.28.165.32:8070/api/users_get/', {
+        fetch('https://mcapp.mcore.solutions/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
-            // headers: {
-            //     Accept: 'application/json',
-            //     'Content-Type': 'application/json',
-            // },
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': 'testing.mcore.solutions'
+            },
         })
             .then((response) => response.json())
             .then((json) => {
@@ -34,6 +35,7 @@ export const Content = (props) => {
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }
+
     return (
         <View style={styles.container}>
             <ImageBackground
