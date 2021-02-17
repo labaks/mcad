@@ -4,9 +4,10 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 export const MainBtn = (props) => {
     return (
         <TouchableOpacity
-            style={styles.mainBtn}
+            style={[styles.mainBtn, props.disabled && styles.disabled]}
             activeOpacity={.5}
-            onPress={props.onPress}>
+            onPress={props.onPress}
+            disabled={props.disabled}>
             <Text style={styles.mainBtnText}>{props.text}</Text>
         </TouchableOpacity>
     )
@@ -28,4 +29,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'SF',
     },
+    disabled: {
+        opacity: .6
+    }
 })

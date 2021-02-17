@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';
@@ -11,14 +12,13 @@ import { FormData } from './helpers/FormData';
 
 export const LoginScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
-
     const [formValues, handleFormValueChange, setFormValues] = FormData({
         login: '',
         password: ''
-    })
+    });
+    const isValid = formValues.login.length > 0 && formValues.password.length > 0;
 
     const handleLoginPress = () => {
-
         setLoading(true);
         let dataToSend = {
             "login": formValues.login,
@@ -36,8 +36,19 @@ export const LoginScreen = ({ navigation }) => {
         })
             .then((response) => response.json())
             .then((json) => {
-                //TODO: if (no errors from api)
-                navigation.navigate('Content', { token: json.session_id });
+                console.log("response", json);
+                if (json.status == 200) {
+                    navigation.navigate('Content', { token: json.session_id });
+                } else {
+                    showMessage({
+                        message: "Error",
+                        description: json.details,
+                        type: 'danger',
+                        duration: 3000,
+                        position: 'top'
+                    })
+                }
+
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
@@ -64,6 +75,7 @@ export const LoginScreen = ({ navigation }) => {
                         textInputProps={{ autoCapitalize: 'none' }}
                         handleFormValueChange={handleFormValueChange} />
                     <MainBtn
+                        disabled={!isValid}
                         text='Log in'
                         onPress={handleLoginPress} />
                     <TouchableOpacity
@@ -75,6 +87,7 @@ export const LoginScreen = ({ navigation }) => {
                 </View>
             </ImageBackground>
             <StatusBar style="auto" />
+            <FlashMessage />
         </View>
     )
 }
@@ -86,7 +99,6 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         width: '100%',
-        // height: '100%',
     },
     contentWrapper: {
         flex: 1,

@@ -1,11 +1,11 @@
-import 'react-native-gesture-handler'
+import 'react-native-gesture-handler';
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import AppLoading from 'expo-app-loading'
-import * as Font from 'expo-font'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import AppLoading from 'expo-app-loading';
+import * as Font from 'expo-font';
 
-import { LoginScreen } from './src/LoginScreen'
+import { LoginScreen } from './src/LoginScreen';
 import { SignUpScreen } from './src/SignUpScreen';
 import { Content } from './src/Content';
 
