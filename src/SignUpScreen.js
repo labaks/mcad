@@ -3,6 +3,7 @@ import { CheckBox } from 'native-base';
 import React, { useState, useCallback } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
 import FlashMessage, { showMessage } from 'react-native-flash-message';
+import publicIP from 'react-native-public-ip';
 import { InputView } from './components/InputView';
 import { Logo } from './components/Logo';
 import { MainBtn } from './components/MainBtn';
@@ -19,7 +20,10 @@ export const SignUpScreen = ({ navigation }) => {
         login: '',
         password: ''
     });
+    let myIp = '';
     const isValid = formValues.login.length > 0 && formValues.password.length > 0 && formValues.url.length > 0 && agryWithPrivacy;
+
+    publicIP().then((ip) => { myIp = ip; });
 
     const openPrivacy = useCallback(async () => {
         const supported = await Linking.canOpenURL(privacyPolicyUrl);
@@ -36,7 +40,7 @@ export const SignUpScreen = ({ navigation }) => {
         let dataToSend = {
             "login": formValues.login,
             "password": formValues.password,
-            "ip": "127.0.0.1" //TODO: get my ip
+            "ip": myIp
         }
         fetch('https://mcapp.mcore.solutions/api/login/', {
             method: 'POST',
