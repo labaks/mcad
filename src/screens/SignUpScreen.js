@@ -2,14 +2,16 @@ import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'native-base';
 import React, { useState, useCallback } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import publicIP from 'react-native-public-ip';
-import { InputView } from './components/InputView';
-import { Logo } from './components/Logo';
-import { MainBtn } from './components/MainBtn';
-import { PasswordField } from './components/PasswordField';
-import { TitleText } from './components/TitleText';
-import { FormData } from './helpers/FormData';
+import { InputView } from '../components/InputView';
+import { Loader } from '../components/Loader';
+import { Logo } from '../components/Logo';
+import { MainBtn } from '../components/MainBtn';
+import { PasswordField } from '../components/PasswordField';
+import { TitleText } from '../components/TitleText';
+import { FormData } from '../helpers/FormData';
 
 export const SignUpScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -20,14 +22,10 @@ export const SignUpScreen = ({ navigation }) => {
         login: '',
         password: ''
     });
-    let myIp = '';
     const isValid = formValues.login.length > 0 && formValues.password.length > 0 && formValues.url.length > 0 && agryWithPrivacy;
-
-    publicIP().then((ip) => { myIp = ip; });
 
     const openPrivacy = useCallback(async () => {
         const supported = await Linking.canOpenURL(privacyPolicyUrl);
-
         if (supported) {
             await Linking.openURL(privacyPolicyUrl);
         } else {
@@ -37,45 +35,72 @@ export const SignUpScreen = ({ navigation }) => {
 
     const handleSignUpPress = () => {
         setLoading(true);
-        let dataToSend = {
-            "login": formValues.login,
-            "password": formValues.password,
-            "ip": myIp
-        }
-        fetch('https://mcapp.mcore.solutions/api/login/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': formValues.url.toString()
-            },
-        })
-            .then((response) => response.json())
-            .then((json) => {
+        publicIP().then(ip => {
+
+            let dataToSend = {
+                "login": formValues.login,
+                "password": formValues.password,
+                "ip": ip
+            }
+            fetch('https://mcapp.mcore.solutions/api/login/', {
+                method: 'POST',
+                body: JSON.stringify(dataToSend),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Host': formValues.url.toString()
+                },
+            }).then((response) => response.json()
+            ).then((json) => {
                 console.log("response", json);
                 if (json.status == 200) {
-                    navigation.navigate('Content', { token: json.session_id });
+                    AsyncStorage.multiSet([
+                        ['url', formValues.url],
+                        ['login', formValues.login],
+                        ['password', formValues.password],
+                        ['logged_in', "true"],
+                        ['token', json.session_id]
+                    ]).then(() => {
+                        setLoading(false);
+                        navigation.navigate('Content', {
+                            token: json.session_id,
+                            url: formValues.url.toString()
+                        });
+                    })
                 } else {
                     showMessage({
                         message: "Error",
-                        description: json.details,
+                        description: json.details ? json.details : json.message,
                         type: 'danger',
                         duration: 3000,
                         position: 'top'
                     })
                 }
 
-            })
-            .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+            }).catch((error) => console.error(error)
+            ).finally(() => setLoading(false));
+        }).catch(error => {
+            showMessage({
+                message: "Error",
+                description: error,
+                type: 'danger',
+                duration: 3000,
+                position: 'top'
+            });
+            setLoading(false);
+        });
+    }
 
+    const handleGoToLogin = () => {
+        AsyncStorage.getItem('url').then((url) => {
+            navigation.navigate('Login', { url: url })
+        })
     }
 
     return (
         <View style={styles.signUpScreenContainer}>
             <ImageBackground
-                source={require('./../assets/signUpBg.png')}
+                source={require('../../assets/signUpBg.png')}
                 style={styles.bgImage}>
                 <View style={styles.contentWrapper}>
                     <Logo />
@@ -116,11 +141,12 @@ export const SignUpScreen = ({ navigation }) => {
                         disabled={!isValid}
                         onPress={handleSignUpPress} />
                     <TouchableOpacity
-                        onPress={() => navigation.navigate('Login')}>
+                        onPress={handleGoToLogin}>
                         <Text style={styles.fontFamilySF}>Log In</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
+            <Loader loading={loading} />
             <StatusBar style="auto" />
             <FlashMessage />
         </View>

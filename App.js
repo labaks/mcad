@@ -5,9 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
-import { LoginScreen } from './src/LoginScreen';
-import { SignUpScreen } from './src/SignUpScreen';
-import { Content } from './src/Content';
+import { LoginScreen } from './src/screens/LoginScreen';
+import { SignUpScreen } from './src/screens/SignUpScreen';
+import { SplashScreen } from './src/screens/SplashScreen';
+// import DrawerNavigationRoutes from './src/screens/DrawerNavigationRoutes';
+import { Content } from './src/screens/Content';
 
 const Stack = createStackNavigator();
 
@@ -32,7 +34,11 @@ export default class App extends React.Component {
     if (this.state.fontsLoaded) {
       return (
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Login">
+          <Stack.Navigator initialRouteName="SplashScreen">
+            <Stack.Screen
+              name="SplashScreen"
+              component={SplashScreen}
+              options={{ headerShown: false }} />
             <Stack.Screen
               name="Login"
               component={LoginScreen}
@@ -43,7 +49,13 @@ export default class App extends React.Component {
               options={{ headerShown: false }} />
             <Stack.Screen
               name="Content"
-              component={Content} />
+              component={Content}
+              options={{ headerShown: false }}
+            />
+            {/* <Stack.Screen
+              name="DrawerNavigationRoutes"
+              component={DrawerNavigationRoutes}
+              options={{ headerShown: false }} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       )
