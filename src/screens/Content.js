@@ -2,19 +2,23 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
 import { MainBtn } from '../components/MainBtn';
 
 export const Content = ({ navigation, route }) => {
-    console.log("route", route)
     const token = route.params.token;
     const url = route.params.url;
     const [responseData, setResponseData] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    console.log("======================");
+    console.log("---Content Screen Loaded---")
+    console.log("-params received: ", route.params);
+
     const hadleGetUsersPress = () => {
+        console.log("--UsersGet pressed");
         setLoading(true);
         let dataToSend = {
             "session_id": token,
@@ -23,7 +27,7 @@ export const Content = ({ navigation, route }) => {
                 "fields": ["name"]
             }
         }
-        console.log("DataToSend", dataToSend);
+        console.log("-DataToSend: ", dataToSend);
         fetch('https://mcapp.mcore.solutions/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
@@ -32,26 +36,26 @@ export const Content = ({ navigation, route }) => {
                 'Content-Type': 'application/json',
                 'Host': url
             },
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log("---users_get response", json)
-                showMessage({
-                    message: "Success",
-                    description: json.details,
-                    type: 'success',
-                    duration: 3000,
-                    position: 'top'
-                })
-                setResponseData(json);
+        }).then((response) => response.json()
+        ).then((json) => {
+            console.log("-fetch response (first elem): ", json.data[0])
+            showMessage({
+                message: "Success",
+                description: json.details,
+                type: 'success',
+                duration: 3000,
+                position: 'center'
             })
-            .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+            // setResponseData(json);
+        }
+        ).catch((error) => console.error("fetch catch error: ", error)
+        ).finally(() => setLoading(false));
     }
 
     const hadleLogout = () => {
         setLoading(true);
-        console.log("url from logout function: ", url)
+        console.log("--Logout pressed");
+        console.log("-url: ", url)
         fetch('https://mcapp.mcore.solutions/api/logout/', {
             method: 'POST',
             body: JSON.stringify({ 'session_id': token, 'data': {} }),
@@ -62,7 +66,7 @@ export const Content = ({ navigation, route }) => {
             },
         }).then((response) => response.json()
         ).then((json) => {
-            console.log("---logout response", json)
+            console.log("-fetch response: ", json)
             if (json.status == 200) {
                 console.log("logout ok")
                 AsyncStorage.setItem('logged_in', 'false').then(() => {
@@ -70,22 +74,25 @@ export const Content = ({ navigation, route }) => {
                     navigation.navigate('Login', { url: url })
                 })
             } else {
+                setLoading(false)
+                console.log("logout false. Error: ", json.details ? json.details : json.message);
                 showMessage({
                     message: "Error",
-                    description: json.details,
+                    description: json.details ? json.details : json.message,
                     type: 'danger',
                     duration: 3000,
                     position: 'top'
                 })
-                setLoading(false)
             }
-        }).catch((error) => console.error(error)
-        ).finally(() => setLoading(false))
+        }).catch((error) => console.error("fetch catch error: ", error)
+        ).finally(() => setLoading(false));
     }
 
     const clearStorage = () => {
+        console.log("--Clear storage pressed");
         AsyncStorage.clear().then(() => {
-            navigation.navigate('SignUp')
+            console.log("-Storage cleared. Navigating to SignUp screen");
+            navigation.navigate('SignUp');
         })
     }
 

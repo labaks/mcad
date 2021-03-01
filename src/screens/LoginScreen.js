@@ -3,7 +3,7 @@ import { StackActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 import publicIP from 'react-native-public-ip';
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
@@ -21,14 +21,23 @@ export const LoginScreen = ({ navigation, route }) => {
         password: ''
     });
     const isValid = formValues.login.length > 0 && formValues.password.length > 0;
-    let url = route.params.url;
 
-    console.log("LoginScreen route", route)
+    let url = '';
+    if (route.params) {
+        url = route.params.url;
+    } else {
+        url = null;
+    }
+
+    console.log("======================");
+    console.log("---LoginScreen loaded---");
+    console.log("-params received: ", route.params);
 
     const handleLoginPress = () => {
-
-        console.log("url", url)
-        if (url == null) {
+        console.log("--Login button pressed");
+        console.log("-url: ", url);
+        if (url === null) {
+            console.log("-Error: url == null");
             showMessage({
                 message: "Error",
                 description: "You have no URL, please go to Sign Up page",
@@ -36,16 +45,16 @@ export const LoginScreen = ({ navigation, route }) => {
                 duration: 3000,
                 position: 'top'
             })
-            console.log("im in error")
         } else {
             setLoading(true);
             publicIP().then(ip => {
+                console.log("-publicIP() response: ", ip);
                 let dataToSend = {
                     "login": formValues.login,
                     "password": formValues.password,
                     "ip": ip
                 }
-                console.log("dataToSend", dataToSend);
+                console.log("-dataToSend: ", dataToSend);
                 fetch('https://mcapp.mcore.solutions/api/login/', {
                     method: 'POST',
                     body: JSON.stringify(dataToSend),
@@ -57,9 +66,9 @@ export const LoginScreen = ({ navigation, route }) => {
                 }).then((response) => response.json()
                 ).then((json) => {
                     setLoading(false);
-                    console.log("response", json);
+                    console.log("-fetch response: ", json);
                     if (json.status == 200) {
-                        console.log("login ok")
+                        console.log("login ok");
                         navigation.navigate('Content', {
                             token: json.session_id,
                             url: url
@@ -68,6 +77,7 @@ export const LoginScreen = ({ navigation, route }) => {
                         //     StackActions.replace('DrawerNavigationRoutes', { token: json.session_id })
                         // );
                     } else {
+                        console.log("login false. Error: ", json.details ? json.details : json.message);
                         showMessage({
                             message: "Error",
                             description: json.details ? json.details : json.message,
@@ -76,16 +86,17 @@ export const LoginScreen = ({ navigation, route }) => {
                             position: 'top'
                         })
                     }
-                }).catch((error) => console.error(error)
+                }).catch((error) => console.error("fetch catch error: ", error)
                 ).finally(() => setLoading(false));
             }).catch(error => {
                 setLoading(false);
+                console.log("-publicIP() catch error:", error);
                 showMessage({
                     message: "Error",
                     description: error,
                     type: 'danger',
                     duration: 3000,
-                    position: 'top'
+                    position: 'bottom'
                 });
             });
         }

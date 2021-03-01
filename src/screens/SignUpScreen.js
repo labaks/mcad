@@ -3,7 +3,7 @@ import { CheckBox } from 'native-base';
 import React, { useState, useCallback } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
-import FlashMessage, { showMessage } from 'react-native-flash-message';
+import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
 import publicIP from 'react-native-public-ip';
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
@@ -24,19 +24,23 @@ export const SignUpScreen = ({ navigation }) => {
     });
     const isValid = formValues.login.length > 0 && formValues.password.length > 0 && formValues.url.length > 0 && agryWithPrivacy;
 
+    console.log("======================");
+    console.log("---SignUpScreen loaded---");
+
     const openPrivacy = useCallback(async () => {
         const supported = await Linking.canOpenURL(privacyPolicyUrl);
         if (supported) {
             await Linking.openURL(privacyPolicyUrl);
         } else {
-            Alert.alert(`Something wrong with URl-opener: ${privacyPolicyUrl}`);
+            Alert.alert('Something wrong with URl-opener');
         }
     }, [privacyPolicyUrl]);
 
     const handleSignUpPress = () => {
         setLoading(true);
+        console.log("--SignUp button pressed");
         publicIP().then(ip => {
-
+            console.log("-publicIP() response: ", ip);
             let dataToSend = {
                 "login": formValues.login,
                 "password": formValues.password,
@@ -52,8 +56,9 @@ export const SignUpScreen = ({ navigation }) => {
                 },
             }).then((response) => response.json()
             ).then((json) => {
-                console.log("response", json);
+                console.log("-fetch response: ", json);
                 if (json.status == 200) {
+                    console.log("login ok");
                     AsyncStorage.multiSet([
                         ['url', formValues.url],
                         ['login', formValues.login],
@@ -61,6 +66,7 @@ export const SignUpScreen = ({ navigation }) => {
                         ['logged_in', "true"],
                         ['token', json.session_id]
                     ]).then(() => {
+                        console.log("multiSet() ok");
                         setLoading(false);
                         navigation.navigate('Content', {
                             token: json.session_id,
@@ -68,6 +74,7 @@ export const SignUpScreen = ({ navigation }) => {
                         });
                     })
                 } else {
+                    console.log("login false. Error: ", json.details ? json.details : json.message);
                     showMessage({
                         message: "Error",
                         description: json.details ? json.details : json.message,
@@ -77,9 +84,11 @@ export const SignUpScreen = ({ navigation }) => {
                     })
                 }
 
-            }).catch((error) => console.error(error)
+            }).catch((error) => console.error("fetch catch error: ", error)
             ).finally(() => setLoading(false));
         }).catch(error => {
+            setLoading(false);
+            console.log("-publicIP() catch error:", error);
             showMessage({
                 message: "Error",
                 description: error,
@@ -87,7 +96,6 @@ export const SignUpScreen = ({ navigation }) => {
                 duration: 3000,
                 position: 'top'
             });
-            setLoading(false);
         });
     }
 
