@@ -2,10 +2,12 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import DropdownAlert from 'react-native-dropdownalert';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
 import { MainBtn } from '../components/MainBtn';
+
+let dropDownAlert;
 
 export const Content = ({ navigation, route }) => {
     const token = route.params.token;
@@ -39,13 +41,7 @@ export const Content = ({ navigation, route }) => {
         }).then((response) => response.json()
         ).then((json) => {
             console.log("-fetch response (first elem): ", json.data[0])
-            showMessage({
-                message: "Success",
-                description: json.details,
-                type: 'success',
-                duration: 3000,
-                position: 'center'
-            })
+            dropDownAlert.alertWithType('success', 'Get Users success', "Received " + json.data.length + " users");
             // setResponseData(json);
         }
         ).catch((error) => console.error("fetch catch error: ", error)
@@ -76,16 +72,17 @@ export const Content = ({ navigation, route }) => {
             } else {
                 setLoading(false)
                 console.log("logout false. Error: ", json.details ? json.details : json.message);
-                showMessage({
-                    message: "Error",
-                    description: json.details ? json.details : json.message,
-                    type: 'danger',
-                    duration: 3000,
-                    position: 'top'
-                })
+                dropDownAlert.alertWithType(
+                    'error',
+                    'Error',
+                    json.details ? json.details : json.message);
             }
         }).catch((error) => console.error("fetch catch error: ", error)
         ).finally(() => setLoading(false));
+    }
+
+    const message = () => {
+        dropDownAlert.alertWithType('warn', 'Warning title', 'warning body');
     }
 
     const clearStorage = () => {
@@ -112,11 +109,17 @@ export const Content = ({ navigation, route }) => {
                     <MainBtn
                         text="Clear credentials"
                         onPress={clearStorage} />
+                    <MainBtn
+                        text="Warning"
+                        onPress={message} />
                 </View>
             </ImageBackground>
             <Loader loading={loading} />
             <StatusBar style="auto" />
-            <FlashMessage />
+            <DropdownAlert
+                ref={(ref) => { dropDownAlert = ref }}
+                closeInterval={3000}
+            />
         </View>
     )
 }

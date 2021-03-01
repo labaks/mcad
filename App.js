@@ -10,6 +10,7 @@ import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 // import DrawerNavigationRoutes from './src/screens/DrawerNavigationRoutes';
 import { Content } from './src/screens/Content';
+import { StyleSheet, View } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -33,34 +34,43 @@ export default class App extends React.Component {
   render() {
     if (this.state.fontsLoaded) {
       return (
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="SplashScreen">
-            <Stack.Screen
-              name="SplashScreen"
-              component={SplashScreen}
-              options={{ headerShown: false }} />
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{ headerShown: false }} />
-            <Stack.Screen
-              name="SignUp"
-              component={SignUpScreen}
-              options={{ headerShown: false }} />
-            <Stack.Screen
-              name="Content"
-              component={Content}
-              options={{ headerShown: false }}
-            />
-            {/* <Stack.Screen
+        <View style={styles.container}>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="SplashScreen">
+              <Stack.Screen
+                name="SplashScreen"
+                component={SplashScreen}
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name="SignUp"
+                component={SignUpScreen}
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name="Content"
+                component={Content}
+                options={{ headerShown: false }}
+              />
+              {/* <Stack.Screen
               name="DrawerNavigationRoutes"
               component={DrawerNavigationRoutes}
               options={{ headerShown: false }} /> */}
-          </Stack.Navigator>
-        </NavigationContainer>
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
       )
     } else {
       return <AppLoading />
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+});

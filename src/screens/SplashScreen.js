@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import publicIP from 'react-native-public-ip';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { Logo } from '../components/Logo';
 import { Loader } from '../components/Loader';
+
+let dropDownAlert;
 
 export const SplashScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -45,19 +47,19 @@ export const SplashScreen = ({ navigation }) => {
                             console.log("-fetch response: ", json);
                             if (json.status == 200) {
                                 console.log("login ok")
-                                navigation.navigate('Content', {
-                                    token: json.session_id,
-                                    url: url
-                                });
+                                AsyncStorage.setItem('logged_in', 'true').then(() => {
+                                    console.log("Storage setItem() ok");
+                                    navigation.navigate('Content', {
+                                        token: json.session_id,
+                                        url: url
+                                    })
+                                })
                             } else {
                                 console.log("login false. error: ", json.details ? json.details : json.message);
-                                showMessage({
-                                    message: "Error",
-                                    description: json.details ? json.details : json.message,
-                                    type: 'danger',
-                                    duration: 3000,
-                                    position: 'top'
-                                })
+                                dropDownAlert.alertWithType(
+                                    'error',
+                                    'Error',
+                                    json.details ? json.details : json.message);
                             }
                         }).catch((error) => console.error("fetch catch error: ", error)
                         ).finally(() => {
@@ -66,13 +68,10 @@ export const SplashScreen = ({ navigation }) => {
                     }).catch(error => {
                         setLoading(false);
                         console.log("-publicIP() catch error:", error);
-                        showMessage({
-                            message: "Error",
-                            description: error,
-                            type: 'danger',
-                            duration: 3000,
-                            position: 'top'
-                        })
+                        dropDownAlert.alertWithType(
+                            'error',
+                            'Error',
+                            error);
                     })
                 } else {
                     if (url === null) {
@@ -94,7 +93,9 @@ export const SplashScreen = ({ navigation }) => {
             <View>
                 <Loader loading={loading} />
             </View>
-            <FlashMessage />
+            <DropdownAlert
+                ref={(ref) => { dropDownAlert = ref }}
+                closeInterval={3000} />
         </View>
     );
 };

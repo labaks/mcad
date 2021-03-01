@@ -3,7 +3,7 @@ import { CheckBox } from 'native-base';
 import React, { useState, useCallback } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
@@ -12,6 +12,8 @@ import { MainBtn } from '../components/MainBtn';
 import { PasswordField } from '../components/PasswordField';
 import { TitleText } from '../components/TitleText';
 import { FormData } from '../helpers/FormData';
+
+let dropDownAlert;
 
 export const SignUpScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
@@ -75,13 +77,10 @@ export const SignUpScreen = ({ navigation }) => {
                     })
                 } else {
                     console.log("login false. Error: ", json.details ? json.details : json.message);
-                    showMessage({
-                        message: "Error",
-                        description: json.details ? json.details : json.message,
-                        type: 'danger',
-                        duration: 3000,
-                        position: 'top'
-                    })
+                    dropDownAlert.alertWithType(
+                        'error',
+                        'Error',
+                        json.details ? json.details : json.message);
                 }
 
             }).catch((error) => console.error("fetch catch error: ", error)
@@ -89,13 +88,10 @@ export const SignUpScreen = ({ navigation }) => {
         }).catch(error => {
             setLoading(false);
             console.log("-publicIP() catch error:", error);
-            showMessage({
-                message: "Error",
-                description: error,
-                type: 'danger',
-                duration: 3000,
-                position: 'top'
-            });
+            dropDownAlert.alertWithType(
+                'error',
+                'Error',
+                error);
         });
     }
 
@@ -156,7 +152,9 @@ export const SignUpScreen = ({ navigation }) => {
             </ImageBackground>
             <Loader loading={loading} />
             <StatusBar style="auto" />
-            <FlashMessage />
+            <DropdownAlert
+                ref={(ref) => { dropDownAlert = ref }}
+                closeInterval={3000} />
         </View>
     )
 }

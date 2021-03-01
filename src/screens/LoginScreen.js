@@ -2,8 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
-import FlashMessage, { showMessage, hideMessage } from 'react-native-flash-message';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
@@ -13,6 +13,8 @@ import { PasswordField } from '../components/PasswordField';
 import { TitleText } from '../components/TitleText';
 
 import { FormData } from '../helpers/FormData';
+
+let dropDownAlert;
 
 export const LoginScreen = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false);
@@ -38,13 +40,10 @@ export const LoginScreen = ({ navigation, route }) => {
         console.log("-url: ", url);
         if (url === null) {
             console.log("-Error: url == null");
-            showMessage({
-                message: "Error",
-                description: "You have no URL, please go to Sign Up page",
-                type: 'danger',
-                duration: 3000,
-                position: 'top'
-            })
+            dropDownAlert.alertWithType(
+                'error',
+                'Error',
+                "You have no URL, please go to Sign Up page");
         } else {
             setLoading(true);
             publicIP().then(ip => {
@@ -69,35 +68,32 @@ export const LoginScreen = ({ navigation, route }) => {
                     console.log("-fetch response: ", json);
                     if (json.status == 200) {
                         console.log("login ok");
-                        navigation.navigate('Content', {
-                            token: json.session_id,
-                            url: url
-                        });
-                        // navigation.dispatch(
-                        //     StackActions.replace('DrawerNavigationRoutes', { token: json.session_id })
-                        // );
+                        AsyncStorage.setItem('logged_in', 'true').then(() => {
+                            console.log("Storage setItem() ok");
+                            navigation.navigate('Content', {
+                                token: json.session_id,
+                                url: url
+                            });
+                            // navigation.dispatch(
+                            //     StackActions.replace('DrawerNavigationRoutes', { token: json.session_id })
+                            // );
+                        })
                     } else {
                         console.log("login false. Error: ", json.details ? json.details : json.message);
-                        showMessage({
-                            message: "Error",
-                            description: json.details ? json.details : json.message,
-                            type: 'danger',
-                            duration: 3000,
-                            position: 'top'
-                        })
+                        dropDownAlert.alertWithType(
+                            'error',
+                            'Error',
+                            json.details ? json.details : json.message);
                     }
                 }).catch((error) => console.error("fetch catch error: ", error)
                 ).finally(() => setLoading(false));
             }).catch(error => {
                 setLoading(false);
                 console.log("-publicIP() catch error:", error);
-                showMessage({
-                    message: "Error",
-                    description: error,
-                    type: 'danger',
-                    duration: 3000,
-                    position: 'bottom'
-                });
+                dropDownAlert.alertWithType(
+                    'error',
+                    'Error',
+                    error);
             });
         }
     }
@@ -136,7 +132,9 @@ export const LoginScreen = ({ navigation, route }) => {
             </ImageBackground>
             <Loader loading={loading} />
             <StatusBar style="auto" />
-            <FlashMessage />
+            <DropdownAlert
+                ref={(ref) => { dropDownAlert = ref }}
+                closeInterval={3000} />
         </View>
     )
 }
