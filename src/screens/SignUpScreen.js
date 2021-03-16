@@ -79,7 +79,7 @@ export const SignUpScreen = ({ navigation }) => {
                     console.log("login false. Error: ", json.details ? json.details : json.message);
                     dropDownAlert.alertWithType(
                         'error',
-                        'Error',
+                        '',
                         json.details ? json.details : json.message);
                 }
 
@@ -90,7 +90,7 @@ export const SignUpScreen = ({ navigation }) => {
             console.log("-publicIP() catch error:", error);
             dropDownAlert.alertWithType(
                 'error',
-                'Error',
+                '',
                 error);
         });
     }

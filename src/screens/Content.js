@@ -74,7 +74,7 @@ export const Content = ({ navigation, route }) => {
                 console.log("logout false. Error: ", json.details ? json.details : json.message);
                 dropDownAlert.alertWithType(
                     'error',
-                    'Error',
+                    '',
                     json.details ? json.details : json.message);
             }
         }).catch((error) => console.error("fetch catch error: ", error)

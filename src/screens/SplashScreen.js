@@ -23,7 +23,6 @@ export const SplashScreen = ({ navigation }) => {
                     url = response[1][1],
                     login = response[2][1],
                     password = response[3][1];
-                console.log("-logged_in: ", logged_in);
                 if (logged_in === "true") {
                     publicIP().then(ip => {
                         console.log("-publicIP() response: ", ip);
@@ -58,7 +57,7 @@ export const SplashScreen = ({ navigation }) => {
                                 console.log("login false. error: ", json.details ? json.details : json.message);
                                 dropDownAlert.alertWithType(
                                     'error',
-                                    'Error',
+                                    '',
                                     json.details ? json.details : json.message);
                             }
                         }).catch((error) => console.error("fetch catch error: ", error)
@@ -70,7 +69,7 @@ export const SplashScreen = ({ navigation }) => {
                         console.log("-publicIP() catch error:", error);
                         dropDownAlert.alertWithType(
                             'error',
-                            'Error',
+                            '',
                             error);
                     })
                 } else {

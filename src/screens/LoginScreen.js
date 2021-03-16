@@ -42,7 +42,7 @@ export const LoginScreen = ({ navigation, route }) => {
             console.log("-Error: url == null");
             dropDownAlert.alertWithType(
                 'error',
-                'Error',
+                '',
                 "You have no URL, please go to Sign Up page");
         } else {
             setLoading(true);
@@ -82,7 +82,7 @@ export const LoginScreen = ({ navigation, route }) => {
                         console.log("login false. Error: ", json.details ? json.details : json.message);
                         dropDownAlert.alertWithType(
                             'error',
-                            'Error',
+                            '',
                             json.details ? json.details : json.message);
                     }
                 }).catch((error) => console.error("fetch catch error: ", error)
@@ -92,7 +92,7 @@ export const LoginScreen = ({ navigation, route }) => {
                 console.log("-publicIP() catch error:", error);
                 dropDownAlert.alertWithType(
                     'error',
-                    'Error',
+                    '',
                     error);
             });
         }
