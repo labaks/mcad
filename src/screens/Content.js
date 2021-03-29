@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react'
-import { StyleSheet, View, ImageBackground, BackHandler } from 'react-native'
+import { StyleSheet, View, ImageBackground } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
@@ -70,7 +70,13 @@ export const Content = ({ navigation, route }) => {
                 console.log("logout ok")
                 AsyncStorage.setItem('logged_in', 'false').then(() => {
                     setLoading(false)
-                    navigation.navigate('Login', { url: url })
+                    navigation.reset({
+                        index: 0,
+                        routes: [{
+                            name: 'Login',
+                            params: { url: url }
+                        }]
+                    })
                 })
             } else {
                 setLoading(false)
@@ -82,18 +88,6 @@ export const Content = ({ navigation, route }) => {
             }
         }).catch((error) => console.error("fetch catch error: ", error)
         ).finally(() => setLoading(false));
-    }
-
-    const message = () => {
-        dropDownAlert.alertWithType('warn', 'Warning title', 'warning body');
-    }
-
-    const clearStorage = () => {
-        console.log("--Clear storage pressed");
-        AsyncStorage.clear().then(() => {
-            console.log("-Storage cleared. Navigating to SignUp screen");
-            navigation.navigate('SignUp');
-        })
     }
 
     return (
@@ -109,12 +103,6 @@ export const Content = ({ navigation, route }) => {
                     <MainBtn
                         text="Logout"
                         onPress={hadleLogout} />
-                    <MainBtn
-                        text="Clear credentials"
-                        onPress={clearStorage} />
-                    <MainBtn
-                        text="Warning"
-                        onPress={message} />
                 </View>
             </ImageBackground>
             <Loader loading={loading} />

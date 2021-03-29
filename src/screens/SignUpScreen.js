@@ -74,7 +74,7 @@ export const SignUpScreen = ({ navigation }) => {
                     ]).then(() => {
                         console.log("multiSet() ok");
                         setLoading(false);
-                        navigation.navigate('Content', {
+                        navigation.navigate('DrawerNavigationRoutes', {
                             token: json.session_id,
                             url: formValues.url.toString()
                         });

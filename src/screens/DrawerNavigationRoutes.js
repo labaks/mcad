@@ -1,74 +1,49 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Content } from './Content';
+import { SecondPage } from './SecondPage';
 
-const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const homeScreenStack = ({ navigation }) => {
-    return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Content"
-                    component={Content}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
-    );
-};
-
-// const settingScreenStack = ({ navigation }) => {
-//     return (
-//         <Stack.Navigator
-//             initialRouteName="SettingsScreen"
-//             screenOptions={{
-//                 headerLeft: () => (
-//                     <NavigationDrawerHeader navigationProps={navigation} />
-//                 ),
-//                 headerStyle: {
-//                     backgroundColor: '#307ecc', //Set Header color
-//                 },
-//                 headerTintColor: '#fff', //Set Header text color
-//                 headerTitleStyle: {
-//                     fontWeight: 'bold', //Set Header text style
-//                 },
-//             }}>
-//             <Stack.Screen
-//                 name="SettingsScreen"
-//                 component={SettingsScreen}
-//                 options={{
-//                     title: 'Settings', //Set Header Title
-//                 }}
-//             />
-//         </Stack.Navigator>
-//     );
-// };
-
-const DrawerNavigatorRoutes = (props) => {
+const DrawerNavigatorRoutes = ({ navigation, route }) => {
+    console.log("======================");
+    console.log("---Drawer Nawigation Loaded---")
+    console.log("-params received: ", route.params);
+    let params = route.params;
     return (
         <Drawer.Navigator
             drawerContentOptions={{
-                activeTintColor: '#cee1f2',
-                color: '#cee1f2',
-                itemStyle: { marginVertical: 5, color: 'white' },
+                activeTintColor: '#575757',
+                color: 'red',
+                itemStyle: { marginVertical: 5, color: 'green' },
                 labelStyle: {
-                    color: '#d8d8d8',
+                    color: '#575757',
                 },
             }}
-            screenOptions={{ headerShown: false }}>
+            screenOptions={{ headerShown: true }}>
             <Drawer.Screen
-                name="homeScreenStack"
-                options={{ drawerLabel: 'Home Screen' }}
-                component={homeScreenStack}
-            />
-            {/* <Drawer.Screen
-                name="settingScreenStack"
-                options={{ drawerLabel: 'Setting Screen' }}
-                component={settingScreenStack}
-            /> */}
+                name="homeScreen"
+                options={{
+                    drawerLabel: 'Home Screen',
+                    headerTitle: 'Home Screen'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={Content} />
+            <Drawer.Screen
+                name="secondPage"
+                options={{
+                    drawerLabel: 'Second Page',
+                    headerTitle: 'Second Page'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={SecondPage} />
         </Drawer.Navigator>
     );
 };

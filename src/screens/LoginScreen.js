@@ -72,13 +72,10 @@ export const LoginScreen = ({ navigation, route }) => {
                         console.log("login ok");
                         AsyncStorage.setItem('logged_in', 'true').then(() => {
                             console.log("Storage setItem() ok");
-                            navigation.navigate('Content', {
+                            navigation.navigate('DrawerNavigationRoutes', {
                                 token: json.session_id,
                                 url: url
                             });
-                            // navigation.dispatch(
-                            //     StackActions.replace('DrawerNavigationRoutes', { token: json.session_id })
-                            // );
                         })
                     } else {
                         console.log("login false. Error: ", json.details ? json.details : json.message);
