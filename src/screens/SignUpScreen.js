@@ -19,7 +19,7 @@ import { BackButtonHandler } from '../helpers/BackButtonHandler';
 let dropDownAlert;
 
 export const SignUpScreen = ({ navigation }) => {
-    // const backButtonHandler = BackButtonHandler();
+    const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
     const [agryWithPrivacy, setAgryWithPrivacy] = useState(false);
     const privacyPolicyUrl = "https://speedflow.com/privacy-policy/";

@@ -13,10 +13,12 @@ import { PasswordField } from '../components/PasswordField';
 import { TitleText } from '../components/TitleText';
 
 import { FormData } from '../helpers/FormData';
+import { BackButtonHandler } from '../helpers/BackButtonHandler';
 
 let dropDownAlert;
 
 export const LoginScreen = ({ navigation, route }) => {
+    const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
     const [formValues, handleFormValueChange, setFormValues] = FormData({
         login: '',

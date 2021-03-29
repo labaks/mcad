@@ -12,7 +12,7 @@ import { BackButtonHandler } from '../helpers/BackButtonHandler';
 let dropDownAlert;
 
 export const Content = ({ navigation, route }) => {
-    // const backButtonHandler = BackButtonHandler();
+    const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
     const [responseData, setResponseData] = useState([]);
