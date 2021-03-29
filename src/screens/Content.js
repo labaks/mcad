@@ -1,15 +1,18 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react'
-import { StyleSheet, View, ImageBackground } from 'react-native'
+import { StyleSheet, View, ImageBackground, BackHandler } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
 import { MainBtn } from '../components/MainBtn';
 
+import { BackButtonHandler } from '../helpers/BackButtonHandler';
+
 let dropDownAlert;
 
 export const Content = ({ navigation, route }) => {
+    // const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
     const [responseData, setResponseData] = useState([]);

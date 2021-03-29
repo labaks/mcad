@@ -11,11 +11,15 @@ import { Logo } from '../components/Logo';
 import { MainBtn } from '../components/MainBtn';
 import { PasswordField } from '../components/PasswordField';
 import { TitleText } from '../components/TitleText';
+
 import { FormData } from '../helpers/FormData';
+import { BackButtonHandler } from '../helpers/BackButtonHandler';
+
 
 let dropDownAlert;
 
 export const SignUpScreen = ({ navigation }) => {
+    // const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
     const [agryWithPrivacy, setAgryWithPrivacy] = useState(false);
     const privacyPolicyUrl = "https://speedflow.com/privacy-policy/";
