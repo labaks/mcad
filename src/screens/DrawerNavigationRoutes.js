@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Content } from './Content';
 import { SecondPage } from './SecondPage';
+import { Account } from './Account';
 
 const Drawer = createDrawerNavigator();
 
@@ -33,6 +34,17 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     url: params.url
                 }}
                 component={Content} />
+            <Drawer.Screen
+                name="account"
+                options={{
+                    drawerLabel: 'Account',
+                    headerTitle: 'Account'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={Account} />
             <Drawer.Screen
                 name="secondPage"
                 options={{
