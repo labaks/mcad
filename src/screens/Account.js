@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import { AccountTextView } from '../components/AccountTextView';
@@ -15,27 +15,33 @@ export const Account = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
-    const [usersResponseData, setUsersResponseData] = useState([]);
-    const [login, setLogin] = useState('');
+    const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
 
     console.log("======================");
     console.log("---Account Screen Loaded---")
     console.log("-params received: ", route.params);
 
-    _setAccountData = async () => {
-        // GetUsers();
-        setLogin(await AsyncStorage.getItem('login'));
-        // let currenUser = usersResponseData.find(item => item[0] == login);
-        console.log("-login: ", login)
-        // console.log("-current User: ", currenUser);
+    useEffect(() => {
+        _setAccountData();
+    }, [])
+
+    const _setAccountData = async () => {
+        setLoading(true)
+        let login = await AsyncStorage.getItem('login')
+            .catch((error) => { console.log("-AsyncStorage getItem() error: ", error) });
+        _getUsers(token, url)
+            .then((json) => {
+                console.log("-fetch response(first): ", json.data[0])
+                let currenUserArray = json.data.find(item => item[0] == login);
+                setCurrentUser(userArrayToObj(currenUserArray));
+                console.log("-current User: ", currentUser);
+            })
+            .catch((error) => console.error("fetch catch error: ", error))
+            .finally(() => setLoading(false));
     }
 
-    _setAccountData();
-
-    const GetUsers = () => {
-        console.log("--UsersGet pressed");
-        setLoading(true);
+    const _getUsers = async (token = '', host = '') => {
         let dataToSend = {
             "session_id": token,
             "data": {
@@ -43,22 +49,24 @@ export const Account = ({ navigation, route }) => {
                 "fields": ["login", "name", "rl_name"]
             }
         }
-        console.log("-DataToSend: ", dataToSend);
-        fetch('https://mcapp.mcore.solutions/api/users_get/', {
+        const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Host': url
+                'Host': host
             },
-        }).then((response) => response.json()
-        ).then((json) => {
-            console.log("-fetch response: ", json.data)
-            setUsersResponseData(json);
+        });
+        return await response.json();
+    }
+
+    const userArrayToObj = (array) => {
+        return {
+            login: array[0],
+            name: array[1],
+            role: array[2]
         }
-        ).catch((error) => console.error("fetch catch error: ", error)
-        ).finally(() => setLoading(false));
     }
 
     const handleLogout = () => {
@@ -109,13 +117,13 @@ export const Account = ({ navigation, route }) => {
                     <View style={styles.topBlock}>
                         <AccountTextView
                             label="User Name"
-                            value={login} />
+                            value={currentUser.name} />
                         <AccountTextView
                             label="Access Level"
-                            value="Some" />
+                            value={currentUser.role} />
                         <AccountTextView
                             label="Version"
-                            value="Some" />
+                            value="Version" />
                     </View>
                     <View style={styles.bottomButtonContainer}>
                         <MainBtn
@@ -158,7 +166,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'stretch',
         paddingBottom: 30,
-        borderColor: 'red',
-        // borderWidth: 1
     }
 })

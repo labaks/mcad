@@ -6,8 +6,7 @@ export const AccountTextView = (props) => {
     return (
         <View style={styles.inputView}>
             <Text style={styles.inputLabel}>{props.label}</Text>
-            <Text style={styles.inputText}>{props.value}
-            </Text>
+            <Text style={styles.inputText}>{props.value}</Text>
         </View>
     )
 }
