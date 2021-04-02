@@ -11,7 +11,7 @@ import { BackButtonHandler } from '../helpers/BackButtonHandler';
 
 let dropDownAlert;
 
-export const SecondPage = ({ navigation, route }) => {
+export const SecondScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
 

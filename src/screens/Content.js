@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
@@ -15,14 +14,13 @@ export const Content = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
-    const [responseData, setResponseData] = useState([]);
     const [loading, setLoading] = useState(false);
 
     console.log("======================");
     console.log("---Content Screen Loaded---")
     console.log("-params received: ", route.params);
 
-    const hadleGetUsersPress = () => {
+    const handleGetUsersPress = () => {
         console.log("--UsersGet pressed");
         setLoading(true);
         let dataToSend = {
@@ -45,48 +43,8 @@ export const Content = ({ navigation, route }) => {
         ).then((json) => {
             console.log("-fetch response (first elem): ", json.data[0])
             dropDownAlert.alertWithType('success', 'Get Users success', "Received " + json.data.length + " users");
-            // setResponseData(json);
         }
         ).catch((error) => console.error("fetch catch error: ", error)
-        ).finally(() => setLoading(false));
-    }
-
-    const hadleLogout = () => {
-        setLoading(true);
-        console.log("--Logout pressed");
-        console.log("-url: ", url)
-        fetch('https://mcapp.mcore.solutions/api/logout/', {
-            method: 'POST',
-            body: JSON.stringify({ 'session_id': token, 'data': {} }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': url
-            },
-        }).then((response) => response.json()
-        ).then((json) => {
-            console.log("-fetch response: ", json)
-            if (json.status == 200) {
-                console.log("logout ok")
-                AsyncStorage.setItem('logged_in', 'false').then(() => {
-                    setLoading(false)
-                    navigation.reset({
-                        index: 0,
-                        routes: [{
-                            name: 'Login',
-                            params: { url: url }
-                        }]
-                    })
-                })
-            } else {
-                setLoading(false)
-                console.log("logout false. Error: ", json.details ? json.details : json.message);
-                dropDownAlert.alertWithType(
-                    'error',
-                    '',
-                    json.details ? json.details : json.message);
-            }
-        }).catch((error) => console.error("fetch catch error: ", error)
         ).finally(() => setLoading(false));
     }
 
@@ -99,10 +57,7 @@ export const Content = ({ navigation, route }) => {
                     <Logo />
                     <MainBtn
                         text='Get users'
-                        onPress={hadleGetUsersPress} />
-                    <MainBtn
-                        text="Logout"
-                        onPress={hadleLogout} />
+                        onPress={handleGetUsersPress} />
                 </View>
             </ImageBackground>
             <Loader loading={loading} />

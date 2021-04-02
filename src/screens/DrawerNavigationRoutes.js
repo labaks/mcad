@@ -2,7 +2,7 @@ import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Content } from './Content';
-import { SecondPage } from './SecondPage';
+import { SecondScreen } from './SecondScreen';
 import { Account } from './Account';
 
 const Drawer = createDrawerNavigator();
@@ -24,17 +24,6 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
             }}
             screenOptions={{ headerShown: true }}>
             <Drawer.Screen
-                name="homeScreen"
-                options={{
-                    drawerLabel: 'Home Screen',
-                    headerTitle: 'Home Screen'
-                }}
-                initialParams={{
-                    token: params.token,
-                    url: params.url
-                }}
-                component={Content} />
-            <Drawer.Screen
                 name="account"
                 options={{
                     drawerLabel: 'Account',
@@ -46,16 +35,27 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                 }}
                 component={Account} />
             <Drawer.Screen
-                name="secondPage"
+                name="firstScreen"
                 options={{
-                    drawerLabel: 'Second Page',
-                    headerTitle: 'Second Page'
+                    drawerLabel: 'First Screen',
+                    headerTitle: 'First Screen'
                 }}
                 initialParams={{
                     token: params.token,
                     url: params.url
                 }}
-                component={SecondPage} />
+                component={Content} />
+            <Drawer.Screen
+                name="secondScreen"
+                options={{
+                    drawerLabel: 'Second Screen',
+                    headerTitle: 'Second Screen'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={SecondScreen} />
         </Drawer.Navigator>
     );
 };
