@@ -9,7 +9,7 @@ import { LoginScreen } from './src/screens/LoginScreen';
 import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 import DrawerNavigationRoutes from './src/screens/DrawerNavigationRoutes';
-import { StyleSheet, View, BackHandler, Alert } from 'react-native';
+import { StyleSheet, View} from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -26,24 +26,11 @@ export default class App extends React.Component {
     this.setState({ fontsLoaded: true });
   }
 
-  // backAction = () => {
-  //   Alert.alert("Hold on!", "Are you sure you want to go back?", [
-  //     { text: "Cancel", onPress: () => null, style: "cancel" },
-  //     { text: "YES", onPress: () => BackHandler.exitApp() }
-  //   ]);
-  //   return true;
-  // }
-
-
   componentDidMount() {
     this._loadFontsAsync();
-    // this.backHandler = BackHandler.addEventListener(
-    //   "hardwareBackPress", function () { return true }
-    // )
   }
 
   componentWillUnmount() {
-    // this.backHandler.remove();
   }
 
   render() {

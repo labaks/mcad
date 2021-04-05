@@ -51,7 +51,7 @@ export const Content = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={require('../../assets/signUpBg.png')}
+                source={require('../../assets/loginBg.png')}
                 style={styles.bgImage}>
                 <View style={styles.contentWrapper}>
                     <Logo />
