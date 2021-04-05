@@ -4,6 +4,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Content } from './Content';
 import { SecondScreen } from './SecondScreen';
 import { Account } from './Account';
+import { Reports } from './Reports';
 
 const Drawer = createDrawerNavigator();
 
@@ -35,6 +36,7 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     color: '#000'
                 },
             }}
+            initialRouteName={'reports'}
         >
             <Drawer.Screen
                 name="account"
@@ -47,6 +49,18 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     url: params.url
                 }}
                 component={Account}
+            />
+            <Drawer.Screen
+                name="reports"
+                options={{
+                    drawerLabel: 'Reports',
+                    headerTitle: 'Reports'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={Reports}
             />
             <Drawer.Screen
                 name="firstScreen"
