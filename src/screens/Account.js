@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import Constants from 'expo-constants';
+
 import { AccountTextView } from '../components/AccountTextView';
 import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
@@ -123,7 +125,7 @@ export const Account = ({ navigation, route }) => {
                             value={currentUser.role} />
                         <AccountTextView
                             label="Version"
-                            value="Version" />
+                            value={Constants.manifest.version} />
                     </View>
                     <View style={styles.bottomButtonContainer}>
                         <MainBtn
