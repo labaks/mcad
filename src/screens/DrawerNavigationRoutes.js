@@ -22,7 +22,20 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     color: '#575757',
                 },
             }}
-            screenOptions={{ headerShown: true }}>
+            screenOptions={{
+                headerShown: true,
+                headerTitleAlign: 'center',
+                headerStyle: {
+                    elevation: 0, // shadow under the header (android)
+                    shadowOpacity: 0 // shadow under the header (ios)
+                },
+                headerTitleStyle: {
+                    fontFamily: 'SF',
+                    fontSize: 16,
+                    color: '#000'
+                },
+            }}
+        >
             <Drawer.Screen
                 name="account"
                 options={{
@@ -33,7 +46,8 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     token: params.token,
                     url: params.url
                 }}
-                component={Account} />
+                component={Account}
+            />
             <Drawer.Screen
                 name="firstScreen"
                 options={{
@@ -44,7 +58,8 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     token: params.token,
                     url: params.url
                 }}
-                component={Content} />
+                component={Content}
+            />
             <Drawer.Screen
                 name="secondScreen"
                 options={{
@@ -55,7 +70,8 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     token: params.token,
                     url: params.url
                 }}
-                component={SecondScreen} />
+                component={SecondScreen}
+            />
         </Drawer.Navigator>
     );
 };
