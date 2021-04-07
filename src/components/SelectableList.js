@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { ModalSelectList } from 'react-native-modal-select-list';
 
 export const SelectableList = (props) => {
     let modalRef;
@@ -12,33 +11,14 @@ export const SelectableList = (props) => {
     };
 
     let selectedValue = "Select";
-    const mockArray = [
-        {
-            label: "srting one",
-            value: "srtingone"
-        },
-        {
-            label: "srting two",
-            value: "srtingtwo"
-        },
-        {
-            label: "srting three",
-            value: "srtingthree"
-        },
-    ]
+    
     return (
         <View style={styles.inputView}>
             <Text style={styles.inputLabel}>{props.label}</Text>
             <TouchableOpacity onPress={openModal}>
                 <Text style={styles.inputText}>{selectedValue}</Text>
             </TouchableOpacity>
-            <ModalSelectList
-                ref={saveModalRef}
-                placeholder={"Search..."}
-                onSelectedOption={onSelectedOption}
-                disableTextSearch={false}
-                options={mockArray}
-            />
+
         </View>
     )
 }
