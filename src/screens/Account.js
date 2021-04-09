@@ -30,22 +30,17 @@ export const Account = ({ navigation, route }) => {
 
     const _setAccountData = async () => {
         setLoading(true)
-        _getUsers(token, url)
-            .then((json) => {
-                console.log("-fetch response: ", json.data)
-                setCurrentUser(userArrayToObj(json.data[0]));
-                console.log("-current User: ", currentUser);
-            })
-            .catch((error) => console.error("fetch catch error: ", error))
-            .finally(() => setLoading(false));
+        let userArray = await _getCurrentUser(token, url);
+        setCurrentUser(userArrayToObj(userArray));
+        setLoading(false)
     }
 
-    const _getUsers = async (token = '', host = '') => {
+    const _getCurrentUser = async (token, host) => {
         let dataToSend = {
             "session_id": token,
             "data": {
                 "session_id": token, //mc api feature
-                "fields": ["login", "name", "rl_name"]
+                "fields": ["name", "rl_name"]
             }
         }
         const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
@@ -57,14 +52,14 @@ export const Account = ({ navigation, route }) => {
                 'Host': host
             },
         });
-        return await response.json();
+        let json = await response.json();
+        return json.data[0];
     }
 
     const userArrayToObj = (array) => {
         return {
-            login: array[0],
-            name: array[1],
-            role: array[2]
+            name: array[0],
+            role: array[1]
         }
     }
 
