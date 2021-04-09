@@ -30,13 +30,10 @@ export const Account = ({ navigation, route }) => {
 
     const _setAccountData = async () => {
         setLoading(true)
-        let login = await AsyncStorage.getItem('login')
-            .catch((error) => { console.log("-AsyncStorage getItem() error: ", error) });
         _getUsers(token, url)
             .then((json) => {
-                console.log("-fetch response(first): ", json.data[0])
-                let currenUserArray = json.data.find(item => item[0] == login);
-                setCurrentUser(userArrayToObj(currenUserArray));
+                console.log("-fetch response: ", json.data)
+                setCurrentUser(userArrayToObj(json.data[0]));
                 console.log("-current User: ", currentUser);
             })
             .catch((error) => console.error("fetch catch error: ", error))
@@ -47,7 +44,7 @@ export const Account = ({ navigation, route }) => {
         let dataToSend = {
             "session_id": token,
             "data": {
-                "sort_by": [{ "name": "" }],
+                "session_id": token, //mc api feature
                 "fields": ["login", "name", "rl_name"]
             }
         }
