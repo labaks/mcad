@@ -10,6 +10,7 @@ import { SelectView } from '../components/SelectView';
 import { TitleText } from '../components/TitleText';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
+import { McData } from '../helpers/McData';
 
 let dropDownAlert;
 
@@ -21,76 +22,28 @@ export const Reports = ({ navigation, route }) => {
     const [companies, setCompanies] = useState([]);
     const [selected, setSelected] = useState({});
 
-    console.log("======================");
-    console.log("---Reports Screen Loaded---")
-    console.log("-params received: ", route.params);
-
     useEffect(() => {
+        console.log("======================");
+        console.log("---Reports Screen Loaded---")
+        console.log("-params received: ", route.params);
         _setUserCompanies();
     }, [])
 
     const _setUserCompanies = async () => {
         setLoading(true)
-        let currentUserId = await _getCurrentUserId(token, url);
-        let userCompanies = await _getUserCompanies(token, url, currentUserId);
-        setCompanies(arrayToObjectsArray(userCompanies));
-        setLoading(false);
-    }
-
-    const _getCurrentUserId = async (token, host) => {
-        let dataToSend = {
-            "session_id": token,
-            "data": {
-                "session_id": token, //mc api feature
-                "fields": ["id"]
-            }
-        }
-        const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        });
-        let json = await response.json();
-        return json.data[0][0].toString();
-    }
-
-    const _getUserCompanies = async (token, host, userId) => {
-        let dataToSend = {
-            "session_id": token,
-            "data": {
-                "user_id": userId,
-                "fields": ["id", "name"]
-            }
-        }
-        console.log("---dataToSend: ", dataToSend)
-        let response = await fetch('https://mcapp.mcore.solutions/api/client_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        return json.data
-    }
-
-    const arrayToObjectsArray = (array) => {
-        let objectsArray = [];
-        for (var i in array) {
-            objectsArray.push(
-                {
-                    Id: array[i][0],
-                    Name: array[i][1]
-                }
+        setCompanies(
+            McData.companiesForPicker(
+                await McData._getUserCompanies(
+                    token,
+                    url,
+                    await McData._getCurrentUserId(
+                        token,
+                        url
+                    )
+                )
             )
-        }
-        return objectsArray;
+        );
+        setLoading(false);
     }
 
     return (

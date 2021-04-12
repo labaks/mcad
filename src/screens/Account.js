@@ -10,6 +10,7 @@ import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
+import { McData } from '../helpers/McData'
 
 let dropDownAlert;
 
@@ -20,86 +21,47 @@ export const Account = ({ navigation, route }) => {
     const [currentUser, setCurrentUser] = useState({});
     const [loading, setLoading] = useState(false);
 
-    console.log("======================");
-    console.log("---Account Screen Loaded---")
-    console.log("-params received: ", route.params);
-
     useEffect(() => {
+        console.log("======================");
+        console.log("---Account Screen Loaded---")
+        console.log("-params received: ", route.params);
         _setAccountData();
     }, [])
 
     const _setAccountData = async () => {
         setLoading(true)
-        let userArray = await _getCurrentUser(token, url);
-        setCurrentUser(userArrayToObj(userArray));
+        setCurrentUser(
+            McData.userArrayToObj(
+                await McData._getCurrentUser(token, url)
+            )
+        );
         setLoading(false)
     }
 
-    const _getCurrentUser = async (token, host) => {
-        let dataToSend = {
-            "session_id": token,
-            "data": {
-                "session_id": token, //mc api feature
-                "fields": ["name", "rl_name"]
-            }
-        }
-        const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        });
-        let json = await response.json();
-        return json.data[0];
-    }
-
-    const userArrayToObj = (array) => {
-        return {
-            name: array[0],
-            role: array[1]
-        }
-    }
-
-    const handleLogout = () => {
+    const _handleLogout = async () => {
         setLoading(true);
         console.log("--Logout pressed");
-        console.log("-url: ", url)
-        fetch('https://mcapp.mcore.solutions/api/logout/', {
-            method: 'POST',
-            body: JSON.stringify({ 'session_id': token, 'data': {} }),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': url
-            },
-        }).then((response) => response.json()
-        ).then((json) => {
-            console.log("-fetch response: ", json)
-            if (json.status == 200) {
-                console.log("logout ok")
-                AsyncStorage.setItem('logged_in', 'false').then(() => {
-                    setLoading(false)
-                    navigation.reset({
-                        index: 0,
-                        routes: [{
-                            name: 'Login',
-                            params: { url: url }
-                        }]
-                    })
-                })
-            } else {
+        let response = await McData._logout(token, url);
+        if (response.status == 200) {
+            console.log("logout ok")
+            AsyncStorage.setItem('logged_in', 'false').then(() => {
                 setLoading(false)
-                console.log("logout false. Error: ", json.details ? json.details : json.message);
-                dropDownAlert.alertWithType(
-                    'error',
-                    '',
-                    json.details ? json.details : json.message);
-            }
-        }).catch((error) => console.error("fetch catch error: ", error)
-        ).finally(() => setLoading(false));
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'Login',
+                        params: { url: url }
+                    }]
+                })
+            })
+        } else {
+            console.log("logout false. Error: ", response.details ? response.details : response.message);
+            dropDownAlert.alertWithType(
+                'error',
+                '',
+                response.details ? response.details : response.message);
+        }
+        setLoading(false);
     }
 
     return (
@@ -122,7 +84,7 @@ export const Account = ({ navigation, route }) => {
                     <View style={styles.bottomButtonContainer}>
                         <MainBtn
                             text="Log out"
-                            onPress={handleLogout} />
+                            onPress={_handleLogout} />
                     </View>
                 </View>
             </ImageBackground>
