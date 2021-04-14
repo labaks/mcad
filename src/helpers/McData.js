@@ -8,6 +8,7 @@ export class McData {
                 "fields": ["name", "rl_name"]
             }
         }
+        console.log("--_getCurrentUser dataToSend: ", dataToSend);
         const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
@@ -29,6 +30,7 @@ export class McData {
                 "fields": ["id"]
             }
         }
+        console.log("--_getCurrentUserId dataToSend: ", dataToSend);
         const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
@@ -50,7 +52,7 @@ export class McData {
                 "fields": ["id", "name"]
             }
         }
-        console.log("---dataToSend: ", dataToSend)
+        console.log("--_getUserCompanies dataToSend: ", dataToSend);
         let response = await fetch('https://mcapp.mcore.solutions/api/client_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
@@ -71,7 +73,7 @@ export class McData {
         }
     }
 
-    static companiesForPicker (array = []) {
+    static companiesForPicker(array = []) {
         let objectsArray = [];
         for (var i in array) {
             objectsArray.push(
@@ -82,6 +84,27 @@ export class McData {
             )
         }
         return objectsArray;
+    }
+
+    static async _login(host = '', login = '', password = '', ip = '') {
+        let dataToSend = {
+            "login": login,
+            "password": password,
+            "ip": ip
+        }
+        console.log("--_Login dataToSend: ", dataToSend);
+        const response = await fetch('https://mcapp.mcore.solutions/api/login/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            }
+        });
+        let json = await response.json();
+        console.log("--_Login return", json);
+        return json;
     }
 
     static async _logout(token = '', host = '') {
