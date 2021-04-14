@@ -24,7 +24,7 @@ export const SplashScreen = ({ navigation }) => {
     useEffect(() => {
         console.log("======================");
         console.log("---SplashScreen loaded---");
-        let timer = setTimeout(async () => {
+        (async () => {
             let storageResponse = await AsyncStorage.multiGet(['logged_in', 'url', 'login', 'password']);
             console.log("--Storage multiget() response: ", storageResponse);
             userData.logged_in = storageResponse[0][1] === "true";
@@ -74,10 +74,7 @@ export const SplashScreen = ({ navigation }) => {
                     navigation.navigate('Login', { url: userData.url });
                 }
             }
-        }, 5000);
-        return function cleanup() {
-            clearTimeout(timer);
-        }
+        })();
     }, []);
 
     return (
