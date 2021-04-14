@@ -43,7 +43,7 @@ export const Account = ({ navigation, route }) => {
         console.log("--Logout pressed");
         let response = await McData._logout(token, url);
         if (response.status == 200) {
-            console.log("logout ok")
+            console.log("---logout ok")
             AsyncStorage.setItem('logged_in', 'false').then(() => {
                 setLoading(false)
                 navigation.reset({
@@ -55,7 +55,7 @@ export const Account = ({ navigation, route }) => {
                 })
             })
         } else {
-            console.log("logout false. Error: ", response.details ? response.details : response.message);
+            console.log("---logout false. Error: ", response.details ? response.details : response.message);
             dropDownAlert.alertWithType(
                 'error',
                 '',

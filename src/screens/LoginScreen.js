@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import { StackActions } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
@@ -14,6 +13,7 @@ import { TitleText } from '../components/TitleText';
 
 import { FormData } from '../helpers/FormData';
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
+import { McData } from '../helpers/McData';
 
 let dropDownAlert;
 
@@ -33,9 +33,11 @@ export const LoginScreen = ({ navigation, route }) => {
         url = null;
     }
 
-    console.log("======================");
-    console.log("---LoginScreen loaded---");
-    console.log("-params received: ", route.params);
+    useEffect(() => {
+        console.log("======================");
+        console.log("---LoginScreen loaded---");
+        console.log("-params received: ", route.params);
+    }, [route.params])
 
     const handleLoginPress = () => {
         console.log("--Login button pressed");
@@ -48,44 +50,26 @@ export const LoginScreen = ({ navigation, route }) => {
                 "You have no URL, please go to Sign Up page");
         } else {
             setLoading(true);
-            publicIP().then(ip => {
+            publicIP().then(async (ip) => {
                 console.log("-publicIP() response: ", ip);
-                let dataToSend = {
-                    "login": formValues.login,
-                    "password": formValues.password,
-                    "ip": ip
+                let loginResponse = await McData._login(url, formValues.login, formValues.password, ip);
+                setLoading(false);
+                if (loginResponse.status == 200) {
+                    console.log("login ok");
+                    AsyncStorage.setItem('logged_in', 'true').then(() => {
+                        console.log("Storage setItem() ok");
+                        navigation.navigate('DrawerNavigationRoutes', {
+                            token: loginResponse.session_id,
+                            url: url
+                        });
+                    })
+                } else {
+                    console.log("login false. Error: ", loginResponse.details ? loginResponse.details : loginResponse.message);
+                    dropDownAlert.alertWithType(
+                        'error',
+                        '',
+                        loginResponse.details ? loginResponse.details : loginResponse.message);
                 }
-                console.log("-dataToSend: ", dataToSend);
-                fetch('https://mcapp.mcore.solutions/api/login/', {
-                    method: 'POST',
-                    body: JSON.stringify(dataToSend),
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Host': url.toString()
-                    },
-                }).then((response) => response.json()
-                ).then((json) => {
-                    setLoading(false);
-                    console.log("-fetch response: ", json);
-                    if (json.status == 200) {
-                        console.log("login ok");
-                        AsyncStorage.setItem('logged_in', 'true').then(() => {
-                            console.log("Storage setItem() ok");
-                            navigation.navigate('DrawerNavigationRoutes', {
-                                token: json.session_id,
-                                url: url
-                            });
-                        })
-                    } else {
-                        console.log("login false. Error: ", json.details ? json.details : json.message);
-                        dropDownAlert.alertWithType(
-                            'error',
-                            '',
-                            json.details ? json.details : json.message);
-                    }
-                }).catch((error) => console.error("fetch catch error: ", error)
-                ).finally(() => setLoading(false));
             }).catch(error => {
                 setLoading(false);
                 console.log("-publicIP() catch error:", error);

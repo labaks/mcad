@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Content } from './Content';
@@ -9,10 +9,14 @@ import { Reports } from './Reports';
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigatorRoutes = ({ navigation, route }) => {
-    console.log("======================");
-    console.log("---Drawer Nawigation Loaded---")
-    console.log("-params received: ", route.params);
     let params = route.params;
+
+    useEffect(() => {
+        console.log("======================");
+        console.log("---Drawer Nawigation Loaded---")
+        console.log("-params received: ", route.params);
+    }, [params])
+
     return (
         <Drawer.Navigator
             drawerContentOptions={{
