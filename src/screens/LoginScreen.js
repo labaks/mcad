@@ -39,7 +39,7 @@ export const LoginScreen = ({ navigation, route }) => {
         console.log("-params received: ", route.params);
     }, [route.params])
 
-    const handleLoginPress = () => {
+    const handleLoginPress = async () => {
         console.log("--Login button pressed");
         console.log("-url: ", url);
         if (url === null) {
@@ -50,34 +50,35 @@ export const LoginScreen = ({ navigation, route }) => {
                 "You have no URL, please go to Sign Up page");
         } else {
             setLoading(true);
-            publicIP().then(async (ip) => {
-                console.log("-publicIP() response: ", ip);
-                let loginResponse = await McData._login(url, formValues.login, formValues.password, ip);
-                setLoading(false);
-                if (loginResponse.status == 200) {
-                    console.log("login ok");
-                    AsyncStorage.setItem('logged_in', 'true').then(() => {
-                        console.log("Storage setItem() ok");
-                        navigation.navigate('DrawerNavigationRoutes', {
-                            token: loginResponse.session_id,
-                            url: url
-                        });
-                    })
-                } else {
-                    console.log("login false. Error: ", loginResponse.details ? loginResponse.details : loginResponse.message);
+            let ip = await publicIP()
+                .catch(error => {
+                    setLoading(false);
+                    console.log("-publicIP() catch error:", error);
                     dropDownAlert.alertWithType(
                         'error',
                         '',
-                        loginResponse.details ? loginResponse.details : loginResponse.message);
-                }
-            }).catch(error => {
+                        error);
+                });
+            console.log("--LoginPage publicIP() response: ", ip);
+            let loginResponse = await McData._login(url, formValues.login, formValues.password, ip);
+            if (loginResponse.status == 200) {
+                console.log("login ok");
+                AsyncStorage.setItem('logged_in', 'true').then(() => {
+                    console.log("Storage setItem() ok");
+                    setLoading(false);
+                    navigation.navigate('DrawerNavigationRoutes', {
+                        token: loginResponse.session_id,
+                        url: url
+                    });
+                })
+            } else {
                 setLoading(false);
-                console.log("-publicIP() catch error:", error);
+                console.log("login false. Error: ", loginResponse.details ? loginResponse.details : loginResponse.message);
                 dropDownAlert.alertWithType(
                     'error',
                     '',
-                    error);
-            });
+                    loginResponse.details ? loginResponse.details : loginResponse.message);
+            }
         }
     }
 
