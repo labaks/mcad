@@ -5,6 +5,7 @@ import { Content } from './Content';
 import { SecondScreen } from './SecondScreen';
 import { Account } from './Account';
 import { Reports } from './Reports';
+import { DiagramsList } from './DiagramsList';
 
 const Drawer = createDrawerNavigator();
 
@@ -65,6 +66,19 @@ const DrawerNavigatorRoutes = ({ navigation, route }) => {
                     url: params.url
                 }}
                 component={Reports}
+
+            />
+            <Drawer.Screen
+                name="diagramsList"
+                options={{
+                    drawerLabel: 'Diagrams',
+                    headerTitle: 'Diagrams'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url
+                }}
+                component={DiagramsList}
             />
             <Drawer.Screen
                 name="firstScreen"
