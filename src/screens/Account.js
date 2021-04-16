@@ -30,12 +30,13 @@ export const Account = ({ navigation, route }) => {
 
     const _setAccountData = async () => {
         setLoading(true)
-        setCurrentUser(
-            McData.userArrayToObj(
-                await McData._getCurrentUser(token, url)
-            )
-        );
-        setLoading(false)
+        let user = await McData._getCurrentUser(token, url);
+        if (user.status) {
+            handleError(user);
+        } else {
+            setLoading(false)
+            setCurrentUser(McData.userArrayToObj(user));
+        }
     }
 
     const _handleLogout = async () => {
@@ -55,13 +56,30 @@ export const Account = ({ navigation, route }) => {
                 })
             })
         } else {
-            console.log("---logout false. Error: ", response.details ? response.details : response.message);
+            handleError(response);
+        }
+    }
+
+    const handleError = (error) => {
+        setLoading(false);
+        if (error.message == "Unauthorized") {
+            console.log("--Force logout");
+            AsyncStorage.setItem('logged_in', 'false').then(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'Login',
+                        params: { url: url, message: error.details }
+                    }]
+                })
+            })
+        } else {
+            console.log("--Error: ", error.details ? error.details : error.message);
             dropDownAlert.alertWithType(
                 'error',
                 '',
-                response.details ? response.details : response.message);
+                error.details ? error.details : error.message);
         }
-        setLoading(false);
     }
 
     return (

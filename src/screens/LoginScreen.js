@@ -37,6 +37,12 @@ export const LoginScreen = ({ navigation, route }) => {
         console.log("======================");
         console.log("---LoginScreen loaded---");
         console.log("-params received: ", route.params);
+        if (route.params.message) {
+            dropDownAlert.alertWithType(
+                'error',
+                '',
+                route.params.message);
+        }
     }, [route.params])
 
     const handleLoginPress = async () => {

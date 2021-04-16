@@ -26,7 +26,7 @@ export const SplashScreen = ({ navigation }) => {
         console.log("---SplashScreen loaded---");
         (async () => {
             let storageResponse = await AsyncStorage.multiGet(['logged_in', 'url', 'login', 'password']);
-            console.log("--Storage multiget() response: ", storageResponse);
+            // console.log("--Storage multiget() response: ", storageResponse);
             userData.logged_in = storageResponse[0][1] === "true";
             userData.url = storageResponse[1][1];
             userData.login = storageResponse[2][1];

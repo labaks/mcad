@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -31,19 +32,44 @@ export const Reports = ({ navigation, route }) => {
 
     const _setUserCompanies = async () => {
         setLoading(true)
-        setCompanies(
-            McData.companiesForPicker(
-                await McData._getUserCompanies(
-                    token,
-                    url,
-                    await McData._getCurrentUserId(
-                        token,
-                        url
-                    )
-                )
-            )
-        );
+        let userId = await McData._getCurrentUserId(token, url);
+        if (userId.status) {
+            handleError(userId);
+        } else {
+            let companies = await McData._getUserCompanies(token, url, userId);
+            if (companies.status) {
+                handleError(companies);
+            } else {
+                setLoading(false);
+                setCompanies(McData.companiesForPicker(companies));
+            }
+        }
+    }
+
+    const handleError = (error) => {
         setLoading(false);
+        if (error.message == "Unauthorized") {
+            console.log("--Force logout");
+            AsyncStorage.setItem('logged_in', 'false').then(() => {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'Login',
+                        params: { url: url, message: error.details }
+                    }]
+                })
+            })
+        } else {
+            console.log("--Error: ", error.details ? error.details : error.message);
+            dropDownAlert.alertWithType(
+                'error',
+                '',
+                error.details ? error.details : error.message);
+        }
+    }
+
+    const selectCompany = () => {
+        console.log("--Selected company: ", selected);
     }
 
     return (
@@ -75,7 +101,14 @@ export const Reports = ({ navigation, route }) => {
                     selected={selected}
                     searchPlaceholderText={'Search...'}
                 />
-                <MainBtn text="Select" />
+                <MainBtn
+                    text="Reload Companies"
+                    onPress={_setUserCompanies}
+                />
+                <MainBtn
+                    text="Select"
+                    onPress={selectCompany}
+                />
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />

@@ -19,7 +19,12 @@ export class McData {
             },
         });
         let json = await response.json();
-        return json.data[0];
+        console.log("--_getCurrentUser response", json);
+        if (json.status == 200) {
+            return json.data[0];
+        } else {
+            return json;
+        }
     }
 
     static async _getCurrentUserId(token = '', host = '') {
@@ -41,7 +46,12 @@ export class McData {
             },
         });
         let json = await response.json();
-        return json.data[0][0].toString();
+        console.log("--_getCurrentUserId response", json);
+        if (json.status == 200) {
+            return json.data[0][0].toString();
+        } else {
+            return json;
+        }
     }
 
     static async _getUserCompanies(token = '', host = '', userId = '') {
@@ -63,7 +73,12 @@ export class McData {
             },
         })
         let json = await response.json();
-        return json.data
+        console.log("--_getUserCompanies response status: ", json.status);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
     }
 
     static userArrayToObj(array = ['']) {
@@ -103,7 +118,7 @@ export class McData {
             }
         });
         let json = await response.json();
-        console.log("--_Login return", json);
+        console.log("--_Login response", json);
         return json;
     }
 
