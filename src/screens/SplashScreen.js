@@ -62,7 +62,8 @@ export const SplashScreen = ({ navigation }) => {
                     dropDownAlert.alertWithType(
                         'error',
                         '',
-                        loginResponse.details ? loginResponse.details : loginResponse.message);
+                        loginResponse.details ? loginResponse.details : loginResponse.message
+                    );
                 }
             } else {
                 setLoading(false);

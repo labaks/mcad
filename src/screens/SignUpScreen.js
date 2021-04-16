@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'native-base';
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
+
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
@@ -14,7 +15,7 @@ import { TitleText } from '../components/TitleText';
 
 import { FormData } from '../helpers/FormData';
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
-
+import { McData } from '../helpers/McData';
 
 let dropDownAlert;
 
@@ -30,8 +31,10 @@ export const SignUpScreen = ({ navigation }) => {
     });
     const isValid = formValues.login.length > 0 && formValues.password.length > 0 && formValues.url.length > 0 && agryWithPrivacy;
 
-    console.log("======================");
-    console.log("---SignUpScreen loaded---");
+    useEffect(() => {
+        console.log("======================");
+        console.log("---SignUpScreen loaded---");
+    }, [])
 
     const openPrivacy = useCallback(async () => {
         const supported = await Linking.canOpenURL(privacyPolicyUrl);
@@ -42,67 +45,48 @@ export const SignUpScreen = ({ navigation }) => {
         }
     }, [privacyPolicyUrl]);
 
-    const handleSignUpPress = () => {
+    const handleSignUpPress = async () => {
         setLoading(true);
         console.log("--SignUp button pressed");
-        publicIP().then(ip => {
-            console.log("-publicIP() response: ", ip);
-            let dataToSend = {
-                "login": formValues.login,
-                "password": formValues.password,
-                "ip": ip
-            }
-            fetch('https://mcapp.mcore.solutions/api/login/', {
-                method: 'POST',
-                body: JSON.stringify(dataToSend),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Host': formValues.url.toString()
-                },
-            }).then((response) => response.json()
-            ).then((json) => {
-                console.log("-fetch response: ", json);
-                if (json.status == 200) {
-                    console.log("login ok");
-                    AsyncStorage.multiSet([
-                        ['url', formValues.url],
-                        ['login', formValues.login],
-                        ['password', formValues.password],
-                        ['logged_in', "true"],
-                        ['token', json.session_id]
-                    ]).then(() => {
-                        console.log("multiSet() ok");
-                        setLoading(false);
-                        navigation.navigate('DrawerNavigationRoutes', {
-                            token: json.session_id,
-                            url: formValues.url.toString()
-                        });
-                    })
-                } else {
-                    console.log("login false. Error: ", json.details ? json.details : json.message);
-                    dropDownAlert.alertWithType(
-                        'error',
-                        '',
-                        json.details ? json.details : json.message);
-                }
-
-            }).catch((error) => console.error("fetch catch error: ", error)
-            ).finally(() => setLoading(false));
-        }).catch(error => {
+        let ip = await publicIP()
+            .catch(error => {
+                setLoading(false);
+                console.log("-publicIP() catch error:", error);
+                dropDownAlert.alertWithType(
+                    'error',
+                    '',
+                    error);
+            });
+        let loginResponse = await McData._login(formValues.url.toString(), formValues.login, formValues.password, ip);
+        if (loginResponse.status == 200) {
+            console.log("login ok");
+            AsyncStorage.multiSet([
+                ['url', formValues.url],
+                ['login', formValues.login],
+                ['password', formValues.password],
+                ['logged_in', "true"],
+                ['token', loginResponse.session_id]
+            ]).then(() => {
+                console.log("multiSet() ok");
+                setLoading(false);
+                navigation.navigate('DrawerNavigationRoutes', {
+                    token: loginResponse.session_id,
+                    url: formValues.url.toString()
+                });
+            })
+        } else {
             setLoading(false);
-            console.log("-publicIP() catch error:", error);
+            console.log("login false. Error: ", loginResponse.details ? loginResponse.details : loginResponse.message);
             dropDownAlert.alertWithType(
                 'error',
                 '',
-                error);
-        });
+                loginResponse.details ? loginResponse.details : loginResponse.message);
+        }
     }
 
-    const handleGoToLogin = () => {
-        AsyncStorage.getItem('url').then((url) => {
-            navigation.navigate('Login', { url: url })
-        })
+    const handleGoToLogin = async () => {
+        let url = await AsyncStorage.getItem('url');
+        navigation.navigate('Login', { url: url });
     }
 
     return (
