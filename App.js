@@ -8,8 +8,10 @@ import * as Font from 'expo-font';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
-import DrawerNavigationRoutes from './src/screens/DrawerNavigationRoutes';
-import { StyleSheet, View} from 'react-native';
+import DrawerNavigationStartScreen from './src/screens/DrawerNavigationStartScreen';
+import DrawerNavigationCompanySelected from './src/screens/DrawerNavigationCompanySelected';
+import { StyleSheet, View } from 'react-native';
+import { TopTenRegionsIn } from './src/screens/diagrams/TopTenRegionsIn';
 
 const Stack = createStackNavigator();
 
@@ -52,9 +54,17 @@ export default class App extends React.Component {
                 component={SignUpScreen}
                 options={{ headerShown: false }} />
               <Stack.Screen
-                name="DrawerNavigationRoutes"
-                component={DrawerNavigationRoutes}
+                name="DrawerNavigationStartScreen"
+                component={DrawerNavigationStartScreen}
                 options={{ headerShown: false }} />
+              <Stack.Screen
+                name="DrawerNavigationCompanySelected"
+                component={DrawerNavigationCompanySelected}
+                options={{ headerShown: false }} />
+              <Stack.Screen
+                name="TopTenRegionsIn"
+                component={TopTenRegionsIn}
+                options={{ headerShown: true }} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>

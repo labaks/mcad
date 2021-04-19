@@ -69,7 +69,7 @@ export const SignUpScreen = ({ navigation }) => {
             ]).then(() => {
                 console.log("multiSet() ok");
                 setLoading(false);
-                navigation.navigate('DrawerNavigationRoutes', {
+                navigation.navigate('DrawerNavigationStartScreen', {
                     token: loginResponse.session_id,
                     url: formValues.url.toString()
                 });

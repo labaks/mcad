@@ -1,8 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { StatusBar } from 'expo-status-bar';
+import { Tab, TabHeading, Tabs } from 'native-base';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, Text, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import CheckboxList from 'rn-checkbox-list';
 
 import { DiagramsHeader } from '../components/DiagramsHeader';
 import { Loader } from '../components/Loader';
@@ -10,7 +12,6 @@ import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
-import { McData } from '../helpers/McData';
 
 let dropDownAlert;
 
@@ -18,8 +19,22 @@ export const DiagramsList = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
+    const companyId = route.params.companyId;
     const [loading, setLoading] = useState(false);
-    const [selectedDiagrams, setSelectedDiagrams] = useState([]);
+    let selectedDiagramsIds = [];
+    let itemsArray = [];
+    const diagramsListData = [
+        { id: 0, name: 'Top 10 Regions In' },
+        { id: 1, name: 'Top 10 Regions Out' },
+        { id: 2, name: 'Top 10 Regions In, $' },
+        { id: 3, name: 'Top 10 Regions Out, $' },
+        { id: 4, name: 'Top 10 Countries In' },
+        { id: 5, name: 'Top 10 Countries Out' },
+        { id: 6, name: 'Traffic Share In' },
+        { id: 7, name: 'Traffic Share Out' },
+        { id: 8, name: 'Financial Reports Today' },
+        { id: 9, name: 'Financial Reports Yesterday' }
+    ];
 
     useEffect(() => {
         console.log("======================");
@@ -28,7 +43,26 @@ export const DiagramsList = ({ navigation, route }) => {
     }, [])
 
     const selectDiagrams = () => {
-        console.log("--Diagrams selected: ", selectedDiagrams);
+        console.log("--Diagrams selected: ", selectedDiagramsIds);
+        switch (selectedDiagramsIds[0]) {
+            case 0: {
+                navigation.reset({
+                    index: 0,
+                    routes: [{
+                        name: 'TopTenRegionsIn',
+                        params: { url: url, token: token, companyId: companyId }
+                    }]
+                })
+                break;
+            }
+            default: break;
+        }
+    }
+
+    const checkListChanged = ({ ids, items }) => {
+        selectedDiagramsIds = ids;
+        itemsArray = items;
+        console.log("--Selected Diagrams Array: ", selectedDiagramsIds);
     }
 
     const handleError = (error) => {
@@ -58,6 +92,24 @@ export const DiagramsList = ({ navigation, route }) => {
             <View style={styles.contentWrapper}>
                 <DiagramsHeader title='' />
                 <Panel>
+                    <CheckboxList
+                        listItems={diagramsListData}
+                        checkboxProp={
+                            Platform.select({
+                                ios: {
+                                    boxType: 'circle',
+                                    tintColor: '#e4e4e4',
+                                    onTintColor: '#4A6E49',
+                                    onCheckColor: '#fff',
+                                    onFillColor: '#4A6E49'
+                                },
+                                android: {
+                                    tintColors: { true: '#4A6E49', false: '#e4e4e4' }
+                                }
+                            })}
+                        listItemStyle={styles.listItemStyle}
+                        onChange={checkListChanged}
+                    />
                 </Panel>
                 <MainBtn
                     text="Select"
@@ -81,9 +133,19 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
-        paddingTop: 20,
-        paddingHorizontal: 40,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingHorizontal: 30,
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
+    wrapper: {
+        flex: 1,
+        alignSelf: 'stretch'
+
+    },
+    listItemStyle: {
+        borderBottomWidth: 1,
+        borderColor: '#e4e4e4'
+    }
 })

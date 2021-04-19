@@ -53,7 +53,7 @@ export const SplashScreen = ({ navigation }) => {
                 if (loginResponse.status == 200) {
                     console.log("---login ok");
                     console.log("---SplashScreen will navigate to Drawer. token: ", loginResponse.session_id);
-                    navigation.navigate('DrawerNavigationRoutes', {
+                    navigation.navigate('DrawerNavigationStartScreen', {
                         token: loginResponse.session_id,
                         url: userData.url
                     })

@@ -23,6 +23,8 @@ export const Reports = ({ navigation, route }) => {
     const [companies, setCompanies] = useState([]);
     const [selected, setSelected] = useState({});
 
+    let btnDisabled = selected.Name == null;
+
     useEffect(() => {
         console.log("======================");
         console.log("---Reports Screen Loaded---")
@@ -46,6 +48,17 @@ export const Reports = ({ navigation, route }) => {
         }
     }
 
+    const selectCompany = () => {
+        console.log("--Selected company: ", selected);
+        navigation.reset({
+            index: 0,
+            routes: [{
+                name: 'DrawerNavigationCompanySelected',
+                params: { url: url, token: token, selectedCompany: selected }
+            }]
+        })
+    }
+
     const handleError = (error) => {
         setLoading(false);
         if (error.message == "Unauthorized") {
@@ -66,10 +79,6 @@ export const Reports = ({ navigation, route }) => {
                 '',
                 error.details ? error.details : error.message);
         }
-    }
-
-    const selectCompany = () => {
-        console.log("--Selected company: ", selected);
     }
 
     return (
@@ -102,12 +111,9 @@ export const Reports = ({ navigation, route }) => {
                     searchPlaceholderText={'Search...'}
                 />
                 <MainBtn
-                    text="Reload Companies"
-                    onPress={_setUserCompanies}
-                />
-                <MainBtn
                     text="Select"
                     onPress={selectCompany}
+                    disabled={btnDisabled}
                 />
             </View>
             <Loader loading={loading} />
@@ -130,6 +136,7 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
+        backgroundColor: 'white',
         paddingHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center'

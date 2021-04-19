@@ -72,7 +72,7 @@ export const LoginScreen = ({ navigation, route }) => {
                 AsyncStorage.setItem('logged_in', 'true').then(() => {
                     console.log("Storage setItem() ok");
                     setLoading(false);
-                    navigation.navigate('DrawerNavigationRoutes', {
+                    navigation.navigate('DrawerNavigationStartScreen', {
                         token: loginResponse.session_id,
                         url: url
                     });

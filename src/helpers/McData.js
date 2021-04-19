@@ -101,6 +101,33 @@ export class McData {
         return objectsArray;
     }
 
+    static async _getTopTenRegionsIn(token = '', host = '', companyId) {
+        let dataToSend = {
+            "session_id": token,
+            "data": {
+                "client_id": companyId,
+                "direction": "in"
+            }
+        }
+        console.log("--_getTopTenRegionsIn dataToSend: ", dataToSend);
+        let response = await fetch('https://mcapp.mcore.solutions/api/top_duration_regions_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            },
+        })
+        let json = await response.json();
+        console.log("--_getTopTenRegionsIn response: ", json);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
+    }
+
     static async _login(host = '', login = '', password = '', ip = '') {
         let dataToSend = {
             "login": login,

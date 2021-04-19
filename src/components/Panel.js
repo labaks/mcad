@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export const Panel = ({ children }) => {
     return (
-        <View style={styles.boxSimple}>
+        <View style={styles.panel}>
             {children}
         </View>
     )
@@ -15,7 +15,8 @@ export const Panel = ({ children }) => {
 // }
 
 const styles = StyleSheet.create({
-    boxSimple: {
+    panel: {
+        flex: 1,
         backgroundColor: '#fff',
         borderRadius: 15,
         borderWidth: .2,
