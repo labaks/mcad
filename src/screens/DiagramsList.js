@@ -1,10 +1,12 @@
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Tab, TabHeading, Tabs } from 'native-base';
 import React, { useEffect, useState } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
-import CheckboxList from 'rn-checkbox-list';
+// import CheckboxList from 'rn-checkbox-list';
+import { CheckboxList } from "../components/CheckboxList";
 
 import { DiagramsHeader } from '../components/DiagramsHeader';
 import { Loader } from '../components/Loader';
@@ -24,16 +26,16 @@ export const DiagramsList = ({ navigation, route }) => {
     let selectedDiagramsIds = [];
     let itemsArray = [];
     const diagramsListData = [
-        { id: 0, name: 'Top 10 Regions In' },
-        { id: 1, name: 'Top 10 Regions Out' },
-        { id: 2, name: 'Top 10 Regions In, $' },
-        { id: 3, name: 'Top 10 Regions Out, $' },
-        { id: 4, name: 'Top 10 Countries In' },
-        { id: 5, name: 'Top 10 Countries Out' },
-        { id: 6, name: 'Traffic Share In' },
-        { id: 7, name: 'Traffic Share Out' },
-        { id: 8, name: 'Financial Reports Today' },
-        { id: 9, name: 'Financial Reports Yesterday' }
+        { id: 0, title: 'Top 10 Regions In', active: false },
+        { id: 1, title: 'Top 10 Regions Out', active: false },
+        { id: 2, title: 'Top 10 Regions In, $', active: false },
+        { id: 3, title: 'Top 10 Regions Out, $', active: false },
+        { id: 4, title: 'Top 10 Countries In', active: false },
+        { id: 5, title: 'Top 10 Countries Out', active: false },
+        { id: 6, title: 'Traffic Share In', active: false },
+        { id: 7, title: 'Traffic Share Out', active: false },
+        { id: 8, title: 'Financial Reports Today', active: false },
+        { id: 9, title: 'Financial Reports Yesterday', active: false }
     ];
 
     useEffect(() => {
@@ -92,24 +94,7 @@ export const DiagramsList = ({ navigation, route }) => {
             <View style={styles.contentWrapper}>
                 <DiagramsHeader title='' />
                 <Panel>
-                    <CheckboxList
-                        listItems={diagramsListData}
-                        checkboxProp={
-                            Platform.select({
-                                ios: {
-                                    boxType: 'circle',
-                                    tintColor: '#e4e4e4',
-                                    onTintColor: '#4A6E49',
-                                    onCheckColor: '#fff',
-                                    onFillColor: '#4A6E49'
-                                },
-                                android: {
-                                    tintColors: { true: '#4A6E49', false: '#e4e4e4' }
-                                }
-                            })}
-                        listItemStyle={styles.listItemStyle}
-                        onChange={checkListChanged}
-                    />
+                    <CheckboxList data={diagramsListData}/>
                 </Panel>
                 <MainBtn
                     text="Select"

@@ -2,7 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'native-base';
 import React, { useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
 

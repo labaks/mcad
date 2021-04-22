@@ -10,7 +10,7 @@ import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 import DrawerNavigationStartScreen from './src/screens/DrawerNavigationStartScreen';
 import DrawerNavigationCompanySelected from './src/screens/DrawerNavigationCompanySelected';
-import { StyleSheet, View } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { TopTenRegionsIn } from './src/screens/diagrams/TopTenRegionsIn';
 
 const Stack = createStackNavigator();
@@ -38,7 +38,7 @@ export default class App extends React.Component {
   render() {
     if (this.state.fontsLoaded) {
       return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <NavigationContainer>
             <Stack.Navigator initialRouteName="SplashScreen">
               <Stack.Screen
@@ -67,7 +67,7 @@ export default class App extends React.Component {
                 options={{ headerShown: true }} />
             </Stack.Navigator>
           </NavigationContainer>
-        </View>
+        </SafeAreaView>
       )
     } else {
       return <AppLoading />

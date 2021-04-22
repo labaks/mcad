@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 export const Loader = (props) => {
     return (
-        <View style={styles.activityIndicatorWrapper}>
+        <View style={[styles.activityIndicatorWrapper, props.loading && styles.active]}>
             <ActivityIndicator
                 animating={props.loading}
                 color="#4A6E49"
@@ -21,5 +21,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
+        display: 'none'
+    },
+    active: {
+        display: 'flex'
     }
 });

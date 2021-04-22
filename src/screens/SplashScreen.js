@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import publicIP from 'react-native-public-ip';
 import DropdownAlert from 'react-native-dropdownalert';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from 'react-native';
 
 import { Logo } from '../components/Logo';
 import { Loader } from '../components/Loader';
