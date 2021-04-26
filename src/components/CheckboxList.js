@@ -1,6 +1,6 @@
 import { CheckBox } from 'react-native-elements'
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 export const CheckboxList = (props) => {
 
@@ -35,6 +35,7 @@ export const CheckboxList = (props) => {
             <FlatList
                 data={data}
                 renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
             />
         </View>
     );
