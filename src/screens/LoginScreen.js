@@ -2,9 +2,10 @@
 import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
+
 import { InputView } from '../components/InputView';
 import { Loader } from '../components/Loader';
 import { Logo } from '../components/Logo';
@@ -17,10 +18,12 @@ import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData';
 
 let dropDownAlert;
+let keyboardWillShowSub, keyboardWillHideSub;
 
 export const LoginScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
+    const [keyboardShow, setKeyboardShow] = useState(false);
     const [formValues, handleFormValueChange, setFormValues] = FormData({
         login: '',
         password: ''
@@ -45,6 +48,26 @@ export const LoginScreen = ({ navigation, route }) => {
                 route.params.message);
         }
     }, [route.params])
+
+    useEffect(() => {
+        keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+        return () => {keyboardWillShowSub.remove();}
+    });
+
+    useEffect(() => {
+        keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+        return () => {keyboardWillHideSub.remove();}
+    });
+
+    const keyboardWillShow = () => {
+        console.log("--keyboardWillShow");
+        setKeyboardShow(true);
+    };
+
+    const keyboardWillHide = () => {
+        console.log("--keyboardWillHide");
+        setKeyboardShow(false);
+    };
 
     const handleLoginPress = async () => {
         console.log("--Login button pressed");
@@ -94,32 +117,43 @@ export const LoginScreen = ({ navigation, route }) => {
             <ImageBackground
                 source={require('../../assets/loginBg.png')}
                 style={styles.bgImage}>
-                <View style={styles.contentWrapper}>
-                    <Logo />
-                    <View style={styles.mainText}>
-                        <TitleText text='Welcome back,' />
-                        <Text style={styles.fontFamilySF}>Sign in to continue</Text>
-                    </View>
-                    <InputView
-                        label='Login'
-                        formKey='login'
-                        textInputProps={{ autoCapitalize: 'none' }}
-                        handleFormValueChange={handleFormValueChange} />
-                    <PasswordField
-                        formKey='password'
-                        textInputProps={{ autoCapitalize: 'none' }}
-                        handleFormValueChange={handleFormValueChange} />
-                    <MainBtn
-                        disabled={!isValid}
-                        text='Log in'
-                        onPress={handleLoginPress} />
-                    <TouchableOpacity
-                        style={styles.signUpLink}
-                        onPress={() => navigation.navigate('SignUp')}>
-                        <Text style={styles.fontFamilySF}>New user?</Text>
-                        <Text style={[styles.signUpColored, styles.fontFamilySF]}>Sign up</Text>
-                    </TouchableOpacity>
-                </View>
+                <KeyboardAvoidingView
+                    enabled
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flexGrow: 1 }}
+                >
+                    <ScrollView
+                        bounces={false}
+                        contentContainerStyle={[styles.scrollContainer, keyboardShow && styles.keyboardShow]}
+                        style={styles.scrollView}>
+                        <View style={styles.contentWrapper}>
+                            <Logo />
+                            <View style={styles.mainText}>
+                                <TitleText text='Welcome back,' />
+                                <Text style={styles.fontFamilySF}>Sign in to continue</Text>
+                            </View>
+                            <InputView
+                                label='Login'
+                                formKey='login'
+                                textInputProps={{ autoCapitalize: 'none' }}
+                                handleFormValueChange={handleFormValueChange} />
+                            <PasswordField
+                                formKey='password'
+                                textInputProps={{ autoCapitalize: 'none' }}
+                                handleFormValueChange={handleFormValueChange} />
+                            <MainBtn
+                                disabled={!isValid}
+                                text='Log in'
+                                onPress={handleLoginPress} />
+                            <TouchableOpacity
+                                style={styles.signUpLink}
+                                onPress={() => navigation.navigate('SignUp')}>
+                                <Text style={styles.fontFamilySF}>New user?</Text>
+                                <Text style={[styles.signUpColored, styles.fontFamilySF]}>Sign up</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </ImageBackground>
             <Loader loading={loading} />
             <StatusBar style="auto" />
@@ -137,6 +171,21 @@ const styles = StyleSheet.create({
     bgImage: {
         flex: 1,
         width: '100%',
+    },
+    scrollView: {
+        flex: 1,
+        borderColor: 'blue',
+        borderWidth: 1
+    },
+    scrollContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        borderColor: 'red',
+        borderWidth: 1
+    },
+    keyboardShow: {
+        flex: 0,
+        justifyContent: 'flex-end'
     },
     contentWrapper: {
         flex: 1,

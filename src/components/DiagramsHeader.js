@@ -9,7 +9,7 @@ export const DiagramsHeader = (params) => {
         <View style={styles.content}>
             <Image
                 style={styles.image}
-                source={require('./../../assets/diagram.png')} />
+                source={require('./../../assets/logo.png')} />
             <View style={styles.textWrapper}>
                 <Text style={styles.header}>Diagrams</Text>
                 <Text style={[styles.diagramName, !params.title && styles.noRecords]}>{title}</Text>
