@@ -23,7 +23,7 @@ export const SplashScreen = ({ navigation }) => {
     });
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---SplashScreen loaded---");
         (async () => {
             let storageResponse = await AsyncStorage.multiGet(['logged_in', 'url', 'login', 'password']);
@@ -53,8 +53,8 @@ export const SplashScreen = ({ navigation }) => {
                 setLoading(false);
                 if (loginResponse.status == 200) {
                     console.log("---login ok");
-                    console.log("---SplashScreen will navigate to Drawer. token: ", loginResponse.session_id);
-                    navigation.navigate('DrawerNavigationStartScreen', {
+                    console.log("---SplashScreen will navigate to Choose Company. token: ", loginResponse.session_id);
+                    navigation.navigate('NavChooseCompany', {
                         token: loginResponse.session_id,
                         url: userData.url
                     })

@@ -16,7 +16,7 @@ export const SecondScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
 
-    console.log("======================");
+    console.log("=====================================================");
     console.log("---Second Page Screen Loaded---")
     console.log("-params received: ", route.params);
 

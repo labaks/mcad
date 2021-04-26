@@ -35,7 +35,7 @@ export const LoginScreen = ({ navigation, route }) => {
     }
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---LoginScreen loaded---");
         console.log("-params received: ", route.params);
         if (route.params.message) {
@@ -73,7 +73,7 @@ export const LoginScreen = ({ navigation, route }) => {
                 AsyncStorage.setItem('logged_in', 'true').then(() => {
                     console.log("Storage setItem() ok");
                     setLoading(false);
-                    navigation.navigate('DrawerNavigationStartScreen', {
+                    navigation.navigate('NavChooseCompany', {
                         token: loginResponse.session_id,
                         url: url
                     });

@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { SecondScreen } from './SecondScreen';
-import { Account } from './Account';
-import { Reports } from './Reports';
+import { Account } from '../Account';
+import { DiagramsList } from '../DiagramsList';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigatorStartScreen = ({ navigation, route }) => {
+const NavCompanySelected = ({ navigation, route }) => {
     let params = route.params;
 
     useEffect(() => {
-        console.log("======================");
-        console.log("---Drawer Nawigation Loaded---")
+        console.log("=====================================================");
+        console.log("---Navigation Company selected Loaded---")
         console.log("-params received: ", route.params);
     }, [params])
 
@@ -39,7 +38,7 @@ const DrawerNavigatorStartScreen = ({ navigation, route }) => {
                     color: '#000'
                 },
             }}
-            initialRouteName={'chooseCompany'}
+            initialRouteName={'diagramsList'}
         >
             <Drawer.Screen
                 name="account"
@@ -54,31 +53,20 @@ const DrawerNavigatorStartScreen = ({ navigation, route }) => {
                 component={Account}
             />
             <Drawer.Screen
-                name="chooseCompany"
+                name="diagramsList"
                 options={{
                     drawerLabel: 'Reports',
-                    headerTitle: ''
+                    headerTitle: params.selectedCompany.Name
                 }}
                 initialParams={{
                     token: params.token,
-                    url: params.url
+                    url: params.url,
+                    companyId: params.selectedCompany.Id
                 }}
-                component={Reports}
-            />
-            <Drawer.Screen
-                name="secondScreen"
-                options={{
-                    drawerLabel: 'Options',
-                    headerTitle: 'Options'
-                }}
-                initialParams={{
-                    token: params.token,
-                    url: params.url
-                }}
-                component={SecondScreen}
+                component={DiagramsList}
             />
         </Drawer.Navigator>
     );
 };
 
-export default DrawerNavigatorStartScreen;
+export default NavCompanySelected;

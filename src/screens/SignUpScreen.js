@@ -33,7 +33,7 @@ export const SignUpScreen = ({ navigation }) => {
     const isValid = formValues.login.length > 0 && formValues.password.length > 0 && formValues.url.length > 0 && agryWithPrivacy;
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---SignUpScreen loaded---");
     }, [])
 
@@ -70,7 +70,7 @@ export const SignUpScreen = ({ navigation }) => {
             ]).then(() => {
                 console.log("multiSet() ok");
                 setLoading(false);
-                navigation.navigate('DrawerNavigationStartScreen', {
+                navigation.navigate('NavChooseCompany', {
                     token: loginResponse.session_id,
                     url: formValues.url.toString()
                 });

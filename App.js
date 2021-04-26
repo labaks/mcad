@@ -8,8 +8,8 @@ import * as Font from 'expo-font';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
-import DrawerNavigationStartScreen from './src/screens/DrawerNavigationStartScreen';
-import DrawerNavigationCompanySelected from './src/screens/DrawerNavigationCompanySelected';
+import NavChooseCompany from './src/screens/navigation/NavChooseCompany';
+import NavCompanySelected from './src/screens/navigation/NavCompanySelected';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { TopTenRegionsIn } from './src/screens/diagrams/TopTenRegionsIn';
 
@@ -54,12 +54,12 @@ export default class App extends React.Component {
                 component={SignUpScreen}
                 options={{ headerShown: false }} />
               <Stack.Screen
-                name="DrawerNavigationStartScreen"
-                component={DrawerNavigationStartScreen}
+                name="NavChooseCompany"
+                component={NavChooseCompany}
                 options={{ headerShown: false }} />
               <Stack.Screen
-                name="DrawerNavigationCompanySelected"
-                component={DrawerNavigationCompanySelected}
+                name="NavCompanySelected"
+                component={NavCompanySelected}
                 options={{ headerShown: false }} />
               <Stack.Screen
                 name="TopTenRegionsIn"

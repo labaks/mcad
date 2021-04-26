@@ -16,7 +16,7 @@ export const Content = ({ navigation, route }) => {
     const url = route.params.url;
     const [loading, setLoading] = useState(false);
 
-    console.log("======================");
+    console.log("=====================================================");
     console.log("---Content Screen Loaded---")
     console.log("-params received: ", route.params);
 
