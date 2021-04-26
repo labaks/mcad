@@ -39,7 +39,7 @@ export const DiagramsList = ({ navigation, route }) => {
     ];
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---Diagrams List Screen Loaded---")
         console.log("-params received: ", route.params);
     }, [])
@@ -65,28 +65,6 @@ export const DiagramsList = ({ navigation, route }) => {
         selectedDiagramsIds = ids;
         itemsArray = items;
         console.log("--Selected Diagrams Array: ", selectedDiagramsIds);
-    }
-
-    const handleError = (error) => {
-        setLoading(false);
-        if (error.message == "Unauthorized") {
-            console.log("--Force logout");
-            AsyncStorage.setItem('logged_in', 'false').then(() => {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'Login',
-                        params: { url: url, message: error.details }
-                    }]
-                })
-            })
-        } else {
-            console.log("--Error: ", error.details ? error.details : error.message);
-            dropDownAlert.alertWithType(
-                'error',
-                '',
-                error.details ? error.details : error.message);
-        }
     }
 
     return (
@@ -127,7 +105,6 @@ const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
         alignSelf: 'stretch'
-
     },
     listItemStyle: {
         borderBottomWidth: 1,

@@ -1,10 +1,9 @@
-// import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 import PickerModal from 'react-native-picker-modal-view';
+
 import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
 import { SelectListItem } from '../components/SelectListItem';
@@ -13,10 +12,11 @@ import { TitleText } from '../components/TitleText';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData';
+import { ErrorHandler } from '../helpers/ErrorHandler';
 
 let dropDownAlert;
 
-export const Reports = ({ navigation, route }) => {
+export const ChooseCompanyScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const token = route.params.token;
     const url = route.params.url;
@@ -27,8 +27,8 @@ export const Reports = ({ navigation, route }) => {
     let btnDisabled = selected.Name == null;
 
     useEffect(() => {
-        console.log("======================");
-        console.log("---Reports Screen Loaded---")
+        console.log("=====================================================");
+        console.log("---Choose Company Screen Loaded---")
         console.log("-params received: ", route.params);
         _setUserCompanies();
     }, [])
@@ -37,11 +37,13 @@ export const Reports = ({ navigation, route }) => {
         setLoading(true)
         let userId = await McData._getCurrentUserId(token, url);
         if (userId.status) {
-            handleError(userId);
+            setLoading(false);
+            ErrorHandler.handle(dropDownAlert, userId, url, navigation);
         } else {
             let companies = await McData._getUserCompanies(token, url, userId);
             if (companies.status) {
-                handleError(companies);
+                setLoading(false);
+                ErrorHandler.handle(dropDownAlert, companies, url, navigation);
             } else {
                 setLoading(false);
                 setCompanies(McData.companiesForPicker(companies));
@@ -54,32 +56,10 @@ export const Reports = ({ navigation, route }) => {
         navigation.reset({
             index: 0,
             routes: [{
-                name: 'DrawerNavigationCompanySelected',
+                name: 'NavCompanySelected',
                 params: { url: url, token: token, selectedCompany: selected }
             }]
         })
-    }
-
-    const handleError = (error) => {
-        setLoading(false);
-        if (error.message == "Unauthorized") {
-            console.log("--Force logout");
-            AsyncStorage.setItem('logged_in', 'false').then(() => {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'Login',
-                        params: { url: url, message: error.details }
-                    }]
-                })
-            })
-        } else {
-            console.log("--Error: ", error.details ? error.details : error.message);
-            dropDownAlert.alertWithType(
-                'error',
-                '',
-                error.details ? error.details : error.message);
-        }
     }
 
     return (

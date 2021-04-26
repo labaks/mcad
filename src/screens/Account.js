@@ -12,6 +12,7 @@ import { MainBtn } from '../components/MainBtn';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData'
+import { ErrorHandler } from '../helpers/ErrorHandler';
 
 let dropDownAlert;
 
@@ -23,7 +24,7 @@ export const Account = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---Account Screen Loaded---")
         console.log("-params received: ", route.params);
         _setAccountData();
@@ -32,10 +33,10 @@ export const Account = ({ navigation, route }) => {
     const _setAccountData = async () => {
         setLoading(true)
         let user = await McData._getCurrentUser(token, url);
+        setLoading(false);
         if (user.status) {
-            handleError(user);
+            ErrorHandler.handle(dropDownAlert, user, url, navigation);
         } else {
-            setLoading(false)
             setCurrentUser(McData.userArrayToObj(user));
         }
     }
@@ -57,29 +58,8 @@ export const Account = ({ navigation, route }) => {
                 })
             })
         } else {
-            handleError(response);
-        }
-    }
-
-    const handleError = (error) => {
-        setLoading(false);
-        if (error.message == "Unauthorized") {
-            console.log("--Force logout");
-            AsyncStorage.setItem('logged_in', 'false').then(() => {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'Login',
-                        params: { url: url, message: error.details }
-                    }]
-                })
-            })
-        } else {
-            console.log("--Error: ", error.details ? error.details : error.message);
-            dropDownAlert.alertWithType(
-                'error',
-                '',
-                error.details ? error.details : error.message);
+            setLoading(false);
+            ErrorHandler.handle(dropDownAlert, response, url, navigation);
         }
     }
 

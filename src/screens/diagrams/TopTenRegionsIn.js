@@ -6,6 +6,7 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { Loader } from '../../components/Loader';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
+import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
 let dropDownAlert;
@@ -19,7 +20,7 @@ export const TopTenRegionsIn = ({ navigation, route }) => {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        console.log("======================");
+        console.log("=====================================================");
         console.log("---Top 10 Regions In Loaded---")
         console.log("-params received: ", route.params);
         _setReportData();
@@ -27,33 +28,11 @@ export const TopTenRegionsIn = ({ navigation, route }) => {
 
     const _setReportData = async () => {
         let data = await McData._getTopTenRegionsIn(token, url, companyId);
-        if (data.status) {
-            handleError(data);
-        } else {
-            setLoading(false)
-            setData(data);
-        }
-    }
-
-    const handleError = (error) => {
         setLoading(false);
-        if (error.message == "Unauthorized") {
-            console.log("--Force logout");
-            AsyncStorage.setItem('logged_in', 'false').then(() => {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'Login',
-                        params: { url: url, message: error.details }
-                    }]
-                })
-            })
+        if (data.status) {
+            ErrorHandler.handle(dropDownAlert, data, url, navigation)
         } else {
-            console.log("--Error: ", error.details ? error.details : error.message);
-            dropDownAlert.alertWithType(
-                'error',
-                '',
-                error.details ? error.details : error.message);
+            setData(data);
         }
     }
 
