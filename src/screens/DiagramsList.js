@@ -70,6 +70,14 @@ export const DiagramsList = ({ navigation, route }) => {
         })
     };
 
+    const TabButton = ({ title }) => {
+        return (
+            <Panel>
+                <Text>{title}</Text>
+            </Panel>
+        )
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
@@ -96,13 +104,20 @@ export const DiagramsList = ({ navigation, route }) => {
                         </View>
                     </View>
                     :
-                    <View style={styles.container}>
-                        <Text>selected: {diagramsSelected.toString()}</Text>
-                        <Text>selected: {titles.toString()}</Text>
+                    <View style={styles.tabsWrapper}>
+                        <Text>selected Ids: {diagramsSelected.toString()}</Text>
+                        <Text>selected titles: {titles.toString()}</Text>
                         <View style={styles.wrapper}>
                             <MainBtn
                                 text="Back"
                                 onPress={tempBack} />
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            {titles.map(title => (
+                                <View key={title} style={{ flex: 1, marginBottom: 10 }}>
+                                    <TabButton title={title} />
+                                </View>
+                            ))}
                         </View>
                     </View>
                 }
@@ -129,9 +144,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    wrapper: {
+    tabsWrapper: {
         flex: 1,
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
+        justifyContent: 'flex-start'
     },
     buttonsContainer: {
         flexDirection: 'row',
