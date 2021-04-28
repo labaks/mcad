@@ -17,13 +17,15 @@ import { FormData } from '../helpers/FormData';
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData';
 
+import bgImage from '../../assets/loginBg.png';
+
 let dropDownAlert;
-let keyboardWillShowSub, keyboardWillHideSub;
+// let keyboardWillShowSub, keyboardWillHideSub;
 
 export const LoginScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
-    const [keyboardShow, setKeyboardShow] = useState(false);
+    // const [keyboardShow, setKeyboardShow] = useState(false);
     const [formValues, handleFormValueChange, setFormValues] = FormData({
         login: '',
         password: ''
@@ -49,25 +51,25 @@ export const LoginScreen = ({ navigation, route }) => {
         }
     }, [route.params])
 
-    useEffect(() => {
-        keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-        return () => {keyboardWillShowSub.remove();}
-    });
+    // useEffect(() => {
+    //     keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', keyboardWillShow);
+    //     return () => {keyboardWillShowSub.remove();}
+    // });
 
-    useEffect(() => {
-        keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-        return () => {keyboardWillHideSub.remove();}
-    });
+    // useEffect(() => {
+    //     keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', keyboardWillHide);
+    //     return () => {keyboardWillHideSub.remove();}
+    // });
 
-    const keyboardWillShow = () => {
-        console.log("--keyboardWillShow");
-        setKeyboardShow(true);
-    };
+    // const keyboardWillShow = () => {
+    //     console.log("--keyboardWillShow");
+    //     setKeyboardShow(true);
+    // };
 
-    const keyboardWillHide = () => {
-        console.log("--keyboardWillHide");
-        setKeyboardShow(false);
-    };
+    // const keyboardWillHide = () => {
+    //     console.log("--keyboardWillHide");
+    //     setKeyboardShow(false);
+    // };
 
     const handleLoginPress = async () => {
         console.log("--Login button pressed");
@@ -115,16 +117,15 @@ export const LoginScreen = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <ImageBackground
-                source={require('../../assets/loginBg.png')}
+                source={bgImage}
                 style={styles.bgImage}>
                 <KeyboardAvoidingView
                     enabled
                     behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={{ flexGrow: 1 }}
-                >
+                    style={{ flexGrow: 1 }}>
                     <ScrollView
                         bounces={false}
-                        contentContainerStyle={[styles.scrollContainer, keyboardShow && styles.keyboardShow]}
+                        contentContainerStyle={styles.scrollContainer}
                         style={styles.scrollView}>
                         <View style={styles.contentWrapper}>
                             <Logo />
@@ -170,23 +171,19 @@ const styles = StyleSheet.create({
     },
     bgImage: {
         flex: 1,
-        width: '100%',
+        resizeMode: 'cover'
     },
     scrollView: {
         flex: 1,
-        borderColor: 'blue',
-        borderWidth: 1
     },
     scrollContainer: {
         flex: 1,
-        justifyContent: 'flex-end',
-        borderColor: 'red',
-        borderWidth: 1
+        justifyContent: 'space-around',
     },
-    keyboardShow: {
-        flex: 0,
-        justifyContent: 'flex-end'
-    },
+    // keyboardShow: {
+    //     flex: 0,
+    //     justifyContent: 'flex-end'
+    // },
     contentWrapper: {
         flex: 1,
         paddingHorizontal: 40,

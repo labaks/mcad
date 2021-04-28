@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'native-base';
 import React, { useState, useCallback, useEffect } from 'react'
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking } from 'react-native'
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking, KeyboardAvoidingView, ScrollView } from 'react-native'
 // import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
@@ -17,6 +17,8 @@ import { TitleText } from '../components/TitleText';
 import { FormData } from '../helpers/FormData';
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData';
+
+import bgImage from '../../assets/signUpBg.png';
 
 let dropDownAlert;
 
@@ -93,51 +95,61 @@ export const SignUpScreen = ({ navigation }) => {
     return (
         <View style={styles.signUpScreenContainer}>
             <ImageBackground
-                source={require('../../assets/signUpBg.png')}
+                source={bgImage}
                 style={styles.bgImage}>
-                <View style={styles.contentWrapper}>
-                    <Logo />
-                    <View style={styles.mainText}>
-                        <TitleText text='Hello!' />
-                        <Text style={styles.fontFamilySF}>Create an account to continue</Text>
-                    </View>
-                    <InputView
-                        label='URL'
-                        formKey='url'
-                        textInputProps={{ autoCapitalize: 'none' }}
-                        handleFormValueChange={handleFormValueChange} />
-                    <InputView
-                        label='Login'
-                        formKey='login'
-                        textInputProps={{ autoCapitalize: 'none' }}
-                        handleFormValueChange={handleFormValueChange} />
-                    <PasswordField
-                        formKey='password'
-                        textInputProps={{ autoCapitalize: 'none' }}
-                        handleFormValueChange={handleFormValueChange} />
-                    <View style={styles.privacyBlock}>
-                        <CheckBox
-                            style={styles.privacyChk}
-                            checked={agryWithPrivacy}
-                            onPress={() => setAgryWithPrivacy(!agryWithPrivacy)}
-                            color="#4B4B52" />
-                        <View style={styles.privacyText}>
-                            <Text>I agree with </Text>
+                <KeyboardAvoidingView
+                    enabled
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flexGrow: 1 }}>
+                    <ScrollView
+                        bounces={false}
+                        contentContainerStyle={styles.scrollContainer}
+                        style={styles.scrollView}>
+                        <View style={styles.contentWrapper}>
+                            <Logo />
+                            <View style={styles.mainText}>
+                                <TitleText text='Hello!' />
+                                <Text style={styles.fontFamilySF}>Create an account to continue</Text>
+                            </View>
+                            <InputView
+                                label='URL'
+                                formKey='url'
+                                textInputProps={{ autoCapitalize: 'none' }}
+                                handleFormValueChange={handleFormValueChange} />
+                            <InputView
+                                label='Login'
+                                formKey='login'
+                                textInputProps={{ autoCapitalize: 'none' }}
+                                handleFormValueChange={handleFormValueChange} />
+                            <PasswordField
+                                formKey='password'
+                                textInputProps={{ autoCapitalize: 'none' }}
+                                handleFormValueChange={handleFormValueChange} />
+                            <View style={styles.privacyBlock}>
+                                <CheckBox
+                                    style={styles.privacyChk}
+                                    checked={agryWithPrivacy}
+                                    onPress={() => setAgryWithPrivacy(!agryWithPrivacy)}
+                                    color="#4B4B52" />
+                                <View style={styles.privacyText}>
+                                    <Text>I agree with </Text>
+                                    <TouchableOpacity
+                                        onPress={openPrivacy}>
+                                        <Text style={styles.privacyLink}>Privacy policy</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <MainBtn
+                                text='Sign Up'
+                                disabled={!isValid}
+                                onPress={handleSignUpPress} />
                             <TouchableOpacity
-                                onPress={openPrivacy}>
-                                <Text style={styles.privacyLink}>Privacy policy</Text>
+                                onPress={handleGoToLogin}>
+                                <Text style={styles.fontFamilySF}>Log In</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    <MainBtn
-                        text='Sign Up'
-                        disabled={!isValid}
-                        onPress={handleSignUpPress} />
-                    <TouchableOpacity
-                        onPress={handleGoToLogin}>
-                        <Text style={styles.fontFamilySF}>Log In</Text>
-                    </TouchableOpacity>
-                </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </ImageBackground>
             <Loader loading={loading} />
             <StatusBar style="auto" />
@@ -154,7 +166,14 @@ const styles = StyleSheet.create({
     },
     bgImage: {
         flex: 1,
-        width: '100%'
+        resizeMode: 'cover',
+    },
+    scrollView: {
+        flex: 1,
+    },
+    scrollContainer: {
+        flex: 1,
+        justifyContent: 'space-around',
     },
     contentWrapper: {
         flex: 1,

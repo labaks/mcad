@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         borderRadius: 15,
-        borderWidth: .2,
+        borderWidth: .5,
         borderColor: '#e4e4e4',
         padding: 10,
         alignSelf: 'stretch',
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
             width: 3,
             height: 3,
         },
-        shadowOpacity: .25,
+        shadowOpacity: .8,
         shadowRadius: 3.5,
         elevation: 3
     },

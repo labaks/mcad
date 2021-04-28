@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
+import headerImage from '../../assets/adaptive-icon.png';
 
 export const DiagramsHeader = (params) => {
 
@@ -9,7 +10,7 @@ export const DiagramsHeader = (params) => {
         <View style={styles.content}>
             <Image
                 style={styles.image}
-                source={require('./../../assets/logo.png')} />
+                source={headerImage} />
             <View style={styles.textWrapper}>
                 <Text style={styles.header}>Diagrams</Text>
                 <Text style={[styles.diagramName, !params.title && styles.noRecords]}>{title}</Text>
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     content: {
         backgroundColor: '#fff',
         borderRadius: 15,
-        borderWidth: .2,
+        borderWidth: .5,
         borderColor: '#e4e4e4',
         padding: 12,
         marginBottom: 10,
@@ -33,14 +34,14 @@ const styles = StyleSheet.create({
             width: 3,
             height: 3,
         },
-        shadowOpacity: .25,
+        shadowOpacity: .8,
         shadowRadius: 3.5,
         elevation: 3
     },
     image: {
         resizeMode: 'cover',
         width: 57,
-        height: 57
+        height: 57,
     },
     textWrapper: {
         padding: 10

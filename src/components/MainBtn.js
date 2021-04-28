@@ -15,7 +15,7 @@ export const MainBtn = (props) => {
 
 const styles = StyleSheet.create({
     mainBtn: {
-        width: "100%",
+        width: '100%',
         backgroundColor: '#4B4B52',
         borderRadius: 25,
         height: 50,

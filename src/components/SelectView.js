@@ -6,12 +6,12 @@ export const SelectView = (props) => {
     let selectedValue = props.selected ? props.selected : "Choose...";
 
     return (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, props.selected && styles.selected]}>
             <Text style={styles.label}>{props.label}</Text>
             <TouchableOpacity
                 disabled={props.disabled}
                 onPress={props.onPress}>
-                <Text style={[styles.valueText, props.selected && styles.selected]}>{selectedValue}</Text>
+                <Text style={[styles.textValue, props.selected && styles.selected]}>{selectedValue}</Text>
             </TouchableOpacity>
         </View>
     )
@@ -20,17 +20,17 @@ export const SelectView = (props) => {
 const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
-        marginBottom: 10
+        marginBottom: 10,
+        borderBottomColor: '#E4E4E4',
+        borderBottomWidth: 1,
     },
     label: {
         color: '#E4E4E4',
         fontFamily: 'SF'
     },
-    valueText: {
+    textValue: {
         color: '#E4E4E4',
         fontSize: 16,
-        borderBottomColor: '#E4E4E4',
-        borderBottomWidth: 1,
         paddingVertical: 10,
         fontFamily: 'SF'
     },
