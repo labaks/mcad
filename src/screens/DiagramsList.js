@@ -1,13 +1,9 @@
-// import AsyncStorage from '@react-native-community/async-storage';
-import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Tab, TabHeading, Tabs } from 'native-base';
 import React, { useEffect, useState } from 'react'
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
-// import CheckboxList from 'rn-checkbox-list';
-import { CheckboxList } from "../components/CheckboxList";
 
+import { CheckboxList } from "../components/CheckboxList";
 import { DiagramsHeader } from '../components/DiagramsHeader';
 import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
@@ -23,8 +19,7 @@ export const DiagramsList = ({ navigation, route }) => {
     const url = route.params.url;
     const companyId = route.params.companyId;
     const [loading, setLoading] = useState(false);
-    let selectedDiagramsIds = [];
-    let itemsArray = [];
+    const [diagramsSelected, setDiagramsSelected] = useState([]);
     const diagramsListData = [
         { id: 0, title: 'Top 10 Regions In', active: false },
         { id: 1, title: 'Top 10 Regions Out', active: false },
@@ -61,30 +56,44 @@ export const DiagramsList = ({ navigation, route }) => {
         }
     }
 
-    const checkListChanged = ({ ids, items }) => {
-        selectedDiagramsIds = ids;
-        itemsArray = items;
-        console.log("--Selected Diagrams Array: ", selectedDiagramsIds);
-    }
+    const request = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{
+                name: 'NavChooseCompany',
+                params: { url: url, token: token }
+            }]
+        })
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
                 <DiagramsHeader title='' />
                 <Panel>
-                    <CheckboxList data={diagramsListData}/>
+                    <CheckboxList
+                        data={diagramsListData}
+                        onChange={(array) => setDiagramsSelected(array)} />
+                    <Text>{diagramsSelected.toString()}</Text>
                 </Panel>
-                <MainBtn
-                    text="Select"
-                    onPress={selectDiagrams}
-                />
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonWrapper}>
+                        <MainBtn
+                            text="Request"
+                            onPress={request} />
+                    </View>
+                    <View style={styles.buttonWrapper}>
+                        <MainBtn
+                            text="Submit"
+                            onPress={selectDiagrams} />
+                    </View>
+                </View>
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
-            />
+                closeInterval={3000} />
         </View>
     )
 }
@@ -106,8 +115,11 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'stretch'
     },
-    listItemStyle: {
-        borderBottomWidth: 1,
-        borderColor: '#e4e4e4'
+    buttonsContainer: {
+        flexDirection: 'row',
+    },
+    buttonWrapper: {
+        width: '50%',
+        paddingHorizontal: '1%'
     }
 })

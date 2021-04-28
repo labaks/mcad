@@ -2,9 +2,11 @@ import { CheckBox } from 'react-native-elements'
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
-export const CheckboxList = (props) => {
+export const CheckboxList = ({ data, onChange }) => {
 
-    const [data, setData] = useState(props.data);
+    const [innerData, setData] = useState(data);
+    const [reportsIds, setReportsIds] = useState([]);
+
 
     const renderItem = ({ item, index }) => {
         return (
@@ -24,16 +26,24 @@ export const CheckboxList = (props) => {
     };
 
     const setToggleCheckbox = (index) => {
-        console.log("checkbox checked: ", index)
-        let newArr = [...data];
+        console.log("checkbox pressed: ", index)
+        let newArr = [...innerData];
         newArr[index].active = !newArr[index].active;
         setData(newArr);
+        let tmpIds = [...reportsIds];
+        if (tmpIds.indexOf(index) !== -1) {
+            tmpIds = tmpIds.filter(item => item !== index);
+        } else {
+            tmpIds.push(index);
+        }
+        setReportsIds(tmpIds)
+        onChange(tmpIds);
     };
 
     return (
         <View style={styles.container}>
             <FlatList
-                data={data}
+                data={innerData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
             />
