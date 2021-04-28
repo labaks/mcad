@@ -20,6 +20,8 @@ export const DiagramsList = ({ navigation, route }) => {
     const companyId = route.params.companyId;
     const [loading, setLoading] = useState(false);
     const [diagramsSelected, setDiagramsSelected] = useState([]);
+    const [isSubmited, setIsSubmited] = useState(false);
+    const [titles, setTitles] = useState([]);
     const diagramsListData = [
         { id: 0, title: 'Top 10 Regions In', active: false },
         { id: 1, title: 'Top 10 Regions Out', active: false },
@@ -40,20 +42,22 @@ export const DiagramsList = ({ navigation, route }) => {
     }, [])
 
     const selectDiagrams = () => {
-        console.log("--Diagrams selected: ", selectedDiagramsIds);
-        switch (selectedDiagramsIds[0]) {
-            case 0: {
-                navigation.reset({
-                    index: 0,
-                    routes: [{
-                        name: 'TopTenRegionsIn',
-                        params: { url: url, token: token, companyId: companyId }
-                    }]
-                })
-                break;
+        parseTitles();
+        setIsSubmited(true);
+    }
+
+    const parseTitles = () => {
+        let tmpArr = [...titles];
+        tmpArr = diagramsSelected.map((id) => {
+            for (var i in diagramsListData) {
+                if (id == diagramsListData[i].id) return diagramsListData[i].title
             }
-            default: break;
-        }
+        })
+        setTitles(tmpArr);
+    };
+
+    const tempBack = () => {
+        setIsSubmited(false);
     }
 
     const request = () => {
@@ -70,24 +74,38 @@ export const DiagramsList = ({ navigation, route }) => {
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
                 <DiagramsHeader title='' />
-                <Panel>
-                    <CheckboxList
-                        data={diagramsListData}
-                        onChange={(array) => setDiagramsSelected(array)} />
-                    <Text>{diagramsSelected.toString()}</Text>
-                </Panel>
-                <View style={styles.buttonsContainer}>
-                    <View style={styles.buttonWrapper}>
-                        <MainBtn
-                            text="Request"
-                            onPress={request} />
+                {!isSubmited ?
+                    <View style={styles.container}>
+                        <Panel>
+                            <CheckboxList
+                                data={diagramsListData}
+                                onChange={(array) => setDiagramsSelected(array)} />
+
+                        </Panel>
+                        <View style={styles.buttonsContainer}>
+                            <View style={styles.buttonWrapper}>
+                                <MainBtn
+                                    text="Request"
+                                    onPress={request} />
+                            </View>
+                            <View style={styles.buttonWrapper}>
+                                <MainBtn
+                                    text="Submit"
+                                    onPress={selectDiagrams} />
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.buttonWrapper}>
-                        <MainBtn
-                            text="Submit"
-                            onPress={selectDiagrams} />
+                    :
+                    <View style={styles.container}>
+                        <Text>selected: {diagramsSelected.toString()}</Text>
+                        <Text>selected: {titles.toString()}</Text>
+                        <View style={styles.wrapper}>
+                            <MainBtn
+                                text="Back"
+                                onPress={tempBack} />
+                        </View>
                     </View>
-                </View>
+                }
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />

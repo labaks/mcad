@@ -4,7 +4,7 @@ import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
 export const CheckboxList = ({ data, onChange }) => {
 
-    const [innerData, setData] = useState(data);
+    const [innerData, setInnerData] = useState(data);
     const [reportsIds, setReportsIds] = useState([]);
 
 
@@ -29,13 +29,14 @@ export const CheckboxList = ({ data, onChange }) => {
         console.log("checkbox pressed: ", index)
         let newArr = [...innerData];
         newArr[index].active = !newArr[index].active;
-        setData(newArr);
+        setInnerData(newArr);
         let tmpIds = [...reportsIds];
         if (tmpIds.indexOf(index) !== -1) {
             tmpIds = tmpIds.filter(item => item !== index);
         } else {
             tmpIds.push(index);
         }
+        tmpIds.sort();
         setReportsIds(tmpIds)
         onChange(tmpIds);
     };
