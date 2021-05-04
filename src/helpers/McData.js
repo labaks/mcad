@@ -1,5 +1,7 @@
 export class McData {
 
+    static url = "https://mcapp.mcore.solutions";
+
     static async _getCurrentUser(token = '', host = '') {
         let dataToSend = {
             "session_id": token,
@@ -9,7 +11,7 @@ export class McData {
             }
         }
         console.log("--_getCurrentUser dataToSend: ", dataToSend);
-        const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
+        const response = await fetch(this.url + '/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -36,7 +38,7 @@ export class McData {
             }
         }
         console.log("--_getCurrentUserId dataToSend: ", dataToSend);
-        const response = await fetch('https://mcapp.mcore.solutions/api/users_get/', {
+        const response = await fetch(this.url + '/api/users_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -63,7 +65,7 @@ export class McData {
             }
         }
         console.log("--_getUserCompanies dataToSend: ", dataToSend);
-        let response = await fetch('https://mcapp.mcore.solutions/api/client_get/', {
+        let response = await fetch(this.url + '/api/client_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -101,16 +103,16 @@ export class McData {
         return objectsArray;
     }
 
-    static async _getTopTenRegionsIn(token = '', host = '', companyId) {
+    static async _getTopTenRegions(token = '', host = '', companyId, direction) {
         let dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
-                "direction": "in"
+                "direction": direction
             }
         }
-        console.log("--_getTopTenRegionsIn dataToSend: ", dataToSend);
-        let response = await fetch('https://mcapp.mcore.solutions/api/top_duration_regions_get/', {
+        console.log("--_getTopTenRegions dataToSend: ", dataToSend);
+        let response = await fetch(this.url + '/api/top_duration_regions_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -120,7 +122,114 @@ export class McData {
             },
         })
         let json = await response.json();
-        console.log("--_getTopTenRegionsIn response: ", json);
+        console.log("--_getTopTenRegions response: ", json);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
+    }
+
+    static async _getTopTenRegionsProfit(token = '', host = '', companyId, direction) {
+        let dataToSend = {
+            "session_id": token,
+            "data": {
+                "client_id": companyId,
+                "direction": direction
+            }
+        }
+        console.log("--_getTopTenRegionsProfit dataToSend: ", dataToSend);
+        let response = await fetch(this.url + '/api/top_profit_regions_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            },
+        })
+        let json = await response.json();
+        console.log("--_getTopTenRegionsProfit response: ", json);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
+    }
+
+    static async _getTopTenCountries(token = '', host = '', companyId, direction) {
+        let dataToSend = {
+            "session_id": token,
+            "data": {
+                "client_id": companyId,
+                "direction": direction
+            }
+        }
+        console.log("--_getTopTenCountries dataToSend: ", dataToSend);
+        let response = await fetch(this.url + '/api/top_countries_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            },
+        })
+        let json = await response.json();
+        console.log("--_getTopTenCountries response: ", json);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
+    }
+
+    static async _getTrafficShare(token = '', host = '', companyId, direction) {
+        let dataToSend = {
+            "session_id": token,
+            "data": {
+                "client_id": companyId,
+                "direction": direction
+            }
+        }
+        console.log("--_getTrafficShare dataToSend: ", dataToSend);
+        let response = await fetch(this.url + '/api/top_countries_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            },
+        })
+        let json = await response.json();
+        console.log("--_getTrafficShare response: ", json);
+        if (json.status == 200) {
+            return json.data;
+        } else {
+            return json;
+        }
+    }
+
+    static async _getFinSummary(token = '', host = '', companyId, period) {
+        let dataToSend = {
+            "session_id": token,
+            "data": {
+                "client_id": companyId,
+            }
+        }
+        console.log("--_getTrafficShare dataToSend: ", dataToSend);
+        let response = await fetch(this.url + '/api/top_countries_get/', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Host': host
+            },
+        })
+        let json = await response.json();
+        console.log("--_getTrafficShare response: ", json);
         if (json.status == 200) {
             return json.data;
         } else {
@@ -135,7 +244,7 @@ export class McData {
             "ip": ip
         }
         console.log("--_Login dataToSend: ", dataToSend);
-        const response = await fetch('https://mcapp.mcore.solutions/api/login/', {
+        const response = await fetch(this.url + '/api/login/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -150,7 +259,7 @@ export class McData {
     }
 
     static async _logout(token = '', host = '') {
-        const response = await fetch('https://mcapp.mcore.solutions/api/logout/', {
+        const response = await fetch(this.url + '/api/logout/', {
             method: 'POST',
             body: JSON.stringify({ 'session_id': token, 'data': {} }),
             headers: {
