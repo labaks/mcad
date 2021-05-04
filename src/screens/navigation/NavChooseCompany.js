@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
-import { SecondScreen } from '../SecondScreen';
 import { Account } from '../Account';
 import { ChooseCompanyScreen } from '../ChooseCompanyScreen';
 
@@ -64,18 +63,6 @@ const NavChooseCompany = ({ navigation, route }) => {
                     url: params.url
                 }}
                 component={ChooseCompanyScreen}
-            />
-            <Drawer.Screen
-                name="secondScreen"
-                options={{
-                    drawerLabel: 'Options',
-                    headerTitle: 'Options'
-                }}
-                initialParams={{
-                    token: params.token,
-                    url: params.url
-                }}
-                component={SecondScreen}
             />
         </Drawer.Navigator>
     );

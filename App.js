@@ -11,7 +11,6 @@ import { SplashScreen } from './src/screens/SplashScreen';
 import NavChooseCompany from './src/screens/navigation/NavChooseCompany';
 import NavCompanySelected from './src/screens/navigation/NavCompanySelected';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { TopTenRegionsIn } from './src/screens/diagrams/TopTenRegionsIn';
 
 const Stack = createStackNavigator();
 
@@ -61,10 +60,6 @@ export default class App extends React.Component {
                 name="NavCompanySelected"
                 component={NavCompanySelected}
                 options={{ headerShown: false }} />
-              <Stack.Screen
-                name="TopTenRegionsIn"
-                component={TopTenRegionsIn}
-                options={{ headerShown: true }} />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
