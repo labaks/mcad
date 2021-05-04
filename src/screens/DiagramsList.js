@@ -249,15 +249,16 @@ export const DiagramsList = ({ navigation, route }) => {
                         style={styles.tabsWrapper}
                         contentContainerStyle={styles.tabsWrapperContainer}>
                         <View style={{ flex: 1 }}>
-                            {titles.map(title => (
-                                <View key={title} style={styles.tab}>
-                                    <TabButton title={title} />
-                                </View>
-                            ))}
+                            {titles.map(title => {
+                                return (
+                                    <View key={title} style={styles.tab}>
+                                        <TabButton title={title} />
+                                    </View>
+                                )
+                            })}
                         </View>
                         <View style={styles.tabContentWrapper}>
                             <TabContent />
-
                         </View>
                     </ScrollView>
                 }
@@ -323,8 +324,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     tabContentWrapper: {
-        borderColor: 'green',
-        borderWidth: 1,
         flex: 1
     }
 })

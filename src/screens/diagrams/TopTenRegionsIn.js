@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import { BarChart, Grid } from 'react-native-svg-charts';
 
 import { Loader } from '../../components/Loader';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
+import { Dimensions } from 'react-native';
+import { Text } from 'native-base';
+import BarChartExample from './BarChartExample';
 
 let dropDownAlert;
 
@@ -17,30 +21,44 @@ export const TopTenRegionsIn = (props) => {
     const url = props.url;
     const companyId = props.companyId;
     const navigation = props.navigation;
+    const screenWidth = Dimensions.get('window').width;
+    const fill = 'rgb(134, 65, 244)';
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState();
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Top 10 Regions In Loaded---")
+        console.log("---Top 10 Regions In Loaded---");
+
         _setReportData();
     }, [])
 
     const _setReportData = async () => {
-        let data = await McData._getTopTenRegions(token, url, companyId, "in");
+        let response = await McData._getTopTenRegions(token, url, companyId, "in");
         setLoading(false);
-        if (data.status) {
-            ErrorHandler.handle(dropDownAlert, data, url, navigation)
+        if (response.status) {
+            ErrorHandler.handle(dropDownAlert, response, url, navigation)
         } else {
-            setData(data);
+            // setData(parseData(response));
         }
-    }
+    };
+
+    const parseData = (response) => {
+        let data = {
+            labels: ['label 1'],
+            datasets: [{
+                data: [0, 2]
+            }]
+        }
+        return data;
+    };
+
+    
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Top 10 Regions In</Text>
-                <Text>{data}</Text>
+                <BarChartExample />
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />
@@ -48,7 +66,7 @@ export const TopTenRegionsIn = (props) => {
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}
             />
-        </View>
+        </View >
     )
 }
 
@@ -60,6 +78,8 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 40,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderColor: 'red',
+        borderWidth: 1,
     },
 })
