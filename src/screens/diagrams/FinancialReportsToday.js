@@ -11,7 +11,7 @@ import { McData } from '../../helpers/McData';
 
 let dropDownAlert;
 
-export const TopTenRegionsIn = (props) => {
+export const FinancialReportsToday = (props) => {
     const backButtonHandler = BackButtonHandler();
     const token = props.token;
     const url = props.url;
@@ -22,12 +22,12 @@ export const TopTenRegionsIn = (props) => {
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Top 10 Regions In Loaded---")
-        _setReportData();
+        console.log("---Financial Reports Today Loaded---")
+        // _setReportData();
     }, [])
 
     const _setReportData = async () => {
-        let data = await McData._getTopTenRegions(token, url, companyId, "in");
+        let data = await McData._getTopTenRegionsIn(token, url, companyId);
         setLoading(false);
         if (data.status) {
             ErrorHandler.handle(dropDownAlert, data, url, navigation)
@@ -39,7 +39,7 @@ export const TopTenRegionsIn = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Top 10 Regions In</Text>
+                <Text>Financial Reports Today</Text>
                 <Text>{data}</Text>
             </View>
             <Loader loading={loading} />

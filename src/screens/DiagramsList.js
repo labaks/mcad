@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import { FontAwesome } from '@expo/vector-icons';
 
 import { CheckboxList } from "../components/CheckboxList";
 import { DiagramsHeader } from '../components/DiagramsHeader';
@@ -10,6 +11,17 @@ import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
+
+import { TopTenRegionsIn } from './diagrams/TopTenRegionsIn';
+import { TopTenRegionsOut } from './diagrams/TopTenRegionsOut';
+import { TopTenRegionsProfitIn } from './diagrams/TopTenRegionsProfitIn';
+import { TopTenRegionsProfitOut } from './diagrams/TopTenRegionsProfitOut';
+import { TopTenCountriesIn } from './diagrams/TopTenCountriesIn';
+import { TopTenCountriesOut } from './diagrams/TopTenCountriesOut';
+import { TrafficShareIn } from './diagrams/TrafficShareIn';
+import { TrafficShareOut } from './diagrams/TrafficShareOut';
+import { FinancialReportsToday } from './diagrams/FinancialReportsToday';
+import { FinancialReportsYesterday } from './diagrams/FinancialReportsYesterday';
 
 let dropDownAlert;
 
@@ -22,6 +34,7 @@ export const DiagramsList = ({ navigation, route }) => {
     const [diagramsSelected, setDiagramsSelected] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
+    const [chosenTab, setChosenTab] = useState("");
     const diagramsListData = [
         { id: 0, title: 'Top 10 Regions In', active: false },
         { id: 1, title: 'Top 10 Regions Out', active: false },
@@ -42,9 +55,11 @@ export const DiagramsList = ({ navigation, route }) => {
     }, [])
 
     const selectDiagrams = () => {
-        parseTitles();
+        let tmpTitles = parseTitles();
+        setTitles(tmpTitles);
+        setChosenTab(tmpTitles[0]);
         setIsSubmited(true);
-    }
+    };
 
     const parseTitles = () => {
         let tmpArr = [...titles];
@@ -53,12 +68,12 @@ export const DiagramsList = ({ navigation, route }) => {
                 if (id == diagramsListData[i].id) return diagramsListData[i].title
             }
         })
-        setTitles(tmpArr);
+        return tmpArr;
     };
 
     const tempBack = () => {
         setIsSubmited(false);
-    }
+    };
 
     const request = () => {
         navigation.reset({
@@ -71,17 +86,143 @@ export const DiagramsList = ({ navigation, route }) => {
     };
 
     const TabButton = ({ title }) => {
+        const removeTab = () => {
+            let tmpArr = [...titles];
+            let index = tmpArr.indexOf(title);
+            tmpArr.splice(index, 1);
+            setTitles(tmpArr);
+            if (chosenTab == title) {
+                if (index < tmpArr.length) {
+                    setChosenTab(titles[index + 1])
+                } else {
+                    setChosenTab(titles[index - 1])
+                }
+            };
+            if (!tmpArr.length) tempBack();
+        };
+
+        const chooseTab = () => {
+            setChosenTab(title);
+        };
+
         return (
             <Panel>
-                <Text>{title}</Text>
+                <View style={styles.tabButtonWrapper}>
+                    <TouchableOpacity
+                        style={styles.tabButtonTextPressable}
+                        onPress={() => chooseTab()}>
+                        <Text style={[styles.tabButtonText, chosenTab == title && styles.chosenTab]}>{title}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.tabButtonClose}
+                        onPress={() => removeTab()}>
+                        <FontAwesome
+                            name="close"
+                            size={16}
+                            color='black' />
+                    </TouchableOpacity>
+                </View>
             </Panel>
         )
-    }
+    };
+
+    const TabContent = () => {
+        let content = <Text></Text>;
+        switch (chosenTab) {
+            case 'Top 10 Regions In':
+                content = <TopTenRegionsIn
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Top 10 Regions Out':
+                content = <TopTenRegionsOut
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Top 10 Regions In, $':
+                content = <TopTenRegionsProfitIn
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Top 10 Regions Out, $':
+                content = <TopTenRegionsProfitOut
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Top 10 Countries In':
+                content = <TopTenCountriesIn
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Top 10 Countries Out':
+                content = <TopTenCountriesOut
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Traffic Share In':
+                content = <TrafficShareIn
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Traffic Share Out':
+                content = <TrafficShareOut
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Financial Reports Today':
+                content = <FinancialReportsToday
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            case 'Financial Reports Yesterday':
+                content = <FinancialReportsYesterday
+                    token={token}
+                    url={url}
+                    companyId={companyId}
+                    navigation={navigation}
+                />
+                break;
+            default:
+                break;
+        }
+        return (
+            <View>
+                {content}
+            </View>
+        );
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <DiagramsHeader title='' />
+                <DiagramsHeader title={chosenTab} />
                 {!isSubmited ?
                     <View style={styles.container}>
                         <Panel>
@@ -104,22 +245,21 @@ export const DiagramsList = ({ navigation, route }) => {
                         </View>
                     </View>
                     :
-                    <View style={styles.tabsWrapper}>
-                        <Text>selected Ids: {diagramsSelected.toString()}</Text>
-                        <Text>selected titles: {titles.toString()}</Text>
-                        <View style={styles.wrapper}>
-                            <MainBtn
-                                text="Back"
-                                onPress={tempBack} />
-                        </View>
+                    <ScrollView
+                        style={styles.tabsWrapper}
+                        contentContainerStyle={styles.tabsWrapperContainer}>
                         <View style={{ flex: 1 }}>
                             {titles.map(title => (
-                                <View key={title} style={{ flex: 1, marginBottom: 10 }}>
+                                <View key={title} style={styles.tab}>
                                     <TabButton title={title} />
                                 </View>
                             ))}
                         </View>
-                    </View>
+                        <View style={styles.tabContentWrapper}>
+                            <TabContent />
+
+                        </View>
+                    </ScrollView>
                 }
             </View>
             <Loader loading={loading} />
@@ -147,7 +287,9 @@ const styles = StyleSheet.create({
     tabsWrapper: {
         flex: 1,
         alignSelf: 'stretch',
-        justifyContent: 'flex-start'
+    },
+    tabsWrapperContainer: {
+        padding: 1
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -155,5 +297,34 @@ const styles = StyleSheet.create({
     buttonWrapper: {
         width: '50%',
         paddingHorizontal: '1%'
+    },
+    tab: {
+        marginBottom: 10,
+        height: 54,
+    },
+    tabButtonWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    tabButtonTextPressable: {
+        flex: 1,
+        marginLeft: 10,
+        paddingVertical: 5,
+    },
+    tabButtonText: {
+        fontFamily: 'SF',
+    },
+    chosenTab: {
+        color: 'green',
+    },
+    tabButtonClose: {
+        paddingVertical: 6,
+        paddingHorizontal: 8,
+    },
+    tabContentWrapper: {
+        borderColor: 'green',
+        borderWidth: 1,
+        flex: 1
     }
 })
