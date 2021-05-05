@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import { LegendUnit } from '../../components/diagramComponents/LegendUnit';
+import { Petals2 } from '../../components/diagramComponents/Petals2';
 
 import { Loader } from '../../components/Loader';
 
@@ -39,8 +41,24 @@ export const TopTenCountriesIn = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Top Ten Countries In</Text>
+                <View style={styles.legend}>
+                    <Text>Summary ASR</Text>
+                    <View style={styles.legendLine}>
+                        <LegendUnit text='0-1%' color='#e38472' />
+                        <LegendUnit text='1-3%' color='#ffbcac' />
+                        <LegendUnit text='3-7%' color='#f9c87c' />
+                    </View>
+                    <View style={styles.legendLine}>
+                        <LegendUnit text='7-10%' color='#deeaac' />
+                        <LegendUnit text='10-15%' color='#c0d280' />
+                        <LegendUnit text='15-100%' color='#90bc99' />
+                    </View>
+                </View>
+                
                 <Text>{data}</Text>
+                <View>
+                    <Petals2 />
+                </View>
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />
@@ -57,9 +75,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     contentWrapper: {
-        flex: 1,
-        paddingHorizontal: 40,
-        justifyContent: 'center',
-        alignItems: 'center'
+        borderColor: 'blue',
+        borderWidth: 1,
     },
+    legend: {
+        borderColor: 'green',
+        borderWidth: 1,
+    },
+    legendLine: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+
+    }
 })
