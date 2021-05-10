@@ -66,63 +66,58 @@ export const Petals3 = (props) => {
 
         //Data petals:
         for (var i = 0; i < data.length; i++) {
+            var calcStart = Date.now();
+            var distance = diameter * 0.4 + diameter * 0.6 * (1 - i / 10),
+                a = radius - Math.cos((i + 0.5) * Math.PI / 5) * distance * 0.32,
+                b = radius - Math.sin((i + 0.5) * Math.PI / 5) * distance * 0.32,
+                c = radius - Math.cos((i + 1.5) * Math.PI / 5) * distance * 0.32,
+                d = radius - Math.sin((i + 1.5) * Math.PI / 5) * distance * 0.32;
+            var angle = (i + 1) * Math.PI / 5;
+            var e = radius - Math.cos(angle - Math.PI / 10) * distance * 0.32,
+                f = radius - Math.sin(angle - Math.PI / 10) * distance * 0.32,
+                g = radius - Math.cos(angle) * distance * 0.37,
+                h = radius - Math.sin(angle) * distance * 0.37,
+                ii = radius - Math.cos(angle + Math.PI / 10) * distance * 0.32,
+                j = radius - Math.sin(angle + Math.PI / 10) * distance * 0.32;
+            var inverse = angle > Math.PI && angle < Math.PI * 2;
+            console.log("calc end ", Date.now() - calcStart);
+            var drawStart = Date.now();
             context.beginPath();
-            var distance = diameter * 0.4 + diameter * 0.6 * (1 - i / 10);
-            gradient = await context.createLinearGradient(
-                radius - Math.cos((i + 0.5) * Math.PI / 5) * distance * 0.32,
-                radius - Math.sin((i + 0.5) * Math.PI / 5) * distance * 0.32,
-                radius - Math.cos((i + 1.5) * Math.PI / 5) * distance * 0.32,
-                radius - Math.sin((i + 1.5) * Math.PI / 5) * distance * 0.32);
+            gradient = await context.createLinearGradient(a, b, c, d);
             var cIndex = getColorIndexByRate(data[i][2]);
             gradient.addColorStop(0, colorsDark[cIndex]);
             gradient.addColorStop(0.5, colors[cIndex]);
             gradient.addColorStop(1, colorsDark[cIndex]);
             context.fillStyle = gradient;
             context.strokeStyle = "#FFFFFF";
-            var angle = (i + 1) * Math.PI / 5;
 
             //Fill
             context.moveTo(radius, radius);
-            context.lineTo(
-                radius - Math.cos(angle - Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle - Math.PI / 10) * distance * 0.32);
-            context.lineTo(
-                radius - Math.cos(angle) * distance * 0.37,
-                radius - Math.sin(angle) * distance * 0.37);
-            context.lineTo(
-                radius - Math.cos(angle + Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle + Math.PI / 10) * distance * 0.32);
+            context.lineTo(e, f);
+            context.lineTo(g, h);
+            context.lineTo(ii, j);
             context.fill();
 
             //Stroke sagittal lines
             context.beginPath();
-            context.moveTo(
-                radius - Math.cos(angle - Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle - Math.PI / 10) * distance * 0.32);
+            context.moveTo(e, f);
             context.lineTo(radius, radius);
-            context.lineTo(
-                radius - Math.cos(angle + Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle + Math.PI / 10) * distance * 0.32);
+            context.lineTo(ii, j);
             context.lineWidth = 6;
             context.stroke();
 
             //Stroke meridional lines
             context.beginPath();
-            context.moveTo(
-                radius - Math.cos(angle - Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle - Math.PI / 10) * distance * 0.32);
-            context.lineTo(
-                radius - Math.cos(angle) * distance * 0.37,
-                radius - Math.sin(angle) * distance * 0.37);
-            context.lineTo(
-                radius - Math.cos(angle + Math.PI / 10) * distance * 0.32,
-                radius - Math.sin(angle + Math.PI / 10) * distance * 0.32);
+            context.moveTo(e, f);
+            context.lineTo(g, h);
+            context.lineTo(ii, j);
             context.lineWidth = 2;
             context.stroke();
 
             context.fillStyle = "#000000";
-            var inverse = angle > Math.PI && angle < Math.PI * 2;
+            console.log("draw middle ", Date.now() - drawStart);
             await drawTextAlongArc(context, data[i][0], fontZoom * 250, radius, radius, radius - radius / 9.2, angle - Math.PI / 2, inverse);
+            console.log("draw end ", Date.now() - drawStart);
         }
 
         //Minutes/Successful SMS text:
