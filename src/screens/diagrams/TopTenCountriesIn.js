@@ -2,8 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+
 import { LegendUnit } from '../../components/diagramComponents/LegendUnit';
 import { Petals2 } from '../../components/diagramComponents/Petals2';
+import { Petals3 } from '../../components/diagramComponents/Petals3';
 
 import { Loader } from '../../components/Loader';
 
@@ -21,6 +23,19 @@ export const TopTenCountriesIn = (props) => {
     const navigation = props.navigation;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
+    const mock = [
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
+        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60]
+    ];
+    const title = "Top 10 Countries";
+    const unit = 'min.';
 
     useEffect(() => {
         console.log("=====================================================");
@@ -35,6 +50,7 @@ export const TopTenCountriesIn = (props) => {
             ErrorHandler.handle(dropDownAlert, data, url, navigation)
         } else {
             setData(data);
+            console.log("_setReportData data: ", data)
         }
     }
 
@@ -54,10 +70,14 @@ export const TopTenCountriesIn = (props) => {
                         <LegendUnit text='15-100%' color='#90bc99' />
                     </View>
                 </View>
-                
-                <Text>{data}</Text>
-                <View>
-                    <Petals2 />
+
+                <View style={styles.canvasWrapper}>
+                    <Petals3
+                        data={mock}
+                        title={title}
+                        unit={unit}
+                        height={280}
+                        width={280} />
                 </View>
             </View>
             <Loader loading={loading} />
@@ -85,6 +105,11 @@ const styles = StyleSheet.create({
     legendLine: {
         flexDirection: 'row',
         justifyContent: 'space-between'
-
+    },
+    canvasWrapper: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'black',
+        borderWidth: 1,
     }
 })
