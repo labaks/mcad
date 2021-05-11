@@ -80,7 +80,7 @@ export const Petals3 = (props) => {
                 ii = radius - Math.cos(angle + Math.PI / 10) * distance * 0.32,
                 j = radius - Math.sin(angle + Math.PI / 10) * distance * 0.32;
             var inverse = angle > Math.PI && angle < Math.PI * 2;
-            console.log("calc end ", Date.now() - calcStart);
+            // console.log("calc end ", Date.now() - calcStart);
             var drawStart = Date.now();
             context.beginPath();
             gradient = await context.createLinearGradient(a, b, c, d);
@@ -115,9 +115,9 @@ export const Petals3 = (props) => {
             context.stroke();
 
             context.fillStyle = "#000000";
-            console.log("draw middle ", Date.now() - drawStart);
+            // console.log("draw middle ", Date.now() - drawStart);
             await drawTextAlongArc(context, data[i][0], fontZoom * 250, radius, radius, radius - radius / 9.2, angle - Math.PI / 2, inverse);
-            console.log("draw end ", Date.now() - drawStart);
+            // console.log("draw end ", Date.now() - drawStart);
         }
 
         //Minutes/Successful SMS text:
@@ -227,7 +227,5 @@ export const Petals3 = (props) => {
 
 const styles = StyleSheet.create({
     canvas: {
-        borderColor: 'red',
-        borderWidth: 1,
     }
 })

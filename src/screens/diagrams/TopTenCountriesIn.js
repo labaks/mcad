@@ -3,11 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
-import { LegendUnit } from '../../components/diagramComponents/LegendUnit';
 import { Petals2 } from '../../components/diagramComponents/Petals2';
 import { Petals3 } from '../../components/diagramComponents/Petals3';
+import { SummaryASRLegend } from '../../components/diagramComponents/SummaryASRLegend';
 
 import { Loader } from '../../components/Loader';
+import { Panel } from '../../components/Panel';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
@@ -23,19 +24,43 @@ export const TopTenCountriesIn = (props) => {
     const navigation = props.navigation;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [labels, setLabels] = useState([]);
+    const [reportDay, setReportDay] = useState("");
+    const [tableData, setTableData] = useState([]);
     const mock = [
         ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60],
-        ["Ukraine", 2, 16.67, ~~(75 / 60) + ':' + 75 % 60]
+        ["Ukraine", 4, 6.67, ~~(175 / 60) + ':' + 175 % 60],
+        ["Ukraine", 6, 67, ~~(55 / 60) + ':' + 55 % 60],
+        ["Ukraine", 21, 11.7, ~~(17 / 60) + ':' + 17 % 60],
+        ["Ukraine", 12, 7.7, ~~(78 / 60) + ':' + 78 % 60],
+        ["Ukraine", 5, 10.59, ~~(760 / 60) + ':' + 760 % 60],
+        ["Ukraine", 1, 23.73, ~~(7 / 60) + ':' + 7 % 60],
+        ["Ukraine", 0, 13.7, ~~(80 / 60) + ':' + 80 % 60],
+        ["Ukraine", 0.6, 38.54, ~~(75 / 60) + ':' + 75 % 60]
     ];
     const title = "Top 10 Countries";
     const unit = 'min.';
+
+    const mock2 = {
+        "data": [
+            [16.67, 75, "Ukraine", 5, 4, 3, 2],
+            [12.3, 175, "USA", 7, 2, 12, 32],
+            [2.3, 15, "Portugal", 6, 12, 412, 56]
+        ],
+        "fields": [
+            "asr",
+            "acd",
+            "country",
+            "delta_price",
+            "tp_sum",
+            "op_sum",
+            "duration",
+        ],
+        "message": "OK",
+        "report_day": "2021-05-10",
+        "status": 200,
+        "time_elapsed": 0.166204
+    }
 
     useEffect(() => {
         console.log("=====================================================");
@@ -43,41 +68,61 @@ export const TopTenCountriesIn = (props) => {
         _setReportData();
     }, [])
 
+    useEffect(() => {
+        setTableData(convertData());
+    }, [data])
+
     const _setReportData = async () => {
-        let data = await McData._getTopTenCountries(token, url, companyId, 'in');
+        // let response = await McData._getTopTenCountries(token, url, companyId, 'in');
+        let response = mock2;
         setLoading(false);
-        if (data.status) {
-            ErrorHandler.handle(dropDownAlert, data, url, navigation)
+        if (response.status != 200) {
+            ErrorHandler.handle(dropDownAlert, response, url, navigation)
         } else {
-            setData(data);
-            console.log("_setReportData data: ", data)
+            setData(response.data);
+            setLabels(response.fields);
+            setReportDay(response.report_day);
         }
-    }
+    };
+
+    const convertData = () => {
+        let arr = [];
+        for (var i in data) {
+            let obj = {};
+            for (var j in labels) {
+                obj[labels[j]] = data[i][j];
+            }
+            arr.push(obj);
+        }
+        console.log("TableData: ", arr);
+        return arr;
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <View style={styles.legend}>
-                    <Text>Summary ASR</Text>
-                    <View style={styles.legendLine}>
-                        <LegendUnit text='0-1%' color='#e38472' />
-                        <LegendUnit text='1-3%' color='#ffbcac' />
-                        <LegendUnit text='3-7%' color='#f9c87c' />
+                <Panel style={styles.table}>
+                    <Text style={styles.tableTitle}>Report for {reportDay}</Text>
+                    <View style={styles.tableContent}>
+                        <View style={styles.tableColumn}>
+                            <Text style={styles.columnTitle}>Country</Text>
+                        </View>
+                        <View style={styles.tableColumn}>
+                            <Text style={styles.columnTitle}>Cost In / Cost Out</Text>
+                        </View>
+                        <View style={styles.tableColumn}>
+                            <Text style={styles.columnTitle}>Margin</Text>
+                        </View>
                     </View>
-                    <View style={styles.legendLine}>
-                        <LegendUnit text='7-10%' color='#deeaac' />
-                        <LegendUnit text='10-15%' color='#c0d280' />
-                        <LegendUnit text='15-100%' color='#90bc99' />
-                    </View>
-                </View>
-
+                </Panel>
+                <SummaryASRLegend />
                 <View style={styles.canvasWrapper}>
                     <Petals3
                         data={mock}
                         title={title}
                         unit={unit}
-                        height={280}
-                        width={280} />
+                        height={300}
+                        width={300} />
                 </View>
             </View>
             <Loader loading={loading} />
@@ -93,23 +138,30 @@ export const TopTenCountriesIn = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginTop: 15
     },
     contentWrapper: {
-        borderColor: 'blue',
-        borderWidth: 1,
-    },
-    legend: {
-        borderColor: 'green',
-        borderWidth: 1,
-    },
-    legendLine: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
     },
     canvasWrapper: {
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: 'black',
-        borderWidth: 1,
+    },
+    table: {
+        marginBottom: 10,
+    },
+    tableTitle: {
+        textAlign: 'center',
+        fontFamily: 'SF',
+        marginBottom: 15
+    },
+    tableContent: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    tableColumn: {
+
+    },
+    columnTitle: {
+        marginBottom: 10
     }
 })

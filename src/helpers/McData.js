@@ -178,7 +178,7 @@ export class McData {
         let json = await response.json();
         console.log("--_getTopTenCountries response: ", json);
         if (json.status == 200) {
-            return json.data;
+            return json;
         } else {
             return json;
         }

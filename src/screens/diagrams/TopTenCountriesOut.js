@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import { SummaryASRLegend } from '../../components/diagramComponents/SummaryASRLegend';
 
 import { Loader } from '../../components/Loader';
 
@@ -39,8 +40,7 @@ export const TopTenCountriesOut = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Top Ten Countries Out</Text>
-                <Text>{data}</Text>
+                <SummaryASRLegend />
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />

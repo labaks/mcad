@@ -1,18 +1,18 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import PropTypes from 'prop-types';
 
-export const Panel = ({ children }) => {
+export const Panel = ({ children, ...props }) => {
+
+    const { style, ...rest } = props;
+
     return (
-        <View style={styles.panel}>
+        <View
+            style={[styles.panel, style]}
+            {...rest}>
             {children}
         </View>
     )
 }
-
-// Panel.propTypes = {
-//     children: PropTypes.node.isRequired,
-// }
 
 const styles = StyleSheet.create({
     panel: {
