@@ -11,7 +11,7 @@ export const Petals3 = (props) => {
         console.log("---Canvas Loaded---");
         const canvas = canvasRef.current;
         handleCanvas(canvas);
-    }, [handleCanvas])
+    }, [handleCanvas, props])
 
     const handleCanvas = (canvas) => {
         if (canvas) {
@@ -84,7 +84,7 @@ export const Petals3 = (props) => {
             var drawStart = Date.now();
             context.beginPath();
             gradient = await context.createLinearGradient(a, b, c, d);
-            var cIndex = getColorIndexByRate(data[i][2]);
+            var cIndex = getColorIndexByRate(data[i].asr);
             gradient.addColorStop(0, colorsDark[cIndex]);
             gradient.addColorStop(0.5, colors[cIndex]);
             gradient.addColorStop(1, colorsDark[cIndex]);
@@ -116,7 +116,7 @@ export const Petals3 = (props) => {
 
             context.fillStyle = "#000000";
             // console.log("draw middle ", Date.now() - drawStart);
-            await drawTextAlongArc(context, data[i][0], fontZoom * 250, radius, radius, radius - radius / 9.2, angle - Math.PI / 2, inverse);
+            await drawTextAlongArc(context, data[i].country, fontZoom * 250, radius, radius, radius - radius / 9.2, angle - Math.PI / 2, inverse);
             // console.log("draw end ", Date.now() - drawStart);
         }
 
@@ -125,7 +125,7 @@ export const Petals3 = (props) => {
         for (var i = 0; i < data.length; i++) {
             var angle = (i + 1) * Math.PI / 5;
             var inverse = angle > Math.PI && angle < Math.PI * 2;
-            await drawTextAlongArc(context, data[i][1] + " " + unit, fontZoom * 250, radius, radius, radius - radius / 4.8, angle - Math.PI / 2, inverse);
+            await drawTextAlongArc(context, data[i].duration + " " + unit, fontZoom * 250, radius, radius, radius - radius / 4.8, angle - Math.PI / 2, inverse);
         }
         context.textBaseline = "middle";
 
@@ -142,15 +142,18 @@ export const Petals3 = (props) => {
                 radius - Math.cos((i + 0.5) * Math.PI / 5) * diameter * 0.48,
                 radius - Math.sin((i + 0.5) * Math.PI / 5) * diameter * 0.48);
             context.stroke();
+            let acdFormat = '';
+            if (data[i] !== undefined) {
+                acdFormat = ~~(data[i].acd / 60) + ':' + data[i].acd % 60;
+                if (i < data.length) {
+                    var circleX = radius - Math.cos((i + 1) * Math.PI / 5) * diameter * 0.27;
+                    var circleY = radius - Math.sin((i + 1) * Math.PI / 5) * diameter * 0.27;
+                    drawCircle(context, circleX, circleY, diameter / 25, "#FFFFFF", "#EEEEEE");
 
-            if (i < data.length && data[i][3] !== null) {
-                var circleX = radius - Math.cos((i + 1) * Math.PI / 5) * diameter * 0.27;
-                var circleY = radius - Math.sin((i + 1) * Math.PI / 5) * diameter * 0.27;
-                drawCircle(context, circleX, circleY, diameter / 25, "#FFFFFF", "#EEEEEE");
-
-                context.fillStyle = "#000000";
-                context.fillText("ACD:", circleX, circleY - 6);
-                context.fillText(data[i][3], circleX, circleY + 8);
+                    context.fillStyle = "#000000";
+                    context.fillText("ACD:", circleX, circleY - 6);
+                    context.fillText(acdFormat, circleX, circleY + 8);
+                }
             }
         }
 

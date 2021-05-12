@@ -16,8 +16,7 @@ import { TopTenRegionsIn } from './diagrams/TopTenRegionsIn';
 import { TopTenRegionsOut } from './diagrams/TopTenRegionsOut';
 import { TopTenRegionsProfitIn } from './diagrams/TopTenRegionsProfitIn';
 import { TopTenRegionsProfitOut } from './diagrams/TopTenRegionsProfitOut';
-import { TopTenCountriesIn } from './diagrams/TopTenCountriesIn';
-import { TopTenCountriesOut } from './diagrams/TopTenCountriesOut';
+import { TopTenCountries } from './diagrams/TopTenCountries';
 import { TrafficShareIn } from './diagrams/TrafficShareIn';
 import { TrafficShareOut } from './diagrams/TrafficShareOut';
 import { FinancialReportsToday } from './diagrams/FinancialReportsToday';
@@ -30,7 +29,6 @@ export const DiagramsList = ({ navigation, route }) => {
     const token = route.params.token;
     const url = route.params.url;
     const companyId = route.params.companyId;
-    const [loading, setLoading] = useState(false);
     const [diagramsSelected, setDiagramsSelected] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
@@ -162,19 +160,21 @@ export const DiagramsList = ({ navigation, route }) => {
                 />
                 break;
             case 'Top 10 Countries In':
-                content = <TopTenCountriesIn
+                content = <TopTenCountries
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'in'}
                 />
                 break;
             case 'Top 10 Countries Out':
-                content = <TopTenCountriesOut
+                content = <TopTenCountries
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'out'}
                 />
                 break;
             case 'Traffic Share In':
@@ -263,7 +263,6 @@ export const DiagramsList = ({ navigation, route }) => {
                     </ScrollView>
                 }
             </View>
-            <Loader loading={loading} />
             <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
