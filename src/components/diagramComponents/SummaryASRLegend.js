@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         marginBottom: 8,
-        fontFamily: 'SF'
+        fontFamily: 'SFBold'
     },
     legendLine: {
         flexDirection: 'row',

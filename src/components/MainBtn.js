@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     mainBtnText: {
         color: 'white',
         fontSize: 16,
-        fontFamily: 'SF',
+        fontFamily: 'SFBold',
     },
     disabled: {
         opacity: .6

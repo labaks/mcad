@@ -27,6 +27,7 @@ export const DiagramsList = ({ navigation, route }) => {
     const token = route.params.token;
     const url = route.params.url;
     const companyId = route.params.companyId;
+    const companyName = route.params.companyName;
     const [diagramsSelected, setDiagramsSelected] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
@@ -182,6 +183,7 @@ export const DiagramsList = ({ navigation, route }) => {
                     companyId={companyId}
                     navigation={navigation}
                     direction={'in'}
+                    companyName={companyName}
                 />
                 break;
             case 'Traffic Share Out':
@@ -191,6 +193,7 @@ export const DiagramsList = ({ navigation, route }) => {
                     companyId={companyId}
                     navigation={navigation}
                     direction={'out'}
+                    companyName={companyName}
                 />
                 break;
             case 'Financial Reports Today':
@@ -320,7 +323,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SF',
     },
     chosenTab: {
-        color: 'green',
+        fontFamily: 'SFBold'
     },
     tabButtonClose: {
         paddingVertical: 6,

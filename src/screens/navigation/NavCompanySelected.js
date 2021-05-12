@@ -33,7 +33,7 @@ const NavCompanySelected = ({ navigation, route }) => {
                     shadowOpacity: 0 // shadow under the header (ios)
                 },
                 headerTitleStyle: {
-                    fontFamily: 'SF',
+                    fontFamily: 'SFBold',
                     fontSize: 16,
                     color: '#000'
                 },
@@ -61,7 +61,8 @@ const NavCompanySelected = ({ navigation, route }) => {
                 initialParams={{
                     token: params.token,
                     url: params.url,
-                    companyId: params.selectedCompany.Id
+                    companyId: params.selectedCompany.Id,
+                    companyName: params.selectedCompany.Name
                 }}
                 component={DiagramsList}
             />

@@ -42,7 +42,9 @@ export const TrafficShare = (props) => {
                 {data.map(elem => {
                     return (
                         <PiePanel
+                            key={elem.interval}
                             data={elem}
+                            company={props.companyName}
                         />
                     )
                 })}

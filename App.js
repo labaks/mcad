@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 
 let customFonts = {
   'SF': require('./assets/fonts/SFProDisplay.ttf'),
+  'SFBold': require('./assets/fonts/SFProDisplayBold.ttf'),
   'Dessau': require('./assets/fonts/Dessau.ttf'),
 }
 export default class App extends React.Component {

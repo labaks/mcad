@@ -53,14 +53,12 @@ export const PiePanel = (props) => {
     };
 
     return (
-        <Panel
-            key={props.data.interval}
-            style={{ marginBottom: 10 }}>
+        <Panel style={styles.container}>
             <Text style={styles.title}>{titlelize(props.data.interval)}</Text>
             <Text style={[styles.title, { marginBottom: 10 }]}> {props.data.start_date} {props.data.start_date == props.data.end_date ? '' : `- ${props.data.end_date}`}</Text>
             <LegendUnit
                 color="#75c374"
-                text={props.companyId + ' - ' + props.data.client_value + ' min.'} />
+                text={props.company + ' - ' + props.data.client_value + ' min.'} />
             <LegendUnit
                 color="#0090d0"
                 text={'Other - ' + (props.data.total_value - props.data.client_value) + ' min.'} />
@@ -81,12 +79,15 @@ export const PiePanel = (props) => {
 
 const styles = StyleSheet.create({
     container: {
+        marginBottom: 10
     },
     title: {
         textAlign: 'center',
+        fontFamily: 'SFBold'
     },
     total: {
-        marginLeft: 25
+        marginLeft: 25,
+        fontFamily: 'SF'
     },
     pieWrapper: {
         alignItems: 'center',

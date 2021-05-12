@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     header: {
         color: '#4B4B52',
-        fontFamily: 'SF'
+        fontFamily: 'SFBold'
     },
     diagramName: {
         color: '#4B4B52',

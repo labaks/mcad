@@ -82,7 +82,7 @@ export const Account = ({ navigation, route }) => {
                     </View>
                     <View style={styles.bottomButtonContainer}>
                         <MainBtn
-                            text="Log out"
+                            text="Log Out"
                             onPress={_handleLogout} />
                     </View>
                 </View>

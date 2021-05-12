@@ -12,7 +12,9 @@ export const Top10CountriesTable = (props) => {
                     <Text style={styles.columnTitle}>Country</Text>
                     {props.data.map(elem => {
                         return (
-                            <Text key={elem.country}>{elem.country}</Text>
+                            <Text
+                                key={elem.country}
+                                style={styles.td}>{elem.country}</Text>
                         )
                     })}
                 </View>
@@ -20,7 +22,9 @@ export const Top10CountriesTable = (props) => {
                     <Text style={styles.columnTitle}>Cost In / Cost Out</Text>
                     {props.data.map(elem => {
                         return (
-                            <Text key={elem.country}>{elem.tp_sum} / {elem.op_sum}</Text>
+                            <Text
+                                key={elem.country}
+                                style={styles.td}>{elem.tp_sum} / {elem.op_sum}</Text>
                         )
                     })}
                 </View>
@@ -28,7 +32,9 @@ export const Top10CountriesTable = (props) => {
                     <Text style={styles.columnTitle}>Margin</Text>
                     {props.data.map(elem => {
                         return (
-                            <Text key={elem.country}>{elem.delta_price}</Text>
+                            <Text
+                                key={elem.country}
+                                style={styles.td}>{elem.delta_price}</Text>
                         )
                     })}
                 </View>
@@ -39,11 +45,11 @@ export const Top10CountriesTable = (props) => {
 
 const styles = StyleSheet.create({
     table: {
-        marginBottom: 10,
+        marginBottom: 20,
     },
     tableTitle: {
         textAlign: 'center',
-        fontFamily: 'SF',
+        fontFamily: 'SFBold',
         marginBottom: 15
     },
     tableContent: {
@@ -54,6 +60,10 @@ const styles = StyleSheet.create({
 
     },
     columnTitle: {
-        marginBottom: 10
+        marginBottom: 10,
+        fontFamily: 'SF'
+    },
+    td: {
+        fontFamily: 'SF'
     }
 })

@@ -150,7 +150,7 @@ export const LoginScreen = ({ navigation, route }) => {
                                 style={styles.signUpLink}
                                 onPress={() => navigation.navigate('SignUp')}>
                                 <Text style={styles.fontFamilySF}>New user?</Text>
-                                <Text style={[styles.signUpColored, styles.fontFamilySF]}>Sign up</Text>
+                                <Text style={styles.signUpColored}>Sign up</Text>
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
@@ -199,7 +199,8 @@ const styles = StyleSheet.create({
     },
     signUpColored: {
         marginLeft: 5,
-        color: '#4A6E49'
+        color: '#4A6E49',
+        fontFamily: 'SFBold'
     },
     fontFamilySF: {
         fontFamily: 'SF'
