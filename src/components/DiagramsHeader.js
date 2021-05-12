@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         borderColor: '#e4e4e4',
         padding: 12,
         marginBottom: 10,
+        marginHorizontal: 10,
         flexDirection: 'row',
         alignSelf: 'stretch',
         shadowColor: "#e4e4e4",

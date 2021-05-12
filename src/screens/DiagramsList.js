@@ -6,7 +6,6 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { CheckboxList } from "../components/CheckboxList";
 import { DiagramsHeader } from '../components/DiagramsHeader';
-import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 
@@ -17,8 +16,7 @@ import { TopTenRegionsOut } from './diagrams/TopTenRegionsOut';
 import { TopTenRegionsProfitIn } from './diagrams/TopTenRegionsProfitIn';
 import { TopTenRegionsProfitOut } from './diagrams/TopTenRegionsProfitOut';
 import { TopTenCountries } from './diagrams/TopTenCountries';
-import { TrafficShareIn } from './diagrams/TrafficShareIn';
-import { TrafficShareOut } from './diagrams/TrafficShareOut';
+import { TrafficShare } from './diagrams/TrafficShare';
 import { FinancialReportsToday } from './diagrams/FinancialReportsToday';
 import { FinancialReportsYesterday } from './diagrams/FinancialReportsYesterday';
 
@@ -178,19 +176,21 @@ export const DiagramsList = ({ navigation, route }) => {
                 />
                 break;
             case 'Traffic Share In':
-                content = <TrafficShareIn
+                content = <TrafficShare
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'in'}
                 />
                 break;
             case 'Traffic Share Out':
-                content = <TrafficShareOut
+                content = <TrafficShare
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'out'}
                 />
                 break;
             case 'Financial Reports Today':
@@ -224,7 +224,7 @@ export const DiagramsList = ({ navigation, route }) => {
             <View style={styles.contentWrapper}>
                 <DiagramsHeader title={chosenTab} />
                 {!isSubmited ?
-                    <View style={styles.container}>
+                    <View style={styles.listContainer}>
                         <Panel>
                             <CheckboxList
                                 data={diagramsListData}
@@ -276,11 +276,15 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white'
     },
+    listContainer: {
+        marginHorizontal: 10,
+        flex: 1
+    },
     contentWrapper: {
         flex: 1,
         paddingTop: 10,
         paddingBottom: 10,
-        paddingHorizontal: 30,
+        paddingHorizontal: 10,
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
     },
     tabsWrapperContainer: {
-        padding: 1
+        paddingHorizontal: 10
     },
     buttonsContainer: {
         flexDirection: 'row',

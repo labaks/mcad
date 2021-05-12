@@ -56,22 +56,10 @@ export const TopTenCountries = (props) => {
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
         } else {
-            setData(convertData(response.data, response.fields));
+            setData(McData.defineData(response.data, response.fields));
             setPetalReady(true);
             setReportDay(response.report_day);
         }
-    };
-
-    const convertData = (data, labels) => {
-        let arr = [];
-        for (var i in data) {
-            let obj = {};
-            for (var j in labels) {
-                obj[labels[j]] = data[i][j];
-            }
-            arr.push(obj);
-        }
-        return arr;
     };
 
     return (

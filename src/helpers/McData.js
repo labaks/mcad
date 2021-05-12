@@ -177,11 +177,7 @@ export class McData {
         })
         let json = await response.json();
         console.log("--_getTopTenCountries response: ", json);
-        if (json.status == 200) {
-            return json;
-        } else {
-            return json;
-        }
+        return json;
     }
 
     static async _getTrafficShare(token = '', host = '', companyId, direction) {
@@ -193,7 +189,7 @@ export class McData {
             }
         }
         console.log("--_getTrafficShare dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/top_countries_get/', {
+        let response = await fetch(this.url + '/api/traffic_share_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -204,12 +200,20 @@ export class McData {
         })
         let json = await response.json();
         console.log("--_getTrafficShare response: ", json);
-        if (json.status == 200) {
-            return json.data;
-        } else {
-            return json;
-        }
+        return json;
     }
+
+    static defineData(data, labels) {
+        let arr = [];
+        for (var i in data) {
+            let obj = {};
+            for (var j in labels) {
+                obj[labels[j]] = data[i][j];
+            }
+            arr.push(obj);
+        }
+        return arr;
+    };
 
     static async _getFinSummary(token = '', host = '', companyId, period) {
         let dataToSend = {
@@ -219,7 +223,7 @@ export class McData {
             }
         }
         console.log("--_getTrafficShare dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/top_countries_get/', {
+        let response = await fetch(this.url + '/api/fin_summary_get/', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {

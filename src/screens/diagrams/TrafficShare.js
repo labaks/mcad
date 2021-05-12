@@ -2,8 +2,12 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
+import { PieChart } from 'react-native-svg-charts';
+import { LegendUnit } from '../../components/diagramComponents/LegendUnit';
+import { PiePanel } from '../../components/diagramComponents/PiePanel';
 
 import { Loader } from '../../components/Loader';
+import { Panel } from '../../components/Panel';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
@@ -11,36 +15,37 @@ import { McData } from '../../helpers/McData';
 
 let dropDownAlert;
 
-export const TrafficShareIn = (props) => {
+export const TrafficShare = (props) => {
     const backButtonHandler = BackButtonHandler();
-    const token = props.token;
-    const url = props.url;
-    const companyId = props.companyId;
-    const navigation = props.navigation;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Traffic Share In Loaded---")
+        console.log(`---Traffic Share ${props.direction} Loaded---`)
         _setReportData();
     }, [])
 
     const _setReportData = async () => {
-        let data = await McData._getTrafficShare(token, url, companyId, 'in');
+        let response = await McData._getTrafficShare(props.token, props.url, props.companyId, props.direction);
         setLoading(false);
-        if (data.status) {
-            ErrorHandler.handle(dropDownAlert, data, url, navigation)
+        if (response.status != 200) {
+            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
         } else {
-            setData(data);
+            setData(McData.defineData(response.data, response.fields));
         }
-    }
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Traffic Share In</Text>
-                <Text>{data}</Text>
+                {data.map(elem => {
+                    return (
+                        <PiePanel
+                            data={elem}
+                        />
+                    )
+                })}
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />
@@ -58,7 +63,6 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
-        paddingHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center'
     },
