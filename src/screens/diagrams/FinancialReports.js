@@ -11,35 +11,30 @@ import { McData } from '../../helpers/McData';
 
 let dropDownAlert;
 
-export const FinancialReportsYesterday = (props) => {
+export const FinancialReports = (props) => {
     const backButtonHandler = BackButtonHandler();
-    const token = props.token;
-    const url = props.url;
-    const companyId = props.companyId;
-    const navigation = props.navigation;
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Financial Reports Yesterday Loaded---")
-        // _setReportData();
-    }, [])
+        console.log(`---Financial Reports ${props.period} Loaded---`)
+        _setReportData();
+    }, []);
 
     const _setReportData = async () => {
-        let data = await McData._getTopTenRegionsIn(token, url, companyId);
+        let response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period);
         setLoading(false);
-        if (data.status) {
-            ErrorHandler.handle(dropDownAlert, data, url, navigation)
+        if (response.status != 200) {
+            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
         } else {
-            setData(data);
+            setData(McData.defineData(response.data, response.fields));
         }
-    }
+    };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <Text>Financial Reports Yesterday</Text>
                 <Text>{data}</Text>
             </View>
             <Loader loading={loading} />
@@ -58,7 +53,6 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
-        paddingHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center'
     },

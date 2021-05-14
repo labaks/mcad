@@ -2,12 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
-import { PieChart } from 'react-native-svg-charts';
-import { LegendUnit } from '../../components/diagramComponents/LegendUnit';
 import { PiePanel } from '../../components/diagramComponents/PiePanel';
 
 import { Loader } from '../../components/Loader';
-import { Panel } from '../../components/Panel';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';

@@ -27,7 +27,7 @@ export class McData {
         } else {
             return json;
         }
-    }
+    };
 
     static async _getCurrentUserId(token = '', host = '') {
         let dataToSend = {
@@ -54,7 +54,7 @@ export class McData {
         } else {
             return json;
         }
-    }
+    };
 
     static async _getUserCompanies(token = '', host = '', userId = '') {
         let dataToSend = {
@@ -81,14 +81,14 @@ export class McData {
         } else {
             return json;
         }
-    }
+    };
 
     static userArrayToObj(array = ['']) {
         return {
             name: array[0],
             role: array[1]
         }
-    }
+    };
 
     static companiesForPicker(array = []) {
         let objectsArray = [];
@@ -101,7 +101,7 @@ export class McData {
             )
         }
         return objectsArray;
-    }
+    };
 
     static async _getTopTenRegions(token = '', host = '', companyId, direction) {
         let dataToSend = {
@@ -128,7 +128,7 @@ export class McData {
         } else {
             return json;
         }
-    }
+    };
 
     static async _getTopTenRegionsProfit(token = '', host = '', companyId, direction) {
         let dataToSend = {
@@ -155,7 +155,7 @@ export class McData {
         } else {
             return json;
         }
-    }
+    };
 
     static async _getTopTenCountries(token = '', host = '', companyId, direction) {
         let dataToSend = {
@@ -178,7 +178,7 @@ export class McData {
         let json = await response.json();
         console.log("--_getTopTenCountries response: ", json);
         return json;
-    }
+    };
 
     static async _getTrafficShare(token = '', host = '', companyId, direction) {
         let dataToSend = {
@@ -201,7 +201,7 @@ export class McData {
         let json = await response.json();
         console.log("--_getTrafficShare response: ", json);
         return json;
-    }
+    };
 
     static defineData(data, labels) {
         let arr = [];
@@ -216,10 +216,28 @@ export class McData {
     };
 
     static async _getFinSummary(token = '', host = '', companyId, period) {
+        let start_date, end_date;
+        let today = new Date();
+        let yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        switch (period) {
+            case "yesterday":
+                start_date = this.dateFormat(yesterday, true);
+                end_date = this.dateFormat(yesterday, false);
+                break;
+            case "today":
+                start_date = this.dateFormat(today, true);
+                end_date = this.dateFormat(today, false);
+                break;
+        };
         let dataToSend = {
             "session_id": token,
             "data": {
-                "client_id": companyId,
+                "start_date": start_date,
+                "end_date": end_date,
+                "type": 2,
+                "companies": [companyId],
+                "fields": ["company", "total", "direction", "point_name", "destination", "country", "duration", "calc_duration", "op_price", "tp_price", "attempts", "sa", "asr", "acd", "pdd", "sc", "op_sum", "tp_sum", "delta_price", "delta_profit", "is_closed", "manager", "ner"],
             }
         }
         console.log("--_getTrafficShare dataToSend: ", dataToSend);
@@ -234,12 +252,12 @@ export class McData {
         })
         let json = await response.json();
         console.log("--_getTrafficShare response: ", json);
-        if (json.status == 200) {
-            return json.data;
-        } else {
-            return json;
-        }
-    }
+        return json;
+    };
+
+    static dateFormat(day, start) {
+        return day.getFullYear() + '-' + (day.getMonth() + 1) + '-' + day.getDate() + 'T' + (start ? '00:00:00' : '23:59:59');
+    };
 
     static async _login(host = '', login = '', password = '', ip = '') {
         let dataToSend = {
@@ -260,7 +278,7 @@ export class McData {
         let json = await response.json();
         console.log("--_Login response", json);
         return json;
-    }
+    };
 
     static async _logout(token = '', host = '') {
         const response = await fetch(this.url + '/api/logout/', {
@@ -274,6 +292,6 @@ export class McData {
         });
         let json = await response.json();
         return json;
-    }
+    };
 
 }

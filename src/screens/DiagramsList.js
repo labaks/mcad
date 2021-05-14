@@ -17,8 +17,7 @@ import { TopTenRegionsProfitIn } from './diagrams/TopTenRegionsProfitIn';
 import { TopTenRegionsProfitOut } from './diagrams/TopTenRegionsProfitOut';
 import { TopTenCountries } from './diagrams/TopTenCountries';
 import { TrafficShare } from './diagrams/TrafficShare';
-import { FinancialReportsToday } from './diagrams/FinancialReportsToday';
-import { FinancialReportsYesterday } from './diagrams/FinancialReportsYesterday';
+import { FinancialReports } from './diagrams/FinancialReports';
 
 let dropDownAlert;
 
@@ -197,19 +196,21 @@ export const DiagramsList = ({ navigation, route }) => {
                 />
                 break;
             case 'Financial Reports Today':
-                content = <FinancialReportsToday
+                content = <FinancialReports
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    period={"today"}
                 />
                 break;
             case 'Financial Reports Yesterday':
-                content = <FinancialReportsYesterday
+                content = <FinancialReports
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    period={"yesterday"}
                 />
                 break;
             default:
