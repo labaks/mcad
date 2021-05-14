@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
-import { BarChart, Grid } from 'react-native-svg-charts';
 
 import { Loader } from '../../components/Loader';
 
@@ -10,8 +9,7 @@ import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 import { Dimensions } from 'react-native';
-import { Text } from 'native-base';
-import BarChartExample from './BarChartExample';
+import BarChartEx from '../../components/diagramComponents/BarChartExample';
 
 let dropDownAlert;
 
@@ -58,7 +56,7 @@ export const TopTenRegionsIn = (props) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <BarChartExample />
+                <BarChartEx />
             </View>
             <Loader loading={loading} />
             <StatusBar style="auto" />
