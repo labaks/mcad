@@ -38,7 +38,6 @@ export const FinancialReports = (props) => {
                 <Text>{data}</Text>
             </View>
             <Loader loading={loading} />
-            <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}

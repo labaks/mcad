@@ -76,11 +76,12 @@ export const TopTenCountries = (props) => {
                             title={title}
                             unit={unit}
                             height={300}
-                            width={300} /> : <Loader loading={!isPetalReady} />
+                            width={300} />
+                        :
+                        <Loader loading={!isPetalReady} />
                     }
                 </View>
             </View>
-            <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}

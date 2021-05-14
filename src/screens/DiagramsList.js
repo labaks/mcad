@@ -19,7 +19,6 @@ import { TopTenCountries } from './diagrams/TopTenCountries';
 import { TrafficShare } from './diagrams/TrafficShare';
 import { FinancialReports } from './diagrams/FinancialReports';
 
-let dropDownAlert;
 
 export const DiagramsList = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
@@ -268,9 +267,6 @@ export const DiagramsList = ({ navigation, route }) => {
                 }
             </View>
             <StatusBar style="auto" />
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000} />
         </View>
     )
 }
