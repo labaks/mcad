@@ -103,7 +103,7 @@ export class McData {
         return objectsArray;
     };
 
-    static async _getTopTenRegions(token = '', host = '', companyId, direction) {
+    static async _getTopTenRegions(token = '', host = '', companyId, direction, profit = false) {
         let dataToSend = {
             "session_id": token,
             "data": {
@@ -112,7 +112,8 @@ export class McData {
             }
         }
         console.log("--_getTopTenRegions dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/top_duration_regions_get/', {
+        let route = profit ? '/api/top_profit_regions_get/' : '/api/top_duration_regions_get/';
+        let response = await fetch(this.url + route, {
             method: 'POST',
             body: JSON.stringify(dataToSend),
             headers: {
@@ -123,38 +124,7 @@ export class McData {
         })
         let json = await response.json();
         console.log("--_getTopTenRegions response: ", json);
-        if (json.status == 200) {
-            return json.data;
-        } else {
-            return json;
-        }
-    };
-
-    static async _getTopTenRegionsProfit(token = '', host = '', companyId, direction) {
-        let dataToSend = {
-            "session_id": token,
-            "data": {
-                "client_id": companyId,
-                "direction": direction
-            }
-        }
-        console.log("--_getTopTenRegionsProfit dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/top_profit_regions_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getTopTenRegionsProfit response: ", json);
-        if (json.status == 200) {
-            return json.data;
-        } else {
-            return json;
-        }
+        return json;
     };
 
     static async _getTopTenCountries(token = '', host = '', companyId, direction) {

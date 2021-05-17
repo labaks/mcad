@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
-import DropdownAlert from 'react-native-dropdownalert';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { CheckboxList } from "../components/CheckboxList";
@@ -11,10 +10,7 @@ import { Panel } from '../components/Panel';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
 
-import { TopTenRegionsIn } from './diagrams/TopTenRegionsIn';
-import { TopTenRegionsOut } from './diagrams/TopTenRegionsOut';
-import { TopTenRegionsProfitIn } from './diagrams/TopTenRegionsProfitIn';
-import { TopTenRegionsProfitOut } from './diagrams/TopTenRegionsProfitOut';
+import { TopTenRegions } from './diagrams/TopTenRegions';
 import { TopTenCountries } from './diagrams/TopTenCountries';
 import { TrafficShare } from './diagrams/TrafficShare';
 import { FinancialReports } from './diagrams/FinancialReports';
@@ -125,35 +121,41 @@ export const DiagramsList = ({ navigation, route }) => {
         let content = <Text></Text>;
         switch (chosenTab) {
             case 'Top 10 Regions In':
-                content = <TopTenRegionsIn
+                content = <TopTenRegions
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'in'}
                 />
                 break;
             case 'Top 10 Regions Out':
-                content = <TopTenRegionsOut
+                content = <TopTenRegions
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'out'}
                 />
                 break;
             case 'Top 10 Regions In, $':
-                content = <TopTenRegionsProfitIn
+                content = <TopTenRegions
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'in'}
+                    profit={true}
                 />
                 break;
             case 'Top 10 Regions Out, $':
-                content = <TopTenRegionsProfitOut
+                content = <TopTenRegions
                     token={token}
                     url={url}
                     companyId={companyId}
                     navigation={navigation}
+                    direction={'out'}
+                    profit={true}
                 />
                 break;
             case 'Top 10 Countries In':

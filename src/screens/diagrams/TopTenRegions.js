@@ -8,57 +8,59 @@ import { Loader } from '../../components/Loader';
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
-import { Dimensions } from 'react-native';
-import BarChartEx from '../../components/diagramComponents/BarChartExample';
+
+import { BarChartPanel } from '../../components/diagramComponents/BarChartPanel';
 
 let dropDownAlert;
 
-export const TopTenRegionsIn = (props) => {
+export const TopTenRegions = (props) => {
     const backButtonHandler = BackButtonHandler();
-    const token = props.token;
-    const url = props.url;
-    const companyId = props.companyId;
-    const navigation = props.navigation;
-    const screenWidth = Dimensions.get('window').width;
-    const fill = 'rgb(134, 65, 244)';
     const [loading, setLoading] = useState(true);
-    // const [data, setData] = useState();
+    const [data, setData] = useState();
+
+    const mock = {
+        "data": [
+            [16, "Ukraine", 2],
+            [12, "USA", 32],
+            [2, "Portugal", 6]
+        ],
+        "fields": [
+            "yesterday_duration",
+            "region",
+            "today_duration",
+        ],
+        "message": "OK",
+        "status": 200,
+        "time_elapsed": 0.166204
+    }
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Top 10 Regions In Loaded---");
-
+        console.log(`---Top 10 Regions ${props.direction} Loaded, Profit = ${props.profit}---`);
         _setReportData();
-    }, [])
+    }, []);
 
     const _setReportData = async () => {
-        let response = await McData._getTopTenRegions(token, url, companyId, "in");
-        setLoading(false);
-        if (response.status) {
-            ErrorHandler.handle(dropDownAlert, response, url, navigation)
+        // let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
+        let response = mock;
+        if (response.status != 200) {
+            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
+            setLoading(false);
         } else {
-            // setData(parseData(response));
+            setData(McData.defineData(response.data, response.fields));
+            setLoading(false);
         }
     };
-
-    const parseData = (response) => {
-        let data = {
-            labels: ['label 1'],
-            datasets: [{
-                data: [0, 2]
-            }]
-        }
-        return data;
-    };
-
-    
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <BarChartEx />
+                {loading ?
+                    <Loader loading={loading} />
+                    :
+                    <BarChartPanel data={data} />
+                }
             </View>
-            <Loader loading={loading} />
             <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
@@ -74,10 +76,7 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
-        paddingHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: 'red',
-        borderWidth: 1,
     },
 })
