@@ -20,9 +20,9 @@ export const TopTenRegions = (props) => {
 
     const mock = {
         "data": [
-            [16, "Ukraine", 2],
-            [12, "USA", 32],
-            [2, "Portugal", 6]
+            [15, "Ukraine", 3],
+            [12, "USA", 30],
+            [3, "Portugal", 6]
         ],
         "fields": [
             "yesterday_duration",
@@ -41,8 +41,8 @@ export const TopTenRegions = (props) => {
     }, []);
 
     const _setReportData = async () => {
-        // let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
-        let response = mock;
+        let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
+        // let response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
             setLoading(false);

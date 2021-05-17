@@ -7,38 +7,42 @@ export const Top10CountriesTable = (props) => {
     return (
         <Panel style={styles.table}>
             <Text style={styles.tableTitle}>Report for {props.reportDay}</Text>
-            <View style={styles.tableContent}>
-                <View style={styles.tableColumn}>
-                    <Text style={styles.columnTitle}>Country</Text>
-                    {props.data.map(elem => {
-                        return (
-                            <Text
-                                key={elem.country}
-                                style={styles.td}>{elem.country}</Text>
-                        )
-                    })}
+            {props.data.length ?
+                <View style={styles.tableContent}>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnTitle}>Country</Text>
+                        {props.data.map(elem => {
+                            return (
+                                <Text
+                                    key={elem.country}
+                                    style={styles.td}>{elem.country}</Text>
+                            )
+                        })}
+                    </View>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnTitle}>Cost In / Cost Out</Text>
+                        {props.data.map(elem => {
+                            return (
+                                <Text
+                                    key={elem.country}
+                                    style={styles.td}>{elem.tp_sum} / {elem.op_sum}</Text>
+                            )
+                        })}
+                    </View>
+                    <View style={styles.tableColumn}>
+                        <Text style={styles.columnTitle}>Margin</Text>
+                        {props.data.map(elem => {
+                            return (
+                                <Text
+                                    key={elem.country}
+                                    style={styles.td}>{elem.delta_price}</Text>
+                            )
+                        })}
+                    </View>
                 </View>
-                <View style={styles.tableColumn}>
-                    <Text style={styles.columnTitle}>Cost In / Cost Out</Text>
-                    {props.data.map(elem => {
-                        return (
-                            <Text
-                                key={elem.country}
-                                style={styles.td}>{elem.tp_sum} / {elem.op_sum}</Text>
-                        )
-                    })}
-                </View>
-                <View style={styles.tableColumn}>
-                    <Text style={styles.columnTitle}>Margin</Text>
-                    {props.data.map(elem => {
-                        return (
-                            <Text
-                                key={elem.country}
-                                style={styles.td}>{elem.delta_price}</Text>
-                        )
-                    })}
-                </View>
-            </View>
+                :
+                <Text style={styles.noRecords}>No records found</Text>
+            }
         </Panel>
     )
 }
@@ -65,5 +69,11 @@ const styles = StyleSheet.create({
     },
     td: {
         fontFamily: 'SF'
+    },
+    noRecords: {
+        color: 'red',
+        fontFamily: 'SFBold',
+        textAlign: 'center',
+        padding: 10
     }
 })

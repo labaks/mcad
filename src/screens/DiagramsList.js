@@ -292,10 +292,11 @@ const styles = StyleSheet.create({
     },
     tabsWrapper: {
         flex: 1,
-        alignSelf: 'stretch',
+        alignSelf: 'stretch'
     },
     tabsWrapperContainer: {
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        paddingBottom: 10
     },
     buttonsContainer: {
         flexDirection: 'row',
