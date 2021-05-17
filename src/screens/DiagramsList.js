@@ -7,14 +7,9 @@ import { CheckboxList } from "../components/CheckboxList";
 import { DiagramsHeader } from '../components/DiagramsHeader';
 import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
+import { TabContent } from '../components/TabContent';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
-
-import { TopTenRegions } from './diagrams/TopTenRegions';
-import { TopTenCountries } from './diagrams/TopTenCountries';
-import { TrafficShare } from './diagrams/TrafficShare';
-import { FinancialReports } from './diagrams/FinancialReports';
-
 
 export const DiagramsList = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
@@ -62,7 +57,7 @@ export const DiagramsList = ({ navigation, route }) => {
         return tmpArr;
     };
 
-    const tempBack = () => {
+    const back = () => {
         setIsSubmited(false);
     };
 
@@ -89,7 +84,7 @@ export const DiagramsList = ({ navigation, route }) => {
                     setChosenTab(titles[index - 1])
                 }
             };
-            if (!tmpArr.length) tempBack();
+            if (!tmpArr.length) back();
         };
 
         const chooseTab = () => {
@@ -115,113 +110,6 @@ export const DiagramsList = ({ navigation, route }) => {
                 </View>
             </Panel>
         )
-    };
-
-    const TabContent = () => {
-        let content = <Text></Text>;
-        switch (chosenTab) {
-            case 'Top 10 Regions In':
-                content = <TopTenRegions
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'in'}
-                />
-                break;
-            case 'Top 10 Regions Out':
-                content = <TopTenRegions
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'out'}
-                />
-                break;
-            case 'Top 10 Regions In, $':
-                content = <TopTenRegions
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'in'}
-                    profit={true}
-                />
-                break;
-            case 'Top 10 Regions Out, $':
-                content = <TopTenRegions
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'out'}
-                    profit={true}
-                />
-                break;
-            case 'Top 10 Countries In':
-                content = <TopTenCountries
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'in'}
-                />
-                break;
-            case 'Top 10 Countries Out':
-                content = <TopTenCountries
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'out'}
-                />
-                break;
-            case 'Traffic Share In':
-                content = <TrafficShare
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'in'}
-                    companyName={companyName}
-                />
-                break;
-            case 'Traffic Share Out':
-                content = <TrafficShare
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    direction={'out'}
-                    companyName={companyName}
-                />
-                break;
-            case 'Financial Reports Today':
-                content = <FinancialReports
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    period={"today"}
-                />
-                break;
-            case 'Financial Reports Yesterday':
-                content = <FinancialReports
-                    token={token}
-                    url={url}
-                    companyId={companyId}
-                    navigation={navigation}
-                    period={"yesterday"}
-                />
-                break;
-            default:
-                break;
-        }
-        return (
-            <View>
-                {content}
-            </View>
-        );
     };
 
     return (
@@ -263,7 +151,13 @@ export const DiagramsList = ({ navigation, route }) => {
                             })}
                         </View>
                         <View style={styles.tabContentWrapper}>
-                            <TabContent />
+                            <TabContent
+                                chosenTab={chosenTab}
+                                token={token}
+                                url={url}
+                                companyId={companyId}
+                                companyName={companyName}
+                                navigation={navigation} />
                         </View>
                     </ScrollView>
                 }
