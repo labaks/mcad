@@ -10,18 +10,7 @@ export class McData {
                 "fields": ["name", "rl_name"]
             }
         }
-        console.log("--_getCurrentUser dataToSend: ", dataToSend);
-        const response = await fetch(this.url + '/api/users_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        });
-        let json = await response.json();
-        console.log("--_getCurrentUser response", json);
+        let json = await this._fetch(dataToSend, 'users_get/', host);
         if (json.status == 200) {
             return json.data[0];
         } else {
@@ -37,18 +26,7 @@ export class McData {
                 "fields": ["id"]
             }
         }
-        console.log("--_getCurrentUserId dataToSend: ", dataToSend);
-        const response = await fetch(this.url + '/api/users_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        });
-        let json = await response.json();
-        console.log("--_getCurrentUserId response", json);
+        let json = await this._fetch(dataToSend, 'users_get/', host);
         if (json.status == 200) {
             return json.data[0][0].toString();
         } else {
@@ -64,18 +42,7 @@ export class McData {
                 "fields": ["id", "name"]
             }
         }
-        console.log("--_getUserCompanies dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/client_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getUserCompanies response status: ", json.status);
+        let json = await this._fetch(dataToSend, 'client_get/', host);
         if (json.status == 200) {
             return json.data;
         } else {
@@ -111,20 +78,8 @@ export class McData {
                 "direction": direction
             }
         }
-        console.log("--_getTopTenRegions dataToSend: ", dataToSend);
-        let route = profit ? '/api/top_profit_regions_get/' : '/api/top_duration_regions_get/';
-        let response = await fetch(this.url + route, {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getTopTenRegions response: ", json);
-        return json;
+        let route = profit ? 'top_profit_regions_get/' : 'top_duration_regions_get/';
+        return await this._fetch(dataToSend, route, host);
     };
 
     static async _getTopTenCountries(token = '', host = '', companyId, direction) {
@@ -135,19 +90,7 @@ export class McData {
                 "direction": direction
             }
         }
-        console.log("--_getTopTenCountries dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/top_countries_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getTopTenCountries response: ", json);
-        return json;
+        return await this._fetch(dataToSend, 'top_countries_get/', host);
     };
 
     static async _getTrafficShare(token = '', host = '', companyId, direction) {
@@ -158,19 +101,7 @@ export class McData {
                 "direction": direction
             }
         }
-        console.log("--_getTrafficShare dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/traffic_share_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getTrafficShare response: ", json);
-        return json;
+        return await this._fetch(dataToSend, 'traffic_share_get/', host);
     };
 
     static defineData(data, labels) {
@@ -187,8 +118,7 @@ export class McData {
 
     static async _getFinSummary(token = '', host = '', companyId, period) {
         let start_date, end_date;
-        let today = new Date();
-        let yesterday = new Date();
+        let today = yesterday = new Date();
         yesterday.setDate(today.getDate() - 1);
         switch (period) {
             case "yesterday":
@@ -210,19 +140,7 @@ export class McData {
                 "fields": ["company", "total", "direction", "point_name", "destination", "country", "duration", "calc_duration", "op_price", "tp_price", "attempts", "sa", "asr", "acd", "pdd", "sc", "op_sum", "tp_sum", "delta_price", "delta_profit", "is_closed", "manager", "ner"],
             }
         }
-        console.log("--_getTrafficShare dataToSend: ", dataToSend);
-        let response = await fetch(this.url + '/api/fin_summary_get/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            },
-        })
-        let json = await response.json();
-        console.log("--_getTrafficShare response: ", json);
-        return json;
+        return await this._fetch(dataToSend, 'fin_summary_get/', host);
     };
 
     static dateFormat(day, start) {
@@ -235,32 +153,26 @@ export class McData {
             "password": password,
             "ip": ip
         }
-        console.log("--_Login dataToSend: ", dataToSend);
-        const response = await fetch(this.url + '/api/login/', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            }
-        });
-        let json = await response.json();
-        console.log("--_Login response", json);
-        return json;
+        return await this._fetch(dataToSend, 'login/', host);
     };
 
     static async _logout(token = '', host = '') {
-        const response = await fetch(this.url + '/api/logout/', {
+        return await this._fetch({ 'session_id': token, 'data': {} }, 'logout/', host);
+    };
+
+    static async _fetch(data = {}, route = '', host = '') {
+        console.log(`--${route}, dataToSend: `, data);
+        const response = await fetch(this.url + '/api/' + route, {
             method: 'POST',
-            body: JSON.stringify({ 'session_id': token, 'data': {} }),
+            body: JSON.stringify(data),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Host': host
             }
         });
-        let json = await response.json();
+        const json = await response.json();
+        console.log("--response: ", json);
         return json;
     };
 
