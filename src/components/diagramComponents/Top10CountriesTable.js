@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import { NoRecords } from '../NoRecords';
 
 import { Panel } from '../Panel';
 
@@ -41,7 +42,7 @@ export const Top10CountriesTable = (props) => {
                     </View>
                 </View>
                 :
-                <Text style={styles.noRecords}>No records found</Text>
+                <NoRecords />
             }
         </Panel>
     )
@@ -69,11 +70,5 @@ const styles = StyleSheet.create({
     },
     td: {
         fontFamily: 'SF'
-    },
-    noRecords: {
-        color: 'red',
-        fontFamily: 'SFBold',
-        textAlign: 'center',
-        padding: 10
     }
 })
