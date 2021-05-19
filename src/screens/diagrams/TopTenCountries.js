@@ -51,8 +51,8 @@ export const TopTenCountries = (props) => {
     }, [])
 
     const _setReportData = async () => {
-        // let response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction);
-        let response = mock;
+        let response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction);
+        // let response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
         } else {
