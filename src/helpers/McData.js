@@ -137,7 +137,21 @@ export class McData {
                 "end_date": end_date,
                 "type": 2,
                 "companies": [companyId],
-                "fields": ["company", "total", "direction", "point_name", "destination", "country", "duration", "calc_duration", "op_price", "tp_price", "attempts", "sa", "asr", "acd", "pdd", "sc", "op_sum", "tp_sum", "delta_price", "delta_profit", "is_closed", "manager", "ner"],
+                "fields": [
+                    "company", //company
+                    "direction", //Inbound/outbound
+                    "point_name", //point name v
+                    "country", //country v
+                    "duration", //duration v
+                    "calc_duration", //calculated v
+                    "attempts", //attempts v
+                    "sa", //S. Attempts v
+                    "op_sum", //Cost IN v
+                    "tp_sum", //Cost OUT v
+                    "delta_price", //Margin v
+                    "delta_profit", //Profit v
+                    "manager", //Account manager
+                ],
             }
         }
         return await this._fetch(dataToSend, 'fin_summary_get/', host);
@@ -161,7 +175,7 @@ export class McData {
     };
 
     static async _fetch(data = {}, route = '', host = '') {
-        console.log(`--${route}, dataToSend: `, data);
+        // console.log(`--${route}, dataToSend: `, data);
         const response = await fetch(this.url + '/api/' + route, {
             method: 'POST',
             body: JSON.stringify(data),
@@ -172,7 +186,7 @@ export class McData {
             }
         });
         const json = await response.json();
-        console.log("--response: ", json);
+        // console.log("--response: ", json);
         return json;
     };
 
