@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
     },
     tabContentWrapper: {
-        flex: 1
+        flex: 1,
+        minHeight: 150,
     }
 })

@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         alignItems: 'center',
         justifyContent: 'center',
-        display: 'none'
+        display: 'none',
+        height: 50,
     },
     active: {
         display: 'flex'

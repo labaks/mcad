@@ -19,7 +19,7 @@ export const TopTenCountries = (props) => {
     const backButtonHandler = BackButtonHandler();
     const [reportDay, setReportDay] = useState("");
     const [data, setData] = useState([]);
-    const [isPetalReady, setPetalReady] = useState(false);
+    const [loading, setLoading] = useState(true);
     const title = "Top 10 Countries";
     const unit = 'min.';
 
@@ -48,40 +48,42 @@ export const TopTenCountries = (props) => {
         console.log("=====================================================");
         console.log(`---Top Ten Countries ${props.direction} Loaded---`)
         _setReportData();
-    }, [])
+    }, [props.direction])
 
     const _setReportData = async () => {
+        setLoading(true);
         let response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction);
         // let response = mock;
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
+            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
+            setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
-            setPetalReady(true);
+            setLoading(false);
             setReportDay(response.report_day);
         }
     };
 
     return (
         <View style={styles.container}>
-            <View style={styles.contentWrapper}>
-                <Top10CountriesTable
-                    reportDay={reportDay}
-                    data={data} />
-                <SummaryASRLegend />
-                <View style={styles.canvasWrapper}>
-                    {isPetalReady ?
+            {loading ?
+                <Loader loading={loading} />
+                :
+                <View style={styles.contentWrapper}>
+                    <Top10CountriesTable
+                        reportDay={reportDay}
+                        data={data} />
+                    <SummaryASRLegend />
+                    <View style={styles.canvasWrapper}>
                         <Petals3
                             data={data}
                             title={title}
                             unit={unit}
                             height={300}
                             width={300} />
-                        :
-                        <Loader loading={!isPetalReady} />
-                    }
+                    </View>
                 </View>
-            </View>
+            }
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}
@@ -93,7 +95,7 @@ export const TopTenCountries = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 15
+        marginTop: 15,
     },
     contentWrapper: {
     },

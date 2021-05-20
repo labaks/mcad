@@ -24,30 +24,35 @@ export const TrafficShare = (props) => {
     }, [props.direction])
 
     const _setReportData = async () => {
+        setLoading(true)
         let response = await McData._getTrafficShare(props.token, props.url, props.companyId, props.direction);
-        setLoading(false);
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
+            setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                {data.map(elem => {
-                    return (
-                        <PiePanel
-                            key={elem.interval}
-                            data={elem}
-                            company={props.companyName}
-                            direction={props.direction}
-                        />
-                    )
-                })}
+                {loading ?
+                    <Loader loading={loading} />
+                    :
+                    data.map(elem => {
+                        return (
+                            <PiePanel
+                                key={elem.interval}
+                                data={elem}
+                                company={props.companyName}
+                                direction={props.direction}
+                            />
+                        )
+                    })
+                }
             </View>
-            <Loader loading={loading} />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}
