@@ -21,7 +21,7 @@ export const TrafficShare = (props) => {
         console.log("=====================================================");
         console.log(`---Traffic Share ${props.direction} Loaded---`)
         _setReportData();
-    }, [])
+    }, [props.direction])
 
     const _setReportData = async () => {
         let response = await McData._getTrafficShare(props.token, props.url, props.companyId, props.direction);
@@ -42,6 +42,7 @@ export const TrafficShare = (props) => {
                             key={elem.interval}
                             data={elem}
                             company={props.companyName}
+                            direction={props.direction}
                         />
                     )
                 })}

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
+import { Panel } from '../../components/Panel';
 
 import { FinancialReportsTable } from '../../components/diagramComponents/FinancialReportsTable';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
+
 
 let dropDownAlert;
 
@@ -53,7 +55,7 @@ export const FinancialReports = (props) => {
         console.log("=====================================================");
         console.log(`---Financial Reports ${props.period} Loaded---`)
         _setReportData();
-    }, []);
+    }, [props.period]);
 
     useEffect(() => {
         if (data.length) {
@@ -63,6 +65,7 @@ export const FinancialReports = (props) => {
     }, [data]);
 
     const _setReportData = async () => {
+        setLoading(true);
         let response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period);
         // let response = mock;
         if (response.status != 200) {
@@ -91,7 +94,13 @@ export const FinancialReports = (props) => {
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
                 {!loading ?
-                    <FinancialReportsTable data={inbound} />
+                    <Panel>
+                        <Text style={styles.subtitle}>Account Manager: {data[0].manager}</Text>
+                        <Text style={[styles.title, {marginBottom: 10}]}>INBOUND</Text>
+                        <FinancialReportsTable data={inbound} />
+                        <Text style={[styles.title, { marginBottom: 10 }]}>OUTBOUND</Text>
+                        <FinancialReportsTable data={outbound} />
+                    </Panel>
                     :
                     <Loader loading={loading} />
                 }
@@ -112,5 +121,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    title: {
+        textAlign: 'center',
+        fontFamily: 'SFBold',
+    },
+    subtitle: {
+        textAlign: 'center',
+        fontFamily: 'SF'
     },
 });

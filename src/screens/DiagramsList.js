@@ -59,6 +59,7 @@ export const DiagramsList = ({ navigation, route }) => {
 
     const back = () => {
         setIsSubmited(false);
+        setDiagramsSelected([]);
     };
 
     const request = () => {
@@ -122,7 +123,6 @@ export const DiagramsList = ({ navigation, route }) => {
                             <CheckboxList
                                 data={diagramsListData}
                                 onChange={(array) => setDiagramsSelected(array)} />
-
                         </Panel>
                         <View style={styles.buttonsContainer}>
                             <View style={styles.buttonWrapper}>
@@ -132,6 +132,7 @@ export const DiagramsList = ({ navigation, route }) => {
                             </View>
                             <View style={styles.buttonWrapper}>
                                 <MainBtn
+                                    disabled={!diagramsSelected.length}
                                     text="Submit"
                                     onPress={selectDiagrams} />
                             </View>

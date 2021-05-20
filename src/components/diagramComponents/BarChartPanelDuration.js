@@ -6,32 +6,27 @@ import * as scale from 'd3-scale'
 import { Panel } from '../Panel'
 import { LegendUnit } from './LegendUnit'
 
-export const BarChartPanel = (props) => {
+export const BarChartPanelDuration = (props) => {
 
     const todayColor = '#75c374';
     const yesterdayColor = '#0090d0';
-    const data = props.data;
     const numberOfTicks = 5;
 
-    let todayData, yesterdayData, xAxisData;
+    let todayData, yesterdayData, xAxisData, barData;
 
     useEffect(() => {
         console.log("=====================================================");
         console.log(`---Bar chart loaded---`);
-        console.log("props", props);
-    }, [props]);
-
-    todayData = data.map((obj) => ({ value: obj.today_duration }));
-    yesterdayData = data.map((obj) => ({ value: obj.yesterday_duration }));
-
+        console.log("data", props.data)
+    }, [props.data]);
 
     const findMaxX = () => {
         let max = 0;
-        for (var i in data) {
-            if (data[i].today_duration > data[i].yesterday_duration) {
-                if (data[i].today_duration > max) max = data[i].today_duration;
+        for (var i in props.data) {
+            if (props.data[i].today_duration > props.data[i].yesterday_duration) {
+                if (props.data[i].today_duration > max) max = props.data[i].today_duration;
             } else {
-                if (data[i].yesterday_duration > max) max = data[i].yesterday_duration;
+                if (props.data[i].yesterday_duration > max) max = props.data[i].yesterday_duration;
             }
         }
         return max;
@@ -41,7 +36,7 @@ export const BarChartPanel = (props) => {
         let xAxisData = [];
         let max = findMaxX();
         let tick = ~~(max / numberOfTicks);
-        for (var i = 0; i < numberOfTicks + 1; i++) {
+        for (var i = 0; i < numberOfTicks; i++) {
             xAxisData.push(tick * i);
         }
         return xAxisData;
@@ -49,7 +44,9 @@ export const BarChartPanel = (props) => {
 
     xAxisData = createXAxisData();
 
-    const barData = [
+    todayData = props.data.map((obj) => ({ value: obj.today_duration }));
+    yesterdayData = props.data.map((obj) => ({ value: obj.yesterday_duration }));
+    barData = [
         {
             data: todayData,
             svg: {
@@ -66,7 +63,7 @@ export const BarChartPanel = (props) => {
 
     return (
         <Panel>
-            {data.length ?
+            {props.data.length ?
                 <View>
                     <View style={styles.legend}>
                         <LegendUnit
@@ -78,13 +75,13 @@ export const BarChartPanel = (props) => {
                     </View>
                     <View style={styles.barWrapper}>
                         <YAxis
-                            data={data}
+                            data={props.data}
                             style={styles.yAxis}
                             contentInset={styles.yAxisContentInset}
                             yAccessor={({ item }) => item.region}
                             scale={scale.scaleBand}
-                            svg={{ fill: 'black' }}
-                            formatLabel={(value, index) => data[index].region}
+                            svg={{ fill: 'black', width: 100 }}
+                            formatLabel={(value, index) => props.data[index].region}
                         />
                         <View style={{ flex: 1 }}>
                             <BarChart
@@ -128,7 +125,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     yAxis: {
-        marginBottom: 25
+        marginBottom: 25,
     },
     xAxis: {
         marginHorizontal: -10,

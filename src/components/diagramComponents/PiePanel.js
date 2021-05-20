@@ -8,18 +8,21 @@ import { PieLabels } from './PieLabels';
 
 export const PiePanel = (props) => {
 
+    const clientColor = props.direction == 'in' ? '#75c374' : '#bac1c6';
+    const otherColor = props.direction == 'in' ? '#0090d0' : '#f19dc4';
+
     const pieData = () => {
-        var clientValue = ~~(props.data.client_value * 100 / props.data.total_value)
+        var clientValue = (props.data.client_value * 100 / props.data.total_value).toFixed(2);
         return [
             {
                 key: 'client',
                 value: clientValue,
-                svg: { fill: '#75c374' },
+                svg: { fill: clientColor },
             },
             {
                 key: 'other',
                 value: props.data.total_value == 0 ? 100 : 100 - clientValue,
-                svg: { fill: '#0090d0' }
+                svg: { fill: otherColor }
             }
         ]
     };
@@ -38,10 +41,10 @@ export const PiePanel = (props) => {
             <Text style={styles.title}>{titlelize(props.data.interval)}</Text>
             <Text style={[styles.title, { marginBottom: 10 }]}> {props.data.start_date} {props.data.start_date == props.data.end_date ? '' : `- ${props.data.end_date}`}</Text>
             <LegendUnit
-                color="#75c374"
+                color={clientColor}
                 text={`${props.company} - ${props.data.client_value} min.`} />
             <LegendUnit
-                color="#0090d0"
+                color={otherColor}
                 text={`Other - ${props.data.total_value - props.data.client_value} min.`} />
             <Text style={styles.total}>Total - {props.data.total_value} min.</Text>
             <View style={styles.pieWrapper}>
@@ -49,6 +52,7 @@ export const PiePanel = (props) => {
                     style={{ height: 200, width: 200 }}
                     outerRadius={100}
                     innerRadius={0}
+                    padAngle={0}
                     data={pieData()}>
                     <PieLabels />
                 </PieChart>

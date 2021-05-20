@@ -9,14 +9,15 @@ import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
-import { BarChartPanel } from '../../components/diagramComponents/BarChartPanel';
+import { BarChartPanelDuration } from '../../components/diagramComponents/BarChartPanelDuration';
+import { BarChartPanelProfit } from '../../components/diagramComponents/BarChartPanelProfit';
 
 let dropDownAlert;
 
 export const TopTenRegions = (props) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState();
+    const [data, setData] = useState([]);
 
     const mock = {
         "data": [
@@ -38,7 +39,15 @@ export const TopTenRegions = (props) => {
         console.log("=====================================================");
         console.log(`---Top 10 Regions ${props.direction} Loaded, Profit = ${props.profit}---`);
         _setReportData();
-    }, []);
+        console.log("data", data)
+    }, [props.profit, props.direction]);
+
+    useEffect(() => {
+        if (data.length) {
+            console.log("length:", data.length)
+            setLoading(false);
+        }
+    }, [data])
 
     const _setReportData = async () => {
         let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
@@ -48,7 +57,7 @@ export const TopTenRegions = (props) => {
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
-            setLoading(false);
+
         }
     };
 
@@ -58,7 +67,10 @@ export const TopTenRegions = (props) => {
                 {loading ?
                     <Loader loading={loading} />
                     :
-                    <BarChartPanel data={data} />
+                    props.profit ?
+                        <BarChartPanelProfit data={data} />
+                        :
+                        <BarChartPanelDuration data={data} />
                 }
             </View>
             <StatusBar style="auto" />
