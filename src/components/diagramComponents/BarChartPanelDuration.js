@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 
 import { Panel } from '../Panel'
 import { LegendUnit } from './LegendUnit'
+import { NoRecords } from '../NoRecords'
 
 export const BarChartPanelDuration = (props) => {
 
@@ -107,7 +108,7 @@ export const BarChartPanelDuration = (props) => {
                     </View>
                 </View>
                 :
-                <Text style={styles.noRecords}>No records found</Text>
+                <NoRecords/>
             }
         </Panel>
     )
@@ -144,11 +145,5 @@ const styles = StyleSheet.create({
         top: 5,
         bottom: 5,
         right: 5
-    },
-    noRecords: {
-        color: 'red',
-        fontFamily: 'SFBold',
-        textAlign: 'center',
-        padding: 20
     }
 })

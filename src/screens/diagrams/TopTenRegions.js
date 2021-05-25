@@ -42,13 +42,6 @@ export const TopTenRegions = (props) => {
         console.log("data", data)
     }, [props.profit, props.direction]);
 
-    useEffect(() => {
-        if (data.length) {
-            console.log("length:", data.length)
-            setLoading(false);
-        }
-    }, [data])
-
     const _setReportData = async () => {
         let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
         // let response = mock;
@@ -57,7 +50,7 @@ export const TopTenRegions = (props) => {
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
-
+            setLoading(false);
         }
     };
 
