@@ -1,24 +1,26 @@
 import React, { useEffect } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts'
+import { View, StyleSheet, Text } from 'react-native'
+import { BarChart, Grid, XAxis } from 'react-native-svg-charts'
 import * as scale from 'd3-scale'
 
 import { Panel } from '../Panel'
 import { LegendUnit } from './LegendUnit'
 import { NoRecords } from '../NoRecords'
 
+let barHeight;
+
 export const BarChartPanelDuration = (props) => {
 
     const todayColor = '#75c374';
     const yesterdayColor = '#0090d0';
-    const numberOfTicks = 5;
+    const numberOfTicks = 4;
 
     let todayData, yesterdayData, xAxisData, barData;
 
     useEffect(() => {
         console.log("=====================================================");
         console.log(`---Bar chart loaded---`);
-        console.log("data", props.data)
+        console.log("data:", props.data)
     }, [props.data]);
 
     const findMaxX = () => {
@@ -37,13 +39,21 @@ export const BarChartPanelDuration = (props) => {
         let xAxisData = [];
         let max = findMaxX();
         let tick = ~~(max / numberOfTicks);
-        for (var i = 0; i < numberOfTicks; i++) {
-            xAxisData.push(tick * i);
+        for (var i = 0; i <= numberOfTicks; i++) {
+            if (i == numberOfTicks) {
+                xAxisData.push(max)
+            } else {
+                xAxisData.push(tick * i);
+            }
         }
         return xAxisData;
     };
 
     xAxisData = createXAxisData();
+
+    barHeight = props.data.length * 20 + 30;
+
+    console.log("barHeight: ", barHeight)
 
     todayData = props.data.map((obj) => ({ value: obj.today_duration }));
     yesterdayData = props.data.map((obj) => ({ value: obj.yesterday_duration }));
@@ -75,15 +85,17 @@ export const BarChartPanelDuration = (props) => {
                             text={'Yesterday'} />
                     </View>
                     <View style={styles.barWrapper}>
-                        <YAxis
-                            data={props.data}
-                            style={styles.yAxis}
-                            contentInset={styles.yAxisContentInset}
-                            yAccessor={({ item }) => item.region}
-                            scale={scale.scaleBand}
-                            svg={{ fill: 'black', width: 100 }}
-                            formatLabel={(value, index) => props.data[index].region}
-                        />
+                        <View style={styles.yAxis}>
+                            {props.data.map((item) => {
+                                return (
+                                    <Text
+                                        numberOfLines={1}
+                                        style={styles.yAxisItem}
+                                        key={item.region}
+                                    >{item.region}</Text>
+                                )
+                            })}
+                        </View>
                         <View style={{ flex: 1 }}>
                             <BarChart
                                 style={{ flex: 1 }}
@@ -93,6 +105,8 @@ export const BarChartPanelDuration = (props) => {
                                 contentInset={styles.barContentInset}
                                 gridMin={0}
                                 numberOfTicks={numberOfTicks}
+                                spacingInner={0.2}
+                                spacingOuter={0.2}
                             >
                                 <Grid direction={Grid.Direction.VERTICAL} />
                             </BarChart>
@@ -108,7 +122,7 @@ export const BarChartPanelDuration = (props) => {
                     </View>
                 </View>
                 :
-                <NoRecords/>
+                <NoRecords />
             }
         </Panel>
     )
@@ -122,24 +136,33 @@ const styles = StyleSheet.create({
     },
     barWrapper: {
         flexDirection: 'row',
-        height: 200,
-        padding: 5
+        height: barHeight,
     },
     yAxis: {
-        marginBottom: 25,
+        paddingVertical: 5,
+        paddingRight: 5,
+        marginBottom: 20,
+        flex: 1,
+    },
+    yAxisItem: {
+        fontFamily: 'SF',
+        fontSize: 13,
+        lineHeight: 20,
+        textAlign: 'right'
     },
     xAxis: {
-        marginHorizontal: -10,
-        height: 20,
-        marginTop: 5
+        marginLeft: -10,
+        marginRight: -10,
+        height: 15,
+        marginTop: 5,
     },
     yAxisContentInset: {
         top: 5,
         bottom: 5
     },
     xAxisContentInset: {
-        left: -15,
-        right: -10
+        left: -10,
+        right: 0
     },
     barContentInset: {
         top: 5,
