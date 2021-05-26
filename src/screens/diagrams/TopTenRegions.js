@@ -42,17 +42,10 @@ export const TopTenRegions = (props) => {
         console.log("data", data)
     }, [props.profit, props.direction]);
 
-
-    // useEffect(()=> {
-    //     if(data.length) {
-    //         setData(cutData(data))
-    //     }
-    // }, [data]);
-
     const _setReportData = async () => {
         setLoading(true);
-        let response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
-        // let response = mock;
+        const response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
+        // const response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
             setLoading(false);
@@ -63,8 +56,8 @@ export const TopTenRegions = (props) => {
     };
 
     const cutData = (data, profit) => {
-        var data1 = []
-        for (var i in data) {
+        let data1 = []
+        for (let i in data) {
             if (profit) {
                 if (data[i].today_profit > 0 && data[i].yesterday_profit > 0) {
                     data1.push(data[i]);

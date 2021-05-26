@@ -7,7 +7,6 @@ export const CheckboxList = ({ data, onChange }) => {
     const [innerData, setInnerData] = useState(data);
     const [reportsIds, setReportsIds] = useState([]);
 
-
     const renderItem = ({ item, index }) => {
         return (
             <TouchableOpacity
@@ -26,7 +25,6 @@ export const CheckboxList = ({ data, onChange }) => {
     };
 
     const setToggleCheckbox = (index) => {
-        console.log("checkbox pressed: ", index)
         let newArr = [...innerData];
         newArr[index].active = !newArr[index].active;
         setInnerData(newArr);

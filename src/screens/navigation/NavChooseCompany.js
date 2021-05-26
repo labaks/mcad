@@ -7,7 +7,7 @@ import { ChooseCompanyScreen } from '../ChooseCompanyScreen';
 const Drawer = createDrawerNavigator();
 
 const NavChooseCompany = ({ navigation, route }) => {
-    let params = route.params;
+    const params = route.params;
 
     useEffect(() => {
         console.log("=====================================================");

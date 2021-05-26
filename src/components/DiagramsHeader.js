@@ -4,7 +4,7 @@ import headerImage from '../../assets/adaptive-icon.png';
 
 export const DiagramsHeader = (params) => {
 
-    let title = params.title ? params.title : "No records found";
+    const title = params.title ? params.title : "No records found";
 
     return (
         <View style={styles.content}>

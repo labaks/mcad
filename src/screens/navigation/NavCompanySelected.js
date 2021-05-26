@@ -7,7 +7,7 @@ import { DiagramsList } from '../DiagramsList';
 const Drawer = createDrawerNavigator();
 
 const NavCompanySelected = ({ navigation, route }) => {
-    let params = route.params;
+    const params = route.params;
 
     useEffect(() => {
         console.log("=====================================================");

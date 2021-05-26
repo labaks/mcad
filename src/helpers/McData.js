@@ -3,14 +3,14 @@ export class McData {
     static url = "https://mcapp.mcore.solutions";
 
     static async _getCurrentUser(token = '', host = '') {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "session_id": token, //mc api feature
                 "fields": ["name", "rl_name"]
             }
         }
-        let json = await this._fetch(dataToSend, 'users_get/', host);
+        const json = await this._fetch(dataToSend, 'users_get/', host);
         if (json.status == 200) {
             return json.data[0];
         } else {
@@ -19,14 +19,14 @@ export class McData {
     };
 
     static async _getCurrentUserId(token = '', host = '') {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "session_id": token, //mc api feature
                 "fields": ["id"]
             }
         }
-        let json = await this._fetch(dataToSend, 'users_get/', host);
+        const json = await this._fetch(dataToSend, 'users_get/', host);
         if (json.status == 200) {
             return json.data[0][0].toString();
         } else {
@@ -35,14 +35,14 @@ export class McData {
     };
 
     static async _getUserCompanies(token = '', host = '', userId = '') {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "user_id": userId,
                 "fields": ["id", "name"]
             }
         }
-        let json = await this._fetch(dataToSend, 'client_get/', host);
+        const json = await this._fetch(dataToSend, 'client_get/', host);
         if (json.status == 200) {
             return json.data;
         } else {
@@ -71,19 +71,19 @@ export class McData {
     };
 
     static async _getTopTenRegions(token = '', host = '', companyId, direction, profit = false) {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
                 "direction": direction
             }
         }
-        let route = profit ? 'top_profit_regions_get/' : 'top_duration_regions_get/';
+        const route = profit ? 'top_profit_regions_get/' : 'top_duration_regions_get/';
         return await this._fetch(dataToSend, route, host);
     };
 
     static async _getTopTenCountries(token = '', host = '', companyId, direction) {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
@@ -94,7 +94,7 @@ export class McData {
     };
 
     static async _getTrafficShare(token = '', host = '', companyId, direction) {
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
@@ -106,9 +106,9 @@ export class McData {
 
     static defineData(data, labels) {
         let arr = [];
-        for (var i in data) {
+        for (let i in data) {
             let obj = {};
-            for (var j in labels) {
+            for (let j in labels) {
                 obj[labels[j]] = data[i][j];
             }
             arr.push(obj);
@@ -130,7 +130,7 @@ export class McData {
                 end_date = this.dateFormat(today, false);
                 break;
         };
-        let dataToSend = {
+        const dataToSend = {
             "session_id": token,
             "data": {
                 "start_date": start_date,
@@ -162,7 +162,7 @@ export class McData {
     };
 
     static async _login(host = '', login = '', password = '', ip = '') {
-        let dataToSend = {
+        const dataToSend = {
             "login": login,
             "password": password,
             "ip": ip

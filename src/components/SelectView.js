@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export const SelectView = (props) => {
 
-    let selectedValue = props.selected ? props.selected : "Choose...";
+    const selectedValue = props.selected ? props.selected : "Choose...";
 
     return (
         <View style={[styles.wrapper, props.selected && styles.selected]}>

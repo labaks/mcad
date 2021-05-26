@@ -12,7 +12,7 @@ export const PiePanel = (props) => {
     const otherColor = props.direction == 'in' ? '#0090d0' : '#f19dc4';
 
     const pieData = () => {
-        var clientValue = parseFloat((props.data.client_value * 100 / props.data.total_value).toFixed(2));
+        const clientValue = parseFloat((props.data.client_value * 100 / props.data.total_value).toFixed(2));
         return [
             {
                 key: 'client',

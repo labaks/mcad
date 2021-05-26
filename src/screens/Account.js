@@ -1,4 +1,3 @@
-// import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
@@ -32,19 +31,20 @@ export const Account = ({ navigation, route }) => {
 
     const _setAccountData = async () => {
         setLoading(true)
-        let user = await McData._getCurrentUser(token, url);
-        setLoading(false);
+        const user = await McData._getCurrentUser(token, url);
         if (user.status) {
             ErrorHandler.handle(dropDownAlert, user, url, navigation);
+            setLoading(false);
         } else {
             setCurrentUser(McData.userArrayToObj(user));
+            setLoading(false);
         }
     }
 
     const _handleLogout = async () => {
         setLoading(true);
         console.log("--Logout pressed");
-        let response = await McData._logout(token, url);
+        const response = await McData._logout(token, url);
         if (response.status == 200) {
             console.log("---logout ok")
             AsyncStorage.setItem('logged_in', 'false').then(() => {
@@ -58,8 +58,8 @@ export const Account = ({ navigation, route }) => {
                 })
             })
         } else {
-            setLoading(false);
             ErrorHandler.handle(dropDownAlert, response, url, navigation);
+            setLoading(false);
         }
     }
 

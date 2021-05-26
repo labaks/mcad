@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import { CheckBox } from 'native-base';
 import React, { useState, useCallback, useEffect } from 'react'
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity, Linking, KeyboardAvoidingView, ScrollView } from 'react-native'
-// import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
@@ -20,7 +19,7 @@ import { McData } from '../helpers/McData';
 
 import bgImage from '../../assets/signUpBg.png';
 
-let dropDownAlert;
+var dropDownAlert;
 
 export const SignUpScreen = ({ navigation }) => {
     const backButtonHandler = BackButtonHandler();
@@ -51,7 +50,7 @@ export const SignUpScreen = ({ navigation }) => {
     const handleSignUpPress = async () => {
         setLoading(true);
         console.log("--SignUp button pressed");
-        let ip = await publicIP()
+        const ip = await publicIP()
             .catch(error => {
                 setLoading(false);
                 console.log("-publicIP() catch error:", error);
@@ -60,7 +59,7 @@ export const SignUpScreen = ({ navigation }) => {
                     '',
                     error);
             });
-        let loginResponse = await McData._login(formValues.url.toString(), formValues.login, formValues.password, ip);
+        const loginResponse = await McData._login(formValues.url.toString(), formValues.login, formValues.password, ip);
         if (loginResponse.status == 200) {
             console.log("login ok");
             AsyncStorage.multiSet([
@@ -88,7 +87,7 @@ export const SignUpScreen = ({ navigation }) => {
     }
 
     const handleGoToLogin = async () => {
-        let url = await AsyncStorage.getItem('url');
+        const url = await AsyncStorage.getItem('url');
         navigation.navigate('Login', { url: url });
     }
 

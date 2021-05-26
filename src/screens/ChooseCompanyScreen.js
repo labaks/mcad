@@ -14,7 +14,7 @@ import { BackButtonHandler } from '../helpers/BackButtonHandler';
 import { McData } from '../helpers/McData';
 import { ErrorHandler } from '../helpers/ErrorHandler';
 
-let dropDownAlert;
+var dropDownAlert;
 
 export const ChooseCompanyScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
@@ -35,12 +35,12 @@ export const ChooseCompanyScreen = ({ navigation, route }) => {
 
     const _setUserCompanies = async () => {
         setLoading(true)
-        let userId = await McData._getCurrentUserId(token, url);
+        const userId = await McData._getCurrentUserId(token, url);
         if (userId.status) {
             setLoading(false);
             ErrorHandler.handle(dropDownAlert, userId, url, navigation);
         } else {
-            let companies = await McData._getUserCompanies(token, url, userId);
+            const companies = await McData._getUserCompanies(token, url, userId);
             if (companies.status) {
                 setLoading(false);
                 ErrorHandler.handle(dropDownAlert, companies, url, navigation);

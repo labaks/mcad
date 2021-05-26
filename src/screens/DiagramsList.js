@@ -50,7 +50,7 @@ export const DiagramsList = ({ navigation, route }) => {
     const parseTitles = () => {
         let tmpArr = [...titles];
         tmpArr = diagramsSelected.map((id) => {
-            for (var i in diagramsListData) {
+            for (let i in diagramsListData) {
                 if (id == diagramsListData[i].id) return diagramsListData[i].title
             }
         })

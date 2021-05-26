@@ -7,7 +7,7 @@ import { Panel } from '../Panel'
 import { LegendUnit } from './LegendUnit'
 import { NoRecords } from '../NoRecords'
 
-let barHeight;
+var barHeight;
 
 export const BarChartPanelProfit = (props) => {
 
@@ -25,7 +25,7 @@ export const BarChartPanelProfit = (props) => {
 
     const findMaxX = () => {
         let max = 0;
-        for (var i in props.data) {
+        for (let i in props.data) {
             if (props.data[i].today_profit > props.data[i].yesterday_profit) {
                 if (props.data[i].today_profit > max) max = props.data[i].today_profit;
             } else {
@@ -37,7 +37,7 @@ export const BarChartPanelProfit = (props) => {
 
     const createXAxisData = () => {
         let xAxisData = [];
-        let max = findMaxX();
+        const max = findMaxX();
         let tick = ~~(max / numberOfTicks);
         if (tick == 0) {
             tick = 1;

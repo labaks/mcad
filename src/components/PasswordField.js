@@ -14,7 +14,6 @@ export const PasswordField = (props) => {
                     secureTextEntry={!showPass}
                     style={styles.inputText}
                     onFocus={() => setIsFocused(true)}
-                    // onBlur={() => setIsFocused(false)} 
                     onChange={(event) =>
                         props.handleFormValueChange(
                             props.formKey,

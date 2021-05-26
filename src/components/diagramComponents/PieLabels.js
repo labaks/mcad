@@ -4,9 +4,9 @@ import { Text } from 'react-native-svg'
 export const PieLabels = ({ slices, height, width }) => {
     return slices.map((slice, index) => {
         const { labelCentroid, pieCentroid, data } = slice;
-        var x = pieCentroid[0];
-        var y = pieCentroid[1];
-        var text = data.value === 0 || data.value !== data.value ? '' : data.value + '%';
+        let x = pieCentroid[0];
+        let y = pieCentroid[1];
+        const text = data.value === 0 || data.value !== data.value ? '' : data.value + '%';
         if (data.value < 11) x += 30;
         if (data.value == 100) y -= 50;
         return (

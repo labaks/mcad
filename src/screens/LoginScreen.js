@@ -1,8 +1,7 @@
-// import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView, Keyboard } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, ScrollView } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import publicIP from 'react-native-public-ip';
 
@@ -19,13 +18,11 @@ import { McData } from '../helpers/McData';
 
 import bgImage from '../../assets/loginBg.png';
 
-let dropDownAlert;
-// let keyboardWillShowSub, keyboardWillHideSub;
+var dropDownAlert;
 
 export const LoginScreen = ({ navigation, route }) => {
     const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(false);
-    // const [keyboardShow, setKeyboardShow] = useState(false);
     const [formValues, handleFormValueChange, setFormValues] = FormData({
         login: '',
         password: ''
@@ -51,26 +48,6 @@ export const LoginScreen = ({ navigation, route }) => {
         }
     }, [route.params])
 
-    // useEffect(() => {
-    //     keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', keyboardWillShow);
-    //     return () => {keyboardWillShowSub.remove();}
-    // });
-
-    // useEffect(() => {
-    //     keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', keyboardWillHide);
-    //     return () => {keyboardWillHideSub.remove();}
-    // });
-
-    // const keyboardWillShow = () => {
-    //     console.log("--keyboardWillShow");
-    //     setKeyboardShow(true);
-    // };
-
-    // const keyboardWillHide = () => {
-    //     console.log("--keyboardWillHide");
-    //     setKeyboardShow(false);
-    // };
-
     const handleLoginPress = async () => {
         console.log("--Login button pressed");
         console.log("-url: ", url);
@@ -82,7 +59,7 @@ export const LoginScreen = ({ navigation, route }) => {
                 "You have no URL, please go to Sign Up page");
         } else {
             setLoading(true);
-            let ip = await publicIP()
+            const ip = await publicIP()
                 .catch(error => {
                     setLoading(false);
                     console.log("-publicIP() catch error:", error);
@@ -92,7 +69,7 @@ export const LoginScreen = ({ navigation, route }) => {
                         error);
                 });
             console.log("--LoginPage publicIP() response: ", ip);
-            let loginResponse = await McData._login(url, formValues.login, formValues.password, ip);
+            const loginResponse = await McData._login(url, formValues.login, formValues.password, ip);
             if (loginResponse.status == 200) {
                 console.log("login ok");
                 AsyncStorage.setItem('logged_in', 'true').then(() => {
@@ -180,10 +157,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-around',
     },
-    // keyboardShow: {
-    //     flex: 0,
-    //     justifyContent: 'flex-end'
-    // },
     contentWrapper: {
         flex: 1,
         paddingHorizontal: 40,

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import publicIP from 'react-native-public-ip';
 import DropdownAlert from 'react-native-dropdownalert';
-// import AsyncStorage from '@react-native-community/async-storage';
 import { AsyncStorage } from 'react-native';
 
 import { Logo } from '../components/Logo';
@@ -11,7 +10,7 @@ import { Loader } from '../components/Loader';
 import { McData } from '../helpers/McData'
 import { UserData } from '../helpers/UserData';
 
-let dropDownAlert;
+var dropDownAlert;
 
 export const SplashScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -26,15 +25,14 @@ export const SplashScreen = ({ navigation }) => {
         console.log("=====================================================");
         console.log("---SplashScreen loaded---");
         (async () => {
-            let storageResponse = await AsyncStorage.multiGet(['logged_in', 'url', 'login', 'password']);
-            // console.log("--Storage multiget() response: ", storageResponse);
+            const storageResponse = await AsyncStorage.multiGet(['logged_in', 'url', 'login', 'password']);
             userData.logged_in = storageResponse[0][1] === "true";
             userData.url = storageResponse[1][1];
             userData.login = storageResponse[2][1];
             userData.password = storageResponse[3][1];
             console.log("---userData: ", userData);
             if (userData.logged_in) {
-                let ip = await publicIP()
+                const ip = await publicIP()
                     .catch(error => {
                         setLoading(false);
                         console.log("--publicIP() catch error:", error);
@@ -44,7 +42,7 @@ export const SplashScreen = ({ navigation }) => {
                             error);
                     });
                 console.log("--publicIP() response: ", ip);
-                let loginResponse = await McData._login(
+                const loginResponse = await McData._login(
                     userData.url,
                     userData.login,
                     userData.password,

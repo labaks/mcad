@@ -10,7 +10,6 @@ export const InputView = (props) => {
             <TextInput
                 style={[styles.inputText, isFocused && styles.focused]}
                 onFocus={() => setIsFocused(true)}
-                // onBlur={() => setIsFocused(false)}
                 onChange={(event) =>
                     props.handleFormValueChange(
                         props.formKey,

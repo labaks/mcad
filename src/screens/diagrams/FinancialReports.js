@@ -4,16 +4,15 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
 import { Panel } from '../../components/Panel';
+import { NoRecords } from '../../components/NoRecords';
 
 import { FinancialReportsTable } from '../../components/diagramComponents/FinancialReportsTable';
 
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
-import { NoRecords } from '../../components/NoRecords';
 
-
-let dropDownAlert;
+var dropDownAlert;
 
 export const FinancialReports = (props) => {
     const backButtonHandler = BackButtonHandler();
@@ -67,8 +66,8 @@ export const FinancialReports = (props) => {
 
     const _setReportData = async () => {
         setLoading(true);
-        let response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period);
-        // let response = mock;
+        const response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period);
+        // const response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
             setLoading(false);
@@ -81,7 +80,7 @@ export const FinancialReports = (props) => {
     const devideData = (arr) => {
         let inbound = [];
         let outbound = [];
-        for (var i in arr) {
+        for (let i in arr) {
             if (arr[i].direction == 1) {
                 inbound.push(arr[i])
             } else if (arr[i].direction == 2) {

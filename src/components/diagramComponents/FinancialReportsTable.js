@@ -37,9 +37,9 @@ export const FinancialReportsTable = (props) => {
                             <Text style={[styles.th, styles.deltaProfitTd]}>Profit</Text>
                         </View>
                         {props.data.map((elem, index) => {
-                            var op_sum = elem.op_sum == null ? '-' : parseFloat(elem.op_sum).toFixed(2);
-                            var tp_sum = elem.tp_sum == null ? '-' : parseFloat(elem.tp_sum).toFixed(2);
-                            var delta_price = parseFloat(elem.delta_price).toFixed(2);
+                            const op_sum = elem.op_sum == null ? '-' : parseFloat(elem.op_sum).toFixed(2);
+                            const tp_sum = elem.tp_sum == null ? '-' : parseFloat(elem.tp_sum).toFixed(2);
+                            const delta_price = parseFloat(elem.delta_price).toFixed(2);
                             return (
                                 <View
                                     key={index}
