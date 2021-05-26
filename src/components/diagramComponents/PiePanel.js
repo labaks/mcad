@@ -12,7 +12,7 @@ export const PiePanel = (props) => {
     const otherColor = props.direction == 'in' ? '#0090d0' : '#f19dc4';
 
     const pieData = () => {
-        var clientValue = (props.data.client_value * 100 / props.data.total_value).toFixed(2);
+        var clientValue = parseFloat((props.data.client_value * 100 / props.data.total_value).toFixed(2));
         return [
             {
                 key: 'client',
@@ -49,7 +49,7 @@ export const PiePanel = (props) => {
             <Text style={styles.total}>Total - {props.data.total_value} min.</Text>
             <View style={styles.pieWrapper}>
                 <PieChart
-                    style={{ height: 200, width: 200 }}
+                    style={styles.chart}
                     outerRadius={100}
                     innerRadius={0}
                     padAngle={0}
@@ -76,5 +76,9 @@ const styles = StyleSheet.create({
     pieWrapper: {
         alignItems: 'center',
         paddingVertical: 15
+    },
+    chart: {
+        width: 200,
+        height: 200
     }
 })
