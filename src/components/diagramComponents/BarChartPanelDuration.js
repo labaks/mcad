@@ -13,7 +13,7 @@ export const BarChartPanelDuration = (props) => {
 
     const todayColor = '#75c374';
     const yesterdayColor = '#0090d0';
-    const numberOfTicks = 4;
+    let numberOfTicks = 4;
 
     let todayData, yesterdayData, xAxisData, barData;
 
@@ -39,6 +39,10 @@ export const BarChartPanelDuration = (props) => {
         let xAxisData = [];
         let max = findMaxX();
         let tick = ~~(max / numberOfTicks);
+        if (tick == 0) {
+            tick = 1;
+            numberOfTicks = max;
+        }
         for (var i = 0; i <= numberOfTicks; i++) {
             if (i == numberOfTicks) {
                 xAxisData.push(max)
