@@ -37,6 +37,9 @@ export const FinancialReportsTable = (props) => {
                             <Text style={[styles.th, styles.deltaProfitTd]}>Profit</Text>
                         </View>
                         {props.data.map((elem, index) => {
+                            var op_sum = elem.op_sum == null ? '-' : parseFloat(elem.op_sum).toFixed(2);
+                            var tp_sum = elem.tp_sum == null ? '-' : parseFloat(elem.tp_sum).toFixed(2);
+                            var delta_price = parseFloat(elem.delta_price).toFixed(2);
                             return (
                                 <View
                                     key={index}
@@ -45,21 +48,21 @@ export const FinancialReportsTable = (props) => {
                                         numberOfLines={1}
                                         style={[styles.td, styles.countryTd]}>{elem.country}</Text>
                                     <Text
-                                        style={[styles.td, styles.durationTd]}>{elem.duration}</Text>
+                                        style={[styles.td, styles.durationTd, !elem.point_name && styles.total]}>{elem.duration}</Text>
                                     <Text
-                                        style={[styles.td, styles.calcDurationTd]}>{elem.calc_duration}</Text>
+                                        style={[styles.td, styles.calcDurationTd, !elem.point_name && styles.total]}>{elem.calc_duration}</Text>
                                     <Text
-                                        style={[styles.td, styles.attemptsTd]}>{elem.attempts}</Text>
+                                        style={[styles.td, styles.attemptsTd, !elem.point_name && styles.total]}>{elem.attempts}</Text>
                                     <Text
-                                        style={[styles.td, styles.saTd]}>{elem.sa}</Text>
+                                        style={[styles.td, styles.saTd, !elem.point_name && styles.total]}>{elem.sa}</Text>
                                     <Text
-                                        style={[styles.td, styles.opSumTd]}>{elem.op_sum == null ? '-' : elem.op_sum}</Text>
+                                        style={[styles.td, styles.opSumTd, !elem.point_name && styles.total]}>{op_sum}</Text>
                                     <Text
-                                        style={[styles.td, styles.tpSumTd]}>{elem.tp_sum == null ? '-' : elem.tp_sum}</Text>
+                                        style={[styles.td, styles.tpSumTd, !elem.point_name && styles.total]}>{tp_sum}</Text>
                                     <Text
-                                        style={[styles.td, styles.deltaPriceTd]}>{elem.delta_price}</Text>
+                                        style={[styles.td, styles.deltaPriceTd, !elem.point_name && styles.total]}>{delta_price}</Text>
                                     <Text
-                                        style={[styles.td, styles.deltaProfitTd]}>{elem.delta_profit}%</Text>
+                                        style={[styles.td, styles.deltaProfitTd, !elem.point_name && styles.total]}>{elem.delta_profit}%</Text>
                                 </View>
                             )
                         })}
@@ -120,13 +123,13 @@ const styles = StyleSheet.create({
         width: 75
     },
     opSumTd: {
-        width: 70
+        width: 55
     },
     tpSumTd: {
         width: 70
     },
     deltaPriceTd: {
-        width: 65
+        width: 55
     },
     deltaProfitTd: {
         width: 60

@@ -10,6 +10,7 @@ import { FinancialReportsTable } from '../../components/diagramComponents/Financ
 import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
+import { NoRecords } from '../../components/NoRecords';
 
 
 let dropDownAlert;
@@ -73,6 +74,7 @@ export const FinancialReports = (props) => {
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
+            if (!response.data.length) setLoading(false);
         }
     };
 
@@ -94,13 +96,16 @@ export const FinancialReports = (props) => {
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
                 {!loading ?
-                    <Panel>
-                        <Text style={styles.subtitle}>Account Manager: {data[0].manager}</Text>
-                        <Text style={[styles.title, {marginBottom: 10}]}>INBOUND</Text>
-                        <FinancialReportsTable data={inbound} />
-                        <Text style={[styles.title, { marginBottom: 10 }]}>OUTBOUND</Text>
-                        <FinancialReportsTable data={outbound} />
-                    </Panel>
+                    data.length ?
+                        <Panel>
+                            <Text style={styles.subtitle}>Account Manager: {data[0].manager}</Text>
+                            <Text style={[styles.title, { marginBottom: 10 }]}>INBOUND</Text>
+                            <FinancialReportsTable data={inbound} />
+                            <Text style={[styles.title, { marginBottom: 10, marginTop: 20 }]}>OUTBOUND</Text>
+                            <FinancialReportsTable data={outbound} />
+                        </Panel>
+                        :
+                        <NoRecords />
                     :
                     <Loader loading={loading} />
                 }
