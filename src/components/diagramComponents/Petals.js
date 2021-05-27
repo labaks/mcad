@@ -10,6 +10,12 @@ export const Petals = (props) => {
     let radius1, radius2, radius3, gradient1, gradient2, x1, diameter1, diameter2, diameter3, coef1;
     let font1, font2, coef4, coef5, coef6, distanceDiv;
 
+    let drawValues = [];
+    let wordsMeasures = [];
+
+    const colors = ["#E38472", "#FFBCAC", "#F9C87C", "#DEEEAC", "#C0D280", "#90BC99"];
+    const colorsDark = ["#C67761", "#DDAD9B", "#DBB86D", "#C8D19C", "#A8BA6D", "#82A587"];
+
     useEffect(() => {
         console.log("=====================================================");
         console.log("---Canvas Loaded---");
@@ -22,12 +28,13 @@ export const Petals = (props) => {
             const context = canvas.getContext('2d');
             canvas.height = props.height;
             canvas.width = props.width;
-            await calcPetalValues(context);
+            await calcPetalValues(context, props.data);
+            await calcWordsMeasures(context, props.data, wordsMeasures, distanceDiv);
             topCountriesPlot(props.data, context, props.title, props.unit);
         }
     };
 
-    const calcPetalValues = async (context) => {
+    const calcPetalValues = async (context, data) => {
         diameter = Math.min(props.height, props.width);
         fontZoom = diameter / 600;
         radius = diameter / 2;
@@ -63,120 +70,133 @@ export const Petals = (props) => {
         font2 = "bold " + 14 * fontZoom + "px Arial";
 
         distanceDiv = fontZoom * 250;
+
+        for (let i = 0; i < 10; i++) {
+            let obj = {};
+            obj.distance = coef4 + coef5 * (1 - i / 10);
+            obj.w1 = obj.distance * 0.32;
+            obj.w2 = obj.distance * 0.37;
+            obj.an1 = (i + 0.5) * coef1;
+            obj.an2 = (i + 1.5) * coef1;
+            obj.an3 = (i + 1) * coef1;
+            obj.an4 = i * coef1;
+            obj.an5 = obj.an3 - Math.PI / 2;
+            obj.a = radius - Math.cos(obj.an1) * obj.w1;
+            obj.b = radius - Math.sin(obj.an1) * obj.w1;
+            obj.c = radius - Math.cos(obj.an2) * obj.w1;
+            obj.d = radius - Math.sin(obj.an2) * obj.w1;
+            obj.e = radius - Math.cos(obj.an3 - coef6) * obj.w1;
+            obj.f = radius - Math.sin(obj.an3 - coef6) * obj.w1;
+            obj.g = radius - Math.cos(obj.an3) * obj.w2;
+            obj.h = radius - Math.sin(obj.an3) * obj.w2;
+            obj.ii = radius - Math.cos(obj.an3 + coef6) * obj.w1;
+            obj.j = radius - Math.sin(obj.an3 + coef6) * obj.w1;
+            obj.inverse = obj.an3 > Math.PI && obj.an3 < Math.PI * 2;
+            obj.k = radius - Math.cos(obj.an1) * radius2;
+            obj.l = radius - Math.sin(obj.an1) * radius2;
+            obj.m = radius - Math.cos(obj.an1) * diameter2;
+            obj.n = radius - Math.sin(obj.an1) * diameter2;
+            obj.o = radius - Math.cos(obj.an4) * diameter1;
+            obj.p = radius - Math.sin(obj.an4) * diameter1;
+            if (data[i] !== undefined) {
+                obj.gradient = await context.createLinearGradient(obj.a, obj.b, obj.c, obj.d);
+                obj.cIndex = getColorIndexByRate(data[i].asr);
+                obj.gradient.addColorStop(0, colorsDark[obj.cIndex]);
+                obj.gradient.addColorStop(0.5, colors[obj.cIndex]);
+                obj.gradient.addColorStop(1, colorsDark[obj.cIndex]);
+                if (i < data.length) {
+                    obj.acdFormat = ~~(data[i].acd / 60) + ':' + data[i].acd % 60;
+                    obj.circleX = radius - Math.cos(obj.an3) * diameter3;
+                    obj.circleY = radius - Math.sin(obj.an3) * diameter3;
+                }
+            }
+            drawValues.push(obj);
+        }
     }
 
     const topCountriesPlot = async (data, context, title, unit) => {
-        var colors = ["#E38472", "#FFBCAC", "#F9C87C", "#DEEEAC", "#C0D280", "#90BC99"];
-        var colorsDark = ["#C67761", "#DDAD9B", "#DBB86D", "#C8D19C", "#A8BA6D", "#82A587"];
+
+        context.clearRect(0, 0, props.width, props.height)
 
         drawBackground(context);
 
-        context.font = font1;
-        context.textAlign = "left";
-
         //Data petals:
-        for (let i = 0; i < data.length; i++) {
-            let distance = coef4 + coef5 * (1 - i / 10),
-                w1 = distance * 0.32,
-                w2 = distance * 0.37,
-                an1 = (i + 0.5) * coef1,
-                an2 = (i + 1.5) * coef1,
-                a = radius - Math.cos(an1) * w1,
-                b = radius - Math.sin(an1) * w1,
-                c = radius - Math.cos(an2) * w1,
-                d = radius - Math.sin(an2) * w1;
-            let angle = (i + 1) * coef1;
-            let e = radius - Math.cos(angle - coef6) * w1,
-                f = radius - Math.sin(angle - coef6) * w1,
-                g = radius - Math.cos(angle) * w2,
-                h = radius - Math.sin(angle) * w2,
-                ii = radius - Math.cos(angle + coef6) * w1,
-                j = radius - Math.sin(angle + coef6) * w1;
-            let inverse = angle > Math.PI && angle < Math.PI * 2;
-            context.beginPath();
-            let gradient = await context.createLinearGradient(a, b, c, d);
-            var cIndex = getColorIndexByRate(data[i].asr);
-            gradient.addColorStop(0, colorsDark[cIndex]);
-            gradient.addColorStop(0.5, colors[cIndex]);
-            gradient.addColorStop(1, colorsDark[cIndex]);
-            context.fillStyle = gradient;
-            context.strokeStyle = "#FFFFFF";
-
-            //Fill
-            context.moveTo(radius, radius);
-            context.lineTo(e, f);
-            context.lineTo(g, h);
-            context.lineTo(ii, j);
-            context.fill();
-
-            //Stroke sagittal lines
-            context.beginPath();
-            context.moveTo(e, f);
-            context.lineTo(radius, radius);
-            context.lineTo(ii, j);
-            context.lineWidth = 6;
-            context.stroke();
-
-            //Stroke meridional lines
-            context.beginPath();
-            context.moveTo(e, f);
-            context.lineTo(g, h);
-            context.lineTo(ii, j);
-            context.lineWidth = 2;
-            context.stroke();
-
-            context.fillStyle = "#000000";
-            await drawTextAlongArc(context, data[i].country, radius, radius, radius - radius / 9.2, angle - Math.PI / 2, inverse);
-        }
-
-        // Minutes/Successful SMS text:
-        context.font = font1;
-        for (let i = 0; i < data.length; i++) {
-            let angle = (i + 1) * coef1;
-            let inverse = angle > Math.PI && angle < Math.PI * 2;
-            await drawTextAlongArc(context, `${data[i].duration}  ${unit}`, radius, radius, radius - radius / 4.8, angle - Math.PI / 2, inverse);
-        }
-        context.textBaseline = "middle";
-
-        context.font = font2;
-        context.textAlign = "center";
-
-        //Overlay edges:
         for (let i = 0; i < 10; i++) {
+            context.font = font1;
+            context.textAlign = "left";
+            context.beginPath();
+
+            if (data[i] !== undefined) {
+                context.fillStyle = drawValues[i].gradient;
+                context.strokeStyle = "#FFFFFF";
+                //Fill
+                context.moveTo(radius, radius);
+                context.lineTo(drawValues[i].e, drawValues[i].f);
+                context.lineTo(drawValues[i].g, drawValues[i].h);
+                context.lineTo(drawValues[i].ii, drawValues[i].j);
+                context.fill();
+                //Stroke sagittal lines
+                context.beginPath();
+                context.moveTo(drawValues[i].e, drawValues[i].f);
+                context.lineTo(radius, radius);
+                context.lineTo(drawValues[i].ii, drawValues[i].j);
+                context.lineWidth = 6;
+                context.stroke();
+                //Stroke meridional lines
+                context.beginPath();
+                context.moveTo(drawValues[i].e, drawValues[i].f);
+                context.lineTo(drawValues[i].g, drawValues[i].h);
+                context.lineTo(drawValues[i].ii, drawValues[i].j);
+                context.lineWidth = 2;
+                context.stroke();
+                context.fillStyle = "#000000";
+
+                drawTextAlongArc2(
+                    context,
+                    wordsMeasures[i],
+                    radius,
+                    radius,
+                    radius - radius / 9.2,
+                    distanceDiv,
+                    drawValues[i].inverse,
+                    true
+                );
+                // Minutes/Successful SMS text:
+                drawTextAlongArc2(
+                    context,
+                    wordsMeasures[i],
+                    radius,
+                    radius,
+                    radius - radius / 4.8,
+                    distanceDiv,
+                    drawValues[i].inverse,
+                    false
+                );
+                if (i < data.length) {
+                    context.textBaseline = "middle";
+                    context.font = font2;
+                    context.textAlign = "center";
+                    drawCircle(context, drawValues[i].circleX, drawValues[i].circleY, diameter / 25, "#FFFFFF", "#EEEEEE");
+                    context.fillStyle = "#000000";
+                    context.fillText("ACD:", drawValues[i].circleX, drawValues[i].circleY - 6);
+                    context.fillText(drawValues[i].acdFormat, drawValues[i].circleX, drawValues[i].circleY + 8);
+                }
+            }
+            //Overlay edges:
             context.beginPath();
             context.lineWidth = 2;
             context.strokeStyle = "#79A352";
             context.moveTo(radius, radius);
-            let an1 = (i + 0.5) * coef1
-            context.lineTo(
-                radius - Math.cos(an1) * radius2,
-                radius - Math.sin(an1) * radius2);
+            context.lineTo(drawValues[i].k, drawValues[i].l);
             context.stroke();
-            let acdFormat = '';
-            if (data[i] !== undefined) {
-                acdFormat = ~~(data[i].acd / 60) + ':' + data[i].acd % 60;
-                if (i < data.length) {
-                    let an2 = (i + 1) * coef1
-                    let circleX = radius - Math.cos(an2) * diameter3;
-                    let circleY = radius - Math.sin(an2) * diameter3;
-                    drawCircle(context, circleX, circleY, diameter / 25, "#FFFFFF", "#EEEEEE");
-
-                    context.fillStyle = "#000000";
-                    context.fillText("ACD:", circleX, circleY - 6);
-                    context.fillText(acdFormat, circleX, circleY + 8);
-                }
-            }
         }
-
-
         // Top 10 Countries circle
         drawCircle(context, radius, radius, radius * 0.20, "#FFFFFF", "#EEEEEE");
-        context.font = font1;
-        context.fillStyle = "#000000";
-        var titleParts = separateText(title);
-        context.fillText(titleParts[0], radius, radius - 8);
-        context.fillText(titleParts[1], radius, radius + 8);
-
+        // context.font = font1;
+        // context.fillStyle = "#000000";
+        // var titleParts = separateText(title);
+        // context.fillText(titleParts[0], radius, radius - 8);
+        // context.fillText(titleParts[1], radius, radius + 8);
     };
 
     const separateText = (text) => {
@@ -184,7 +204,7 @@ export const Petals = (props) => {
         var topPart = textParts[0] + " " + textParts[1];
         var bottomHalf = textParts[2];
         return [topPart, bottomHalf];
-    }
+    };
 
     const getColorIndexByRate = (rate) => {
         const rates = [1, 3, 7, 10, 15];
@@ -193,30 +213,22 @@ export const Petals = (props) => {
                 return i;
         }
         return 0;
-    }
+    };
 
     const drawBackground = (context) => {
-
         drawCircle(context, radius, radius, radius2, "#79A352", gradient1);
         drawCircle(context, radius, radius, radius1, "#79A352", gradient2);
         drawCircle(context, radius, radius, radius3, "#79A352", "#FFFFFF");
-
         //Background petals:
         context.beginPath();
         context.fillStyle = "#E8EFC0";
         context.moveTo(x1, radius);
         for (let i = 0; i < 10; i++) {
-            let coef2 = i * coef1,
-                coef3 = (i + 0.5) * coef1;
-            context.lineTo(
-                radius - Math.cos(coef2) * diameter1,
-                radius - Math.sin(coef2) * diameter1)
-            context.lineTo(
-                radius - Math.cos(coef3) * diameter2,
-                radius - Math.sin(coef3) * diameter2);
+            context.lineTo(drawValues[i].o, drawValues[i].p);
+            context.lineTo(drawValues[i].m, drawValues[i].n);
         }
         context.fill();
-    }
+    };
 
     const drawCircle = (context, centerX, centerY, radius, colorStroke, colorFill) => {
         context.beginPath();
@@ -255,6 +267,67 @@ export const Petals = (props) => {
         }
         context.restore();
     };
+
+    const drawTextAlongArc2 = (context, measure, centerX, centerY, radius, distanceDiv, inverse, countries) => {
+        let resultRadius = radius;
+        if (inverse) {
+            resultRadius = radius * -1.04; //Move baseline of inverted text to be on the same arc as normal text
+            distanceDiv = -distanceDiv;
+        }
+        context.save();
+        context.translate(centerX, centerY);
+        if (countries) {
+            context.rotate(measure.countryStart);
+            for (let i = 0; i < measure.countryLen; i++) {
+                context.fillText(measure.countryStr[i], 0, -resultRadius);
+                context.rotate(measure.countryLetters[i] / distanceDiv);
+            }
+        } else {
+            context.rotate(measure.durationStart);
+            for (let i = 0; i < measure.durationLen; i++) {
+                context.fillText(measure.durationStr[i], 0, -resultRadius);
+                context.rotate(measure.durationLetters[i] / distanceDiv);
+            }
+        }
+        context.restore();
+    };
+
+    const calcWordsMeasures = async (context, data, measures, distanceDiv) => {
+        for (let i = 0; i < data.length; i++) {
+            let angle = drawValues[i].an5;
+            let obj = {};
+            // obj.distanceDiv = distanceDiv;
+            if (drawValues[i].inverse) {
+                angle += Math.PI;
+                // obj.distanceDiv = -obj.distanceDiv;
+                distanceDiv = -distanceDiv
+            }
+            obj.countryStr = data[i].country;
+            obj.durationStr = data[i].duration + " " + props.unit;
+            obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
+            obj.durationStrWidth = (await context.measureText(obj.durationStr)).width;
+            if (obj.countryStrWidth > 0.55 * radius) {
+                while (obj.countryStrWidth > 0.5 * radius) {
+                    obj.countryStr = obj.countryStr.substring(0, obj.countryStr.length - 1);
+                    obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
+                }
+                obj.countryStr += "...";
+            }
+            obj.countryLen = obj.countryStr.length;
+            obj.durationLen = obj.durationStr.length;
+            obj.countryStart = angle - obj.countryStrWidth / (distanceDiv * 2);
+            obj.durationStart = angle - obj.durationStrWidth / (distanceDiv * 2);
+            obj.countryLetters = [];
+            for (let n = 0; n < obj.countryLen; n++) {
+                obj.countryLetters[n] = (await context.measureText(obj.countryStr[n])).width;
+            }
+            obj.durationLetters = [];
+            for (let n = 0; n < obj.durationLen; n++) {
+                obj.durationLetters[n] = (await context.measureText(obj.durationStr[n])).width;
+            }
+            measures.push(obj);
+        }
+    }
 
     return (
         <Canvas
