@@ -21,7 +21,7 @@ export const Petals = (props) => {
         console.log("---Canvas Loaded---");
         const canvas = canvasRef.current;
         handleCanvas(canvas);
-    }, [handleCanvas, props])
+    }, [handleCanvas])
 
     const handleCanvas = async (canvas) => {
         if (canvas) {
@@ -295,12 +295,11 @@ export const Petals = (props) => {
     const calcWordsMeasures = async (context, data, measures, distanceDiv) => {
         for (let i = 0; i < data.length; i++) {
             let angle = drawValues[i].an5;
+            let localDistanceDiv = distanceDiv;
             let obj = {};
-            // obj.distanceDiv = distanceDiv;
             if (drawValues[i].inverse) {
                 angle += Math.PI;
-                // obj.distanceDiv = -obj.distanceDiv;
-                distanceDiv = -distanceDiv
+                localDistanceDiv = -localDistanceDiv;
             }
             obj.countryStr = data[i].country;
             obj.durationStr = data[i].duration + " " + props.unit;
@@ -315,8 +314,9 @@ export const Petals = (props) => {
             }
             obj.countryLen = obj.countryStr.length;
             obj.durationLen = obj.durationStr.length;
-            obj.countryStart = angle - obj.countryStrWidth / (distanceDiv * 2);
-            obj.durationStart = angle - obj.durationStrWidth / (distanceDiv * 2);
+
+            obj.countryStart = angle - obj.countryStrWidth / (localDistanceDiv * 2);
+            obj.durationStart = angle - obj.durationStrWidth / (localDistanceDiv * 2);
             obj.countryLetters = [];
             for (let n = 0; n < obj.countryLen; n++) {
                 obj.countryLetters[n] = (await context.measureText(obj.countryStr[n])).width;
