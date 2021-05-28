@@ -14,6 +14,9 @@ export const PasswordField = (props) => {
                     secureTextEntry={!showPass}
                     style={styles.inputText}
                     onFocus={() => setIsFocused(true)}
+                    autoCompleteType='off'
+                    autoCapitalize='none'
+                    autoCorrect={false}
                     onChange={(event) =>
                         props.handleFormValueChange(
                             props.formKey,
