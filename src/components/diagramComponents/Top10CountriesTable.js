@@ -10,32 +10,35 @@ export const Top10CountriesTable = (props) => {
             <Text style={styles.tableTitle}>Report for {props.reportDay}</Text>
             {props.data.length ?
                 <View style={styles.tableContent}>
-                    <View style={styles.tableColumn}>
-                        <Text style={styles.columnTitle}>Country</Text>
+                    <View style={[styles.tableColumn, { width: '33%' }]}>
+                        <Text style={[styles.columnTitle, {borderTopLeftRadius: 10}]}>Country</Text>
                         {props.data.map(elem => {
                             return (
                                 <Text
                                     key={elem.country}
+                                    numberOfLines={1}
                                     style={styles.td}>{elem.country}</Text>
                             )
                         })}
                     </View>
-                    <View style={styles.tableColumn}>
+                    <View style={[styles.tableColumn, { width: '40%' }]}>
                         <Text style={styles.columnTitle}>Cost In / Cost Out</Text>
                         {props.data.map(elem => {
                             return (
                                 <Text
                                     key={elem.country}
+                                    numberOfLines={1}
                                     style={styles.td}>{elem.tp_sum} / {elem.op_sum}</Text>
                             )
                         })}
                     </View>
-                    <View style={styles.tableColumn}>
-                        <Text style={styles.columnTitle}>Margin</Text>
+                    <View style={[styles.tableColumn, { width: '26%' }]}>
+                        <Text style={[styles.columnTitle, {borderTopRightRadius: 10}]}>Margin</Text>
                         {props.data.map(elem => {
                             return (
                                 <Text
                                     key={elem.country}
+                                    numberOfLines={1}
                                     style={styles.td}>{elem.delta_price}</Text>
                             )
                         })}
@@ -55,20 +58,21 @@ const styles = StyleSheet.create({
     tableTitle: {
         textAlign: 'center',
         fontFamily: 'SFBold',
-        marginBottom: 15
+        marginBottom: 10
     },
     tableContent: {
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     tableColumn: {
-
     },
     columnTitle: {
-        marginBottom: 10,
-        fontFamily: 'SF'
+        fontFamily: 'SF',
+        backgroundColor: '#edf2dc',
+        padding: 3
     },
     td: {
-        fontFamily: 'SF'
+        fontFamily: 'SF',
+        paddingHorizontal: 3
     }
 })
