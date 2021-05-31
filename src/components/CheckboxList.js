@@ -16,6 +16,10 @@ export const CheckboxList = ({ data, onChange }) => {
                     style={styles.checkbox}
                     title={item.title}
                     checked={item.active}
+                    uncheckedColor='#e4e4e4'
+                    checkedColor='#556c55'
+                    uncheckedIcon='circle-o'
+                    checkedIcon='circle-o'
                     containerStyle={styles.checkboxWrapper}
                     textStyle={styles.checkboxTitle}
                     onPress={() => setToggleCheckbox(index)}
@@ -65,7 +69,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         margin: 0,
         borderBottomWidth: 1,
-        borderBottomColor: '#686868',
+        borderBottomColor: '#e4e4e4',
     },
     checkboxTitle: {
         fontWeight: 'normal',
