@@ -45,6 +45,7 @@ export const DiagramsList = ({ navigation, route }) => {
         setTitles(tmpTitles);
         setChosenTab(tmpTitles[0]);
         setIsSubmited(true);
+        console.log("diagramsSelected: ", diagramsSelected)
     };
 
     const parseTitles = () => {
@@ -57,9 +58,18 @@ export const DiagramsList = ({ navigation, route }) => {
         return tmpArr;
     };
 
-    const back = () => {
+    const onAllClosed = () => {
         setIsSubmited(false);
         setDiagramsSelected([]);
+    };
+
+    const onBackPressed = () => {
+        // setIsSubmited(false);
+        console.log("diagramsSelected: ", diagramsSelected)
+        for (let i in diagramsSelected) {
+            diagramsListData[i].active = true;
+        }
+        console.log(diagramsListData)
     };
 
     const request = () => {
@@ -85,7 +95,7 @@ export const DiagramsList = ({ navigation, route }) => {
                     setChosenTab(titles[index - 1])
                 }
             };
-            if (!tmpArr.length) back();
+            if (!tmpArr.length) onAllClosed();
         };
 
         const chooseTab = () => {
@@ -116,13 +126,20 @@ export const DiagramsList = ({ navigation, route }) => {
     return (
         <View style={styles.container}>
             <View style={styles.contentWrapper}>
-                <DiagramsHeader title={chosenTab} />
+                <DiagramsHeader
+                    title={chosenTab}
+                    showButtons={isSubmited}
+                    onBackPressed={() => { setIsSubmited(false); onBackPressed() }}
+                    onCloseAllPressed={onAllClosed} />
                 {!isSubmited ?
                     <View style={styles.listContainer}>
                         <Panel>
                             <CheckboxList
                                 data={diagramsListData}
-                                onChange={(array) => setDiagramsSelected(array)} />
+                                onChange={(array) => {
+                                    onBackPressed();
+                                    setDiagramsSelected(array)
+                                }} />
                         </Panel>
                         <View style={styles.buttonsContainer}>
                             <View style={styles.buttonWrapper}>
