@@ -39,7 +39,8 @@ export class McData {
             "session_id": token,
             "data": {
                 "user_id": userId,
-                "fields": ["id", "name"]
+                "fields": ["id", "name"],
+                "sort_by": [{ "name": "asc" }]
             }
         }
         const json = await this._fetch(dataToSend, 'client_get/', host);
