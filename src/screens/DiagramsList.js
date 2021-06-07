@@ -110,7 +110,7 @@ export const DiagramsList = ({ navigation, route }) => {
         };
 
         return (
-            <Panel>
+            <Panel style={chosenTab == title && styles.chosenTab}>
                 <View style={styles.tabButtonWrapper}>
                     <TouchableOpacity
                         style={styles.tabButtonTextPressable}
@@ -245,7 +245,8 @@ const styles = StyleSheet.create({
         fontFamily: 'SF',
     },
     chosenTab: {
-        fontFamily: 'SFBold'
+        fontFamily: 'SFBold',
+        backgroundColor: '#edf2dc'
     },
     tabButtonClose: {
         paddingVertical: 6,
