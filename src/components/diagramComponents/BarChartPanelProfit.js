@@ -20,7 +20,6 @@ export const BarChartPanelProfit = (props) => {
     useEffect(() => {
         console.log("=====================================================");
         console.log(`---Bar chart loaded---`);
-        console.log("props.data", props.data)
     }, [props.data]);
 
     const findMaxX = () => {

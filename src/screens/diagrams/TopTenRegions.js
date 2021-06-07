@@ -39,7 +39,6 @@ export const TopTenRegions = (props) => {
         console.log("=====================================================");
         console.log(`---Top 10 Regions ${props.direction} Loaded, Profit = ${props.profit}---`);
         _setReportData();
-        console.log("data", data)
     }, [props.profit, props.direction]);
 
     const _setReportData = async () => {
@@ -56,19 +55,19 @@ export const TopTenRegions = (props) => {
     };
 
     const cutData = (data, profit) => {
-        let data1 = []
+        let cutedData = []
         for (let i in data) {
             if (profit) {
                 if (data[i].today_profit > 0 && data[i].yesterday_profit > 0) {
-                    data1.push(data[i]);
+                    cutedData.push(data[i]);
                 }
             } else {
                 if (data[i].today_duration > 0 && data[i].yesterday_duration > 0) {
-                    data1.push(data[i]);
+                    cutedData.push(data[i]);
                 }
             }
         }
-        return data1;
+        return cutedData;
     };
 
     return (

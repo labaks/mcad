@@ -20,7 +20,6 @@ export const BarChartPanelDuration = (props) => {
     useEffect(() => {
         console.log("=====================================================");
         console.log(`---Bar chart loaded---`);
-        console.log("data:", props.data)
     }, [props.data]);
 
     const findMaxX = () => {
@@ -56,8 +55,6 @@ export const BarChartPanelDuration = (props) => {
     xAxisData = createXAxisData();
 
     barHeight = props.data.length * 20 + 30;
-
-    console.log("barHeight: ", barHeight)
 
     todayData = props.data.map((obj) => ({ value: obj.today_duration }));
     yesterdayData = props.data.map((obj) => ({ value: obj.yesterday_duration }));
