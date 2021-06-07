@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
-import headerImage from '../../assets/adaptive-icon.png';
+import headerImage from '../../assets/round.png';
 
 export const DiagramsHeader = (props) => {
 
