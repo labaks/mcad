@@ -1,6 +1,5 @@
-import { Icon } from 'native-base';
 import React from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import headerImage from '../../assets/adaptive-icon.png';
 
 export const DiagramsHeader = (props) => {
@@ -19,21 +18,19 @@ export const DiagramsHeader = (props) => {
                 </View>
             </View>
             {props.showButtons ?
-                <View style={styles.btnWrapper}>
-                    <View style={[styles.iconWrapper, styles.topIconButton]}>
-                        <Icon
-                            style={styles.icon}
-                            onPress={props.onBackPressed}
-                            type='FontAwesome5'
-                            name='angle-left' />
-                    </View>
-                    <View style={[styles.iconWrapper, styles.bottomIconButton]}>
-                        <Icon
-                            style={styles.icon}
-                            onPress={props.onCloseAllPressed}
-                            type='MaterialCommunityIcons'
-                            name='close-box-multiple-outline' />
-                    </View>
+                <View style={styles.btnsWrapper}>
+                    <TouchableOpacity
+                        style={[styles.button, styles.topButton]}
+                        activeOpacity={.5}
+                        onPress={props.onBackPressed}>
+                        <Text style={styles.btnText}>Back</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.button, styles.bottomButton]}
+                        activeOpacity={.5}
+                        onPress={props.onRequestPressed}>
+                        <Text style={styles.btnText}>Request</Text>
+                    </TouchableOpacity>
                 </View>
                 :
                 <View></View>
@@ -44,7 +41,7 @@ export const DiagramsHeader = (props) => {
 
 const styles = StyleSheet.create({
     wrapper: {
-        height: 85,
+        height: 80,
         backgroundColor: '#fff',
         borderRadius: 15,
         borderWidth: .5,
@@ -87,31 +84,31 @@ const styles = StyleSheet.create({
     noRecords: {
         color: '#E4E4E4'
     },
-    btnWrapper: {
+    btnsWrapper: {
         flexDirection: 'column',
     },
-    iconWrapper: {
+    button: {
         borderRadius: 10,
         backgroundColor: '#4B4B52',
         padding: 5,
-        height: 35,
-        width: 35,
+        height: 32,
+        width: 70,
         alignContent: 'center',
         justifyContent: 'center'
     },
-    icon: {
-        color: 'white',
-        textAlign: 'center',
-        fontSize: 22
-    },
-    topIconButton: {
+    topButton: {
         marginBottom: 1,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0
     },
-    bottomIconButton: {
+    bottomButton: {
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0
-
+    },
+    btnText: {
+        color: 'white',
+        textAlign: 'center',
+        fontSize: 13,
+        fontFamily: 'SFBold'
     }
 })

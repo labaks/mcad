@@ -17,11 +17,11 @@ export const DiagramsList = ({ navigation, route }) => {
     const url = route.params.url;
     const companyId = route.params.companyId;
     const companyName = route.params.companyName;
-    const [diagramsSelected, setDiagramsSelected] = useState([]);
+    const [selectedDiagramsIds, setSelectedDiagramsIds] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
     const [chosenTab, setChosenTab] = useState("");
-    const diagramsListData = [
+    let defaultListData = [
         { id: 0, title: 'Top 10 Regions In', active: false },
         { id: 1, title: 'Top 10 Regions Out', active: false },
         { id: 2, title: 'Top 10 Regions In, $', active: false },
@@ -33,6 +33,7 @@ export const DiagramsList = ({ navigation, route }) => {
         { id: 8, title: 'Financial Reports Today', active: false },
         { id: 9, title: 'Financial Reports Yesterday', active: false }
     ];
+    const [listData, setListData] = useState(defaultListData);
 
     useEffect(() => {
         console.log("=====================================================");
@@ -45,14 +46,13 @@ export const DiagramsList = ({ navigation, route }) => {
         setTitles(tmpTitles);
         setChosenTab(tmpTitles[0]);
         setIsSubmited(true);
-        console.log("diagramsSelected: ", diagramsSelected)
     };
 
     const parseTitles = () => {
         let tmpArr = [...titles];
-        tmpArr = diagramsSelected.map((id) => {
-            for (let i in diagramsListData) {
-                if (id == diagramsListData[i].id) return diagramsListData[i].title
+        tmpArr = selectedDiagramsIds.map((id) => {
+            for (let i in listData) {
+                if (id == listData[i].id) return listData[i].title
             }
         })
         return tmpArr;
@@ -60,16 +60,20 @@ export const DiagramsList = ({ navigation, route }) => {
 
     const onAllClosed = () => {
         setIsSubmited(false);
-        setDiagramsSelected([]);
+        setSelectedDiagramsIds([]);
+        for (let j in listData) {
+            listData[j].active = false;
+        }
     };
 
     const onBackPressed = () => {
-        // setIsSubmited(false);
-        console.log("diagramsSelected: ", diagramsSelected)
-        for (let i in diagramsSelected) {
-            diagramsListData[i].active = true;
+        for (let j in listData) {
+            listData[j].active = false;
         }
-        console.log(diagramsListData)
+        for (let i in selectedDiagramsIds) {
+            listData[selectedDiagramsIds[i]].active = true;
+        }
+        setIsSubmited(false);
     };
 
     const request = () => {
@@ -85,9 +89,12 @@ export const DiagramsList = ({ navigation, route }) => {
     const TabButton = ({ title }) => {
         const removeTab = () => {
             let tmpArr = [...titles];
+            let tmpIds = [...selectedDiagramsIds];
             let index = tmpArr.indexOf(title);
             tmpArr.splice(index, 1);
+            tmpIds.splice(index, 1);
             setTitles(tmpArr);
+            setSelectedDiagramsIds(tmpIds);
             if (chosenTab == title) {
                 if (index < tmpArr.length) {
                     setChosenTab(titles[index + 1])
@@ -129,16 +136,19 @@ export const DiagramsList = ({ navigation, route }) => {
                 <DiagramsHeader
                     title={chosenTab}
                     showButtons={isSubmited}
-                    onBackPressed={() => { setIsSubmited(false); onBackPressed() }}
-                    onCloseAllPressed={onAllClosed} />
+                    onBackPressed={onBackPressed}
+                    onRequestPressed={request} />
                 {!isSubmited ?
                     <View style={styles.listContainer}>
                         <Panel>
                             <CheckboxList
-                                data={diagramsListData}
+                                data={listData}
+                                ids={selectedDiagramsIds}
                                 onChange={(array) => {
-                                    onBackPressed();
-                                    setDiagramsSelected(array)
+                                    setSelectedDiagramsIds(array);
+                                }}
+                                onChangeInnerData={(obj) => {
+                                    setListData(obj)
                                 }} />
                         </Panel>
                         <View style={styles.buttonsContainer}>
@@ -149,7 +159,7 @@ export const DiagramsList = ({ navigation, route }) => {
                             </View>
                             <View style={styles.buttonWrapper}>
                                 <MainBtn
-                                    disabled={!diagramsSelected.length}
+                                    disabled={!selectedDiagramsIds.length}
                                     text="Submit"
                                     onPress={selectDiagrams} />
                             </View>

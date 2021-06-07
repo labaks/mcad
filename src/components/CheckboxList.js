@@ -2,10 +2,10 @@ import { CheckBox } from 'react-native-elements'
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 
-export const CheckboxList = ({ data, onChange }) => {
+export const CheckboxList = ({ data, ids, onChange, onChangeInnerData }) => {
 
     const [innerData, setInnerData] = useState(data);
-    const [reportsIds, setReportsIds] = useState([]);
+    const [reportsIds, setReportsIds] = useState(ids);
 
     const renderItem = ({ item, index }) => {
         return (
@@ -41,6 +41,7 @@ export const CheckboxList = ({ data, onChange }) => {
         tmpIds.sort();
         setReportsIds(tmpIds)
         onChange(tmpIds);
+        onChangeInnerData(innerData);
     };
 
     return (
