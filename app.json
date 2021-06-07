@@ -2,12 +2,12 @@
   "expo": {
     "name": "MCAD",
     "slug": "speedflow",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/loginBg.png",
-      "resizeMode": "cover",
+      "image": "./assets/splashMcad.png",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#ffffff"
       },
       "package": "com.speedflow.mcad",
       "versionCode": 1
