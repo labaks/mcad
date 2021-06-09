@@ -14,18 +14,20 @@ export const FinancialReportsTable = (props) => {
                                 elem.point_name ?
                                     <Text
                                         key={index}
-                                        style={styles.td}>{elem.point_name}</Text>
+                                        style={[styles.td, styles.highlightedColumn]}>{elem.point_name}</Text>
                                     :
-                                    <Text
-                                        key={index}
-                                        style={styles.total}>Total</Text>
+                                    <View style={[styles.totalRow]}>
+                                        <Text
+                                            key={index}
+                                            style={[styles.td, styles.total]}>Total</Text>
+                                    </View>
                             )
                         })}
                     </View>
                     <ScrollView
                         horizontal
                         contentContainerStyle={styles.tableContent}>
-                        <View style={styles.tableRow}>
+                        <View style={[styles.tableRow, styles.stickyHeader]}>
                             <Text style={[styles.th, styles.countryTd]}>Country</Text>
                             <Text style={[styles.th, styles.durationTd]}>Duration</Text>
                             <Text style={[styles.th, styles.calcDurationTd]}>Calculated</Text>
@@ -43,7 +45,7 @@ export const FinancialReportsTable = (props) => {
                             return (
                                 <View
                                     key={index}
-                                    style={styles.tableRow}>
+                                    style={[styles.tableRow, !elem.point_name && styles.totalRow]}>
                                     <Text
                                         numberOfLines={1}
                                         style={[styles.td, styles.countryTd]}>{elem.country}</Text>
@@ -76,7 +78,6 @@ export const FinancialReportsTable = (props) => {
 }
 
 const styles = StyleSheet.create({
-
     scrollWrapper: {
         flexDirection: 'row'
     },
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
     },
     pointNameColumn: {
         flexDirection: 'column',
-        marginRight: 5
+        marginRight: 2
     },
     tableRow: {
         flexDirection: 'row'
@@ -98,14 +99,27 @@ const styles = StyleSheet.create({
     th: {
         fontFamily: 'SFBold',
         marginBottom: 5,
+        marginRight: 1,
+        backgroundColor: '#edf2dc'
+    },
+    stickyHeader: {
+    },
+    highlightedColumn: {
+        backgroundColor: '#edf2dc'
     },
     td: {
         fontFamily: 'SF',
         paddingVertical: 2,
         marginBottom: 3,
+        marginRight: 1
     },
     total: {
-        fontFamily: 'SFBold'
+        fontFamily: 'SFBold',
+    },
+    totalRow: {
+        borderColor: '#edf2dc',
+        borderBottomWidth: 1,
+        borderTopWidth: 1
     },
     countryTd: {
         width: 80,
