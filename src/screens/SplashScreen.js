@@ -63,6 +63,8 @@ export const SplashScreen = ({ navigation }) => {
                         '',
                         loginResponse.details ? loginResponse.details : loginResponse.message
                     );
+                    console.log("---SplashScreen will navigate to SignUpScreen");
+                    navigation.navigate('SignUp');
                 }
             } else {
                 setLoading(false);
