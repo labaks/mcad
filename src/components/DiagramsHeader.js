@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     image: {
-        resizeMode: 'cover',
-        width: 57,
-        height: 57,
+        resizeMode: 'contain',
+        width: 60,
+        height: 60,
     },
     textWrapper: {
-        padding: 10
+        padding: 6
     },
     header: {
         color: '#4B4B52',
