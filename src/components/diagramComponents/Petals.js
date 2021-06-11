@@ -1,10 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Canvas from 'react-native-canvas';
+
+import { Loader } from '../Loader';
 
 export const Petals = (props) => {
 
     const canvasRef = useRef(null);
+
+    const [loading, setLoading] = useState(true);
 
     let diameter, fontZoom, radius;
     let radius1, radius2, radius3, gradient1, gradient2, x1, diameter1, diameter2, diameter3, coef1;
@@ -21,6 +25,7 @@ export const Petals = (props) => {
         console.log("---Canvas Loaded---");
         const canvas = canvasRef.current;
         handleCanvas(canvas);
+
     }, [handleCanvas])
 
     const handleCanvas = async (canvas) => {
@@ -151,7 +156,7 @@ export const Petals = (props) => {
                 context.stroke();
                 context.fillStyle = "#000000";
 
-                drawTextAlongArc2(
+                drawTextAlongArc(
                     context,
                     wordsMeasures[i],
                     radius,
@@ -162,7 +167,7 @@ export const Petals = (props) => {
                     true
                 );
                 // Minutes/Successful SMS text:
-                drawTextAlongArc2(
+                drawTextAlongArc(
                     context,
                     wordsMeasures[i],
                     radius,
@@ -197,6 +202,8 @@ export const Petals = (props) => {
         // var titleParts = separateText(title);
         // context.fillText(titleParts[0], radius, radius - 8);
         // context.fillText(titleParts[1], radius, radius + 8);
+
+        setLoading(false);
     };
 
     const separateText = (text) => {
@@ -240,35 +247,7 @@ export const Petals = (props) => {
         context.stroke();
     };
 
-    const drawTextAlongArc = async (context, str, centerX, centerY, radius, angle, inverse) => {
-        var resultRadius = radius;
-        if (inverse) {
-            angle += Math.PI;
-            resultRadius = radius * -1.04; //Move baseline of inverted text to be on the same arc as normal text
-            distanceDiv = -distanceDiv
-        }
-        context.save();
-        context.translate(centerX, centerY);
-        let strWidth = (await context.measureText(str)).width;
-        if (strWidth > 0.55 * radius) {
-            while (strWidth > 0.5 * radius) {
-                str = str.substring(0, str.length - 1);
-                strWidth = (await context.measureText(str)).width;
-            }
-            str += "...";
-        }
-        var len = str.length;
-        var start = angle - strWidth / (distanceDiv * 2);
-        context.rotate(start);
-        for (var n = 0; n < len; n++) {
-            context.fillText(str[n], 0, -resultRadius);
-            let letterMeasure = await context.measureText(str[n])
-            context.rotate(letterMeasure.width / distanceDiv);
-        }
-        context.restore();
-    };
-
-    const drawTextAlongArc2 = (context, measure, centerX, centerY, radius, distanceDiv, inverse, countries) => {
+    const drawTextAlongArc = (context, measure, centerX, centerY, radius, distanceDiv, inverse, countries) => {
         let resultRadius = radius;
         if (inverse) {
             resultRadius = radius * -1.04; //Move baseline of inverted text to be on the same arc as normal text
@@ -306,7 +285,7 @@ export const Petals = (props) => {
             obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
             obj.durationStrWidth = (await context.measureText(obj.durationStr)).width;
             if (obj.countryStrWidth > 0.55 * radius) {
-                while (obj.countryStrWidth > 0.5 * radius) {
+                while (obj.countryStrWidth > 0.43 * radius) {
                     obj.countryStr = obj.countryStr.substring(0, obj.countryStr.length - 1);
                     obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
                 }
@@ -330,10 +309,13 @@ export const Petals = (props) => {
     }
 
     return (
-        <Canvas
-            style={styles.canvas}
-            ref={canvasRef}
-            {...props} />
+        <View>
+            <Loader loading={loading} />
+            <Canvas
+                style={styles.canvas}
+                ref={canvasRef}
+                {...props} />
+        </View>
     )
 }
 

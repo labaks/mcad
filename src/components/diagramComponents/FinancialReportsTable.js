@@ -16,9 +16,10 @@ export const FinancialReportsTable = (props) => {
                                         key={index}
                                         style={[styles.td, styles.highlightedColumn]}>{elem.point_name}</Text>
                                     :
-                                    <View style={[styles.totalRow]}>
+                                    <View
+                                        key={index}
+                                        style={[styles.totalRow]}>
                                         <Text
-                                            key={index}
                                             style={[styles.td, styles.total]}>Total</Text>
                                     </View>
                             )

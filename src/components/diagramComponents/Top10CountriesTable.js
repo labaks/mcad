@@ -11,7 +11,7 @@ export const Top10CountriesTable = (props) => {
             {props.data.length ?
                 <View style={styles.tableContent}>
                     <View style={[styles.tableColumn, { width: '33%' }]}>
-                        <Text style={[styles.columnTitle, {borderTopLeftRadius: 10}]}>Country</Text>
+                        <Text style={[styles.columnTitle, { borderTopLeftRadius: 10 }]}>Country</Text>
                         {props.data.map(elem => {
                             return (
                                 <Text
@@ -28,12 +28,12 @@ export const Top10CountriesTable = (props) => {
                                 <Text
                                     key={elem.country}
                                     numberOfLines={1}
-                                    style={styles.td}>{elem.tp_sum} / {elem.op_sum}</Text>
+                                    style={styles.td}>{elem.op_sum} / {elem.tp_sum}</Text>
                             )
                         })}
                     </View>
                     <View style={[styles.tableColumn, { width: '26%' }]}>
-                        <Text style={[styles.columnTitle, {borderTopRightRadius: 10}]}>Margin</Text>
+                        <Text style={[styles.columnTitle, { borderTopRightRadius: 10 }]}>Margin</Text>
                         {props.data.map(elem => {
                             return (
                                 <Text
