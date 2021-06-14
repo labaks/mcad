@@ -284,7 +284,7 @@ export const Petals = (props) => {
             obj.durationStr = data[i].duration + " " + props.unit;
             obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
             obj.durationStrWidth = (await context.measureText(obj.durationStr)).width;
-            if (obj.countryStrWidth > 0.55 * radius) {
+            if (obj.countryStrWidth > 0.5 * radius) {
                 while (obj.countryStrWidth > 0.43 * radius) {
                     obj.countryStr = obj.countryStr.substring(0, obj.countryStr.length - 1);
                     obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;

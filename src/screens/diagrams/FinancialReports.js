@@ -98,9 +98,9 @@ export const FinancialReports = (props) => {
                     data.length ?
                         <Panel>
                             <Text style={styles.subtitle}>Account Manager: {data[0].manager}</Text>
-                            <Text style={[styles.title, { marginBottom: 10 }]}>INBOUND</Text>
+                            <Text style={styles.title}>INBOUND</Text>
                             <FinancialReportsTable data={inbound} />
-                            <Text style={[styles.title, { marginBottom: 10, marginTop: 20 }]}>OUTBOUND</Text>
+                            <Text style={[styles.title, { marginTop: 20 }]}>OUTBOUND</Text>
                             <FinancialReportsTable data={outbound} />
                         </Panel>
                         :
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     title: {
         textAlign: 'center',
         fontFamily: 'SFBold',
+        marginBottom: 10
     },
     subtitle: {
         textAlign: 'center',
