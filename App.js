@@ -9,7 +9,6 @@ import { LoginScreen } from './src/screens/LoginScreen';
 import { SignUpScreen } from './src/screens/SignUpScreen';
 import { SplashScreen } from './src/screens/SplashScreen';
 import NavChooseCompany from './src/screens/navigation/NavChooseCompany';
-import NavCompanySelected from './src/screens/navigation/NavCompanySelected';
 import { SafeAreaView, StyleSheet } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -56,10 +55,6 @@ export default class App extends React.Component {
               <Stack.Screen
                 name="NavChooseCompany"
                 component={NavChooseCompany}
-                options={{ headerShown: false }} />
-              <Stack.Screen
-                name="NavCompanySelected"
-                component={NavCompanySelected}
                 options={{ headerShown: false }} />
             </Stack.Navigator>
           </NavigationContainer>

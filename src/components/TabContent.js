@@ -12,7 +12,8 @@ export const TabContent = (props) => {
         url = props.url,
         companyId = props.companyId,
         companyName = props.companyName,
-        navigation = props.navigation;
+        navigation = props.navigation,
+        service = props.service;
 
     let content = <Text></Text>;
 
@@ -24,6 +25,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 direction={'in'}
+                service={service}
             />
             break;
         case 'Top 10 Regions Out':
@@ -33,6 +35,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 direction={'out'}
+                service={service}
             />
             break;
         case 'Top 10 Regions In, $':
@@ -43,6 +46,7 @@ export const TabContent = (props) => {
                 navigation={navigation}
                 direction={'in'}
                 profit={true}
+                service={service}
             />
             break;
         case 'Top 10 Regions Out, $':
@@ -53,6 +57,7 @@ export const TabContent = (props) => {
                 navigation={navigation}
                 direction={'out'}
                 profit={true}
+                service={service}
             />
             break;
         case 'Top 10 Countries In':
@@ -62,6 +67,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 direction={'in'}
+                service={service}
             />
             break;
         case 'Top 10 Countries Out':
@@ -71,6 +77,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 direction={'out'}
+                service={service}
             />
             break;
         case 'Traffic Share In':
@@ -81,6 +88,7 @@ export const TabContent = (props) => {
                 navigation={navigation}
                 direction={'in'}
                 companyName={companyName}
+                service={service}
             />
             break;
         case 'Traffic Share Out':
@@ -91,6 +99,7 @@ export const TabContent = (props) => {
                 navigation={navigation}
                 direction={'out'}
                 companyName={companyName}
+                service={service}
             />
             break;
         case 'Financial Reports Today':
@@ -100,6 +109,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 period={"today"}
+                service={service}
             />
             break;
         case 'Financial Reports Yesterday':
@@ -109,6 +119,7 @@ export const TabContent = (props) => {
                 companyId={companyId}
                 navigation={navigation}
                 period={"yesterday"}
+                service={service}
             />
             break;
         default:

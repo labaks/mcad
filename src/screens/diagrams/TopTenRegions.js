@@ -5,7 +5,6 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
 
-import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
@@ -15,7 +14,6 @@ import { BarChartPanelProfit } from '../../components/diagramComponents/BarChart
 let dropDownAlert;
 
 export const TopTenRegions = (props) => {
-    const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
@@ -43,7 +41,7 @@ export const TopTenRegions = (props) => {
 
     const _setReportData = async () => {
         setLoading(true);
-        const response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit);
+        const response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit, props.service);
         // const response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
@@ -58,11 +56,11 @@ export const TopTenRegions = (props) => {
         let cutedData = []
         for (let i in data) {
             if (profit) {
-                if (data[i].today_profit > 0 && data[i].yesterday_profit > 0) {
+                if (data[i].today_profit > 0 || data[i].yesterday_profit > 0) {
                     cutedData.push(data[i]);
                 }
             } else {
-                if (data[i].today_duration > 0 && data[i].yesterday_duration > 0) {
+                if (data[i].today_duration > 0 || data[i].yesterday_duration > 0) {
                     cutedData.push(data[i]);
                 }
             }
@@ -82,7 +80,6 @@ export const TopTenRegions = (props) => {
                         <BarChartPanelDuration data={data} />
                 }
             </View>
-            <StatusBar style="auto" />
             <DropdownAlert
                 ref={(ref) => { dropDownAlert = ref }}
                 closeInterval={3000}

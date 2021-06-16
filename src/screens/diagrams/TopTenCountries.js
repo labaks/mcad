@@ -8,19 +8,17 @@ import { Top10CountriesTable } from '../../components/diagramComponents/Top10Cou
 
 import { Loader } from '../../components/Loader';
 
-import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
 let dropDownAlert;
 
 export const TopTenCountries = (props) => {
-    const backButtonHandler = BackButtonHandler();
     const [reportDay, setReportDay] = useState("");
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const title = "Top 10 Countries";
-    const unit = 'min.';
+    const unit = props.service == 1 ? 'min.' : 'sms';
 
     const mock = {
         "data": [
@@ -51,7 +49,7 @@ export const TopTenCountries = (props) => {
 
     const _setReportData = async () => {
         setLoading(true);
-        const response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction);
+        const response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction, props.service);
         // const response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
@@ -79,7 +77,8 @@ export const TopTenCountries = (props) => {
                             title={title}
                             unit={unit}
                             height={300}
-                            width={300} />
+                            width={300}
+                            service={props.service} />
                     </View>
                 </View>
             }

@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons';
@@ -9,14 +8,7 @@ import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 import { TabContent } from '../components/TabContent';
 
-import { BackButtonHandler } from '../helpers/BackButtonHandler';
-
-export const DiagramsList = ({ navigation, route }) => {
-    const backButtonHandler = BackButtonHandler();
-    const token = route.params.token;
-    const url = route.params.url;
-    const companyId = route.params.companyId;
-    const companyName = route.params.companyName;
+export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, navigation }) => {
     const [selectedDiagramsIds, setSelectedDiagramsIds] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
@@ -37,8 +29,8 @@ export const DiagramsList = ({ navigation, route }) => {
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Diagrams List Screen Loaded---")
-        console.log("-params received: ", route.params);
+        console.log("---Diagrams List Screen Loaded---");
+        navigation.setOptions({ headerTitle: selectedCompany.Name });
     }, [])
 
     const selectDiagrams = () => {
@@ -76,14 +68,9 @@ export const DiagramsList = ({ navigation, route }) => {
         setIsSubmited(false);
     };
 
-    const request = () => {
-        navigation.reset({
-            index: 0,
-            routes: [{
-                name: 'NavChooseCompany',
-                params: { url: url, token: token }
-            }]
-        })
+    const onRequestPressed = () => {
+        navigation.setOptions({ headerTitle: '' });
+        onRequest(false);
     };
 
     const TabButton = ({ title }) => {
@@ -137,7 +124,8 @@ export const DiagramsList = ({ navigation, route }) => {
                     title={chosenTab}
                     showButtons={isSubmited}
                     onBackPressed={onBackPressed}
-                    onRequestPressed={request} />
+                    onRequestPressed={onRequestPressed}
+                    service={service} />
                 {!isSubmited ?
                     <View style={styles.listContainer}>
                         <Panel>
@@ -155,7 +143,7 @@ export const DiagramsList = ({ navigation, route }) => {
                             <View style={styles.buttonWrapper}>
                                 <MainBtn
                                     text="Request"
-                                    onPress={request} />
+                                    onPress={onRequestPressed} />
                             </View>
                             <View style={styles.buttonWrapper}>
                                 <MainBtn
@@ -183,14 +171,14 @@ export const DiagramsList = ({ navigation, route }) => {
                                 chosenTab={chosenTab}
                                 token={token}
                                 url={url}
-                                companyId={companyId}
-                                companyName={companyName}
-                                navigation={navigation} />
+                                companyId={selectedCompany.Id}
+                                companyName={selectedCompany.Name}
+                                navigation={navigation}
+                                service={service} />
                         </View>
                     </ScrollView>
                 }
             </View>
-            <StatusBar style="auto" />
         </View>
     )
 }

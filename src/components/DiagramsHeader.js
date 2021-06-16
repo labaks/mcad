@@ -5,6 +5,7 @@ import headerImage from '../../assets/round.png';
 export const DiagramsHeader = (props) => {
 
     const title = props.title ? props.title : "No records found";
+    const service = props.service == 1 ? "Voice" : "SMS";
 
     return (
         <View style={styles.wrapper}>
@@ -13,7 +14,7 @@ export const DiagramsHeader = (props) => {
                     style={styles.image}
                     source={headerImage} />
                 <View style={styles.textWrapper}>
-                    <Text style={styles.header}>Diagrams</Text>
+                    <Text style={styles.header}>{service} Diagrams</Text>
                     <Text style={[styles.diagramName, !props.title && styles.noRecords]}>{title}</Text>
                 </View>
             </View>

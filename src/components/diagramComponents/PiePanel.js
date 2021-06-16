@@ -10,6 +10,7 @@ export const PiePanel = (props) => {
 
     const clientColor = props.direction == 'in' ? '#75c374' : '#bac1c6';
     const otherColor = props.direction == 'in' ? '#0090d0' : '#f19dc4';
+    const unit = props.service == 1 ? 'min.' : 'sms';
 
     const pieData = () => {
         const clientValue = parseFloat((props.data.client_value * 100 / props.data.total_value).toFixed(2));
@@ -42,11 +43,11 @@ export const PiePanel = (props) => {
             <Text style={[styles.title, { marginBottom: 10 }]}> {props.data.start_date} {props.data.start_date == props.data.end_date ? '' : `- ${props.data.end_date}`}</Text>
             <LegendUnit
                 color={clientColor}
-                text={`${props.company} - ${props.data.client_value} min.`} />
+                text={`${props.company} - ${props.data.client_value} ${unit}`} />
             <LegendUnit
                 color={otherColor}
-                text={`Other - ${props.data.total_value - props.data.client_value} min.`} />
-            <Text style={styles.total}>Total - {props.data.total_value} min.</Text>
+                text={`Other - ${props.data.total_value - props.data.client_value} ${unit}`} />
+            <Text style={styles.total}>Total - {props.data.total_value} {unit}</Text>
             <View style={styles.pieWrapper}>
                 <PieChart
                     style={styles.chart}

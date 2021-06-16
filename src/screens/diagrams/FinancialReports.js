@@ -8,14 +8,12 @@ import { NoRecords } from '../../components/NoRecords';
 
 import { FinancialReportsTable } from '../../components/diagramComponents/FinancialReportsTable';
 
-import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
 var dropDownAlert;
 
 export const FinancialReports = (props) => {
-    const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [inbound, setInbound] = useState([]);
@@ -66,7 +64,7 @@ export const FinancialReports = (props) => {
 
     const _setReportData = async () => {
         setLoading(true);
-        const response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period);
+        const response = await McData._getFinSummary(props.token, props.url, props.companyId, props.period, props.service);
         // const response = mock;
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
@@ -99,9 +97,13 @@ export const FinancialReports = (props) => {
                         <Panel>
                             <Text style={styles.subtitle}>Account Manager: {data[0].manager}</Text>
                             <Text style={styles.title}>INBOUND</Text>
-                            <FinancialReportsTable data={inbound} />
+                            <FinancialReportsTable
+                                data={inbound}
+                                service={props.service} />
                             <Text style={[styles.title, { marginTop: 20 }]}>OUTBOUND</Text>
-                            <FinancialReportsTable data={outbound} />
+                            <FinancialReportsTable
+                                data={outbound}
+                                service={props.service} />
                         </Panel>
                         :
                         <NoRecords />

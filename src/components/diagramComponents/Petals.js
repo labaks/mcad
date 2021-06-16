@@ -110,7 +110,7 @@ export const Petals = (props) => {
                 obj.gradient.addColorStop(0.5, colors[obj.cIndex]);
                 obj.gradient.addColorStop(1, colorsDark[obj.cIndex]);
                 if (i < data.length) {
-                    obj.acdFormat = ~~(data[i].acd / 60) + ':' + data[i].acd % 60;
+                    if (props.service == 1) obj.acdFormat = ~~(data[i].acd / 60) + ':' + data[i].acd % 60;
                     obj.circleX = radius - Math.cos(obj.an3) * diameter3;
                     obj.circleY = radius - Math.sin(obj.an3) * diameter3;
                 }
@@ -177,7 +177,7 @@ export const Petals = (props) => {
                     drawValues[i].inverse,
                     false
                 );
-                if (i < data.length) {
+                if (i < data.length && props.service == 1) {
                     context.textBaseline = "middle";
                     context.font = font2;
                     context.textAlign = "center";
@@ -281,7 +281,11 @@ export const Petals = (props) => {
                 localDistanceDiv = -localDistanceDiv;
             }
             obj.countryStr = data[i].country;
-            obj.durationStr = data[i].duration + " " + props.unit;
+            if (props.service == 1) {
+                obj.durationStr = data[i].duration + " " + props.unit;
+            } else {
+                obj.durationStr = data[i].sa + " " + props.unit;
+            }
             obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
             obj.durationStrWidth = (await context.measureText(obj.durationStr)).width;
             if (obj.countryStrWidth > 0.5 * radius) {

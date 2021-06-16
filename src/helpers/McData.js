@@ -34,13 +34,14 @@ export class McData {
         }
     };
 
-    static async _getUserCompanies(token = '', host = '', userId = '') {
+    static async _getUserCompanies(token = '', host = '', userId = '', service) {
         const dataToSend = {
             "session_id": token,
             "data": {
                 "user_id": userId,
                 "fields": ["id", "name"],
-                "sort_by": [{ "name": "asc" }]
+                "sort_by": [{ "name": "asc" }],
+                "services_ids": [service]
             }
         }
         const json = await this._fetch(dataToSend, 'client_get/', host);
@@ -71,35 +72,39 @@ export class McData {
         return objectsArray;
     };
 
-    static async _getTopTenRegions(token = '', host = '', companyId, direction, profit = false) {
+    static async _getTopTenRegions(token = '', host = '', companyId, direction, profit = false, service) {
         const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
-                "direction": direction
+                "direction": direction,
+                "service_id": service
             }
         }
         const route = profit ? 'top_profit_regions_get/' : 'top_duration_regions_get/';
         return await this._fetch(dataToSend, route, host);
     };
 
-    static async _getTopTenCountries(token = '', host = '', companyId, direction) {
+    static async _getTopTenCountries(token = '', host = '', companyId, direction, service) {
         const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
-                "direction": direction
+                "direction": direction,
             }
         }
-        return await this._fetch(dataToSend, 'top_countries_get/', host);
+        const route = service == 1 ? 'top_countries_get' : 'sms_top_countries_get/';
+        return await this._fetch(dataToSend, route, host);
     };
 
-    static async _getTrafficShare(token = '', host = '', companyId, direction) {
+    static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
+        console.log("get traffic share service: ", service)
         const dataToSend = {
             "session_id": token,
             "data": {
                 "client_id": companyId,
-                "direction": direction
+                "direction": direction,
+                // "service_id": service
             }
         }
         return await this._fetch(dataToSend, 'traffic_share_get/', host);
@@ -117,7 +122,7 @@ export class McData {
         return arr;
     };
 
-    static async _getFinSummary(token = '', host = '', companyId, period) {
+    static async _getFinSummary(token = '', host = '', companyId, period, service) {
         let start_date, end_date;
         let today = yesterday = new Date();
         yesterday.setDate(today.getDate() - 1);
@@ -131,6 +136,36 @@ export class McData {
                 end_date = this.dateFormat(today, false);
                 break;
         };
+        const fields = service == 1 ?
+            [
+                "company", //company
+                "direction", //Inbound/outbound
+                "point_name", //point name v
+                "country", //country v
+                "duration", //duration v ---
+                "calc_duration", //calculated v ---
+                "attempts", //attempts v
+                "sa", //S. Attempts v
+                "op_sum", //Cost IN v
+                "tp_sum", //Cost OUT v
+                "delta_price", //Margin v
+                "delta_profit", //Profit v
+                "manager", //Account manager
+            ]
+            :
+            [
+                "company", //company
+                "direction", //Inbound/outbound
+                "point_name", //point name v
+                "country", //country v
+                "attempts", //attempts v
+                "sa", //S. Attempts v
+                "op_sum", //Cost IN v
+                "tp_sum", //Cost OUT v
+                "delta_price", //Margin v
+                "delta_profit", //Profit v
+                "manager", //Account manager
+            ];
         const dataToSend = {
             "session_id": token,
             "data": {
@@ -138,24 +173,11 @@ export class McData {
                 "end_date": end_date,
                 "type": 2,
                 "companies": [companyId],
-                "fields": [
-                    "company", //company
-                    "direction", //Inbound/outbound
-                    "point_name", //point name v
-                    "country", //country v
-                    "duration", //duration v
-                    "calc_duration", //calculated v
-                    "attempts", //attempts v
-                    "sa", //S. Attempts v
-                    "op_sum", //Cost IN v
-                    "tp_sum", //Cost OUT v
-                    "delta_price", //Margin v
-                    "delta_profit", //Profit v
-                    "manager", //Account manager
-                ],
+                "fields": fields,
             }
         }
-        return await this._fetch(dataToSend, 'fin_summary_get/', host);
+        const route = service == 1 ? 'fin_summary_get/' : 'sms_fin_summary_get';
+        return await this._fetch(dataToSend, route, host);
     };
 
     static dateFormat(day, start) {

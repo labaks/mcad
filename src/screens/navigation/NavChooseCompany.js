@@ -38,7 +38,7 @@ const NavChooseCompany = ({ navigation, route }) => {
                     color: '#000'
                 },
             }}
-            initialRouteName={'chooseCompany'}
+            initialRouteName={'chooseVoiceCompany'}
         >
             <Drawer.Screen
                 name="account"
@@ -53,14 +53,28 @@ const NavChooseCompany = ({ navigation, route }) => {
                 component={Account}
             />
             <Drawer.Screen
-                name="chooseCompany"
+                name="chooseVoiceCompany"
                 options={{
-                    drawerLabel: 'Reports',
+                    drawerLabel: 'Voice Diagrams',
                     headerTitle: ''
                 }}
                 initialParams={{
                     token: params.token,
-                    url: params.url
+                    url: params.url,
+                    service: 1
+                }}
+                component={ChooseCompanyScreen}
+            />
+            <Drawer.Screen
+                name="chooseSMSCompany"
+                options={{
+                    drawerLabel: 'SMS Diagrams',
+                    headerTitle: ''
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url,
+                    service: 2
                 }}
                 component={ChooseCompanyScreen}
             />

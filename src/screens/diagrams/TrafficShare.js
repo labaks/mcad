@@ -5,14 +5,12 @@ import DropdownAlert from 'react-native-dropdownalert';
 import { PiePanel } from '../../components/diagramComponents/PiePanel';
 import { Loader } from '../../components/Loader';
 
-import { BackButtonHandler } from '../../helpers/BackButtonHandler';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
 var dropDownAlert;
 
 export const TrafficShare = (props) => {
-    const backButtonHandler = BackButtonHandler();
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
 
@@ -24,7 +22,7 @@ export const TrafficShare = (props) => {
 
     const _setReportData = async () => {
         setLoading(true)
-        const response = await McData._getTrafficShare(props.token, props.url, props.companyId, props.direction);
+        const response = await McData._getTrafficShare(props.token, props.url, props.companyId, props.direction, props.service);
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
             setLoading(false);
@@ -47,6 +45,7 @@ export const TrafficShare = (props) => {
                                 data={elem}
                                 company={props.companyName}
                                 direction={props.direction}
+                                service={props.service}
                             />
                         )
                     })

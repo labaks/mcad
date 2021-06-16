@@ -30,8 +30,16 @@ export const FinancialReportsTable = (props) => {
                         contentContainerStyle={styles.tableContent}>
                         <View style={[styles.tableRow, styles.stickyHeader]}>
                             <Text style={[styles.th, styles.countryTd]}>Country</Text>
-                            <Text style={[styles.th, styles.durationTd]}>Duration</Text>
-                            <Text style={[styles.th, styles.calcDurationTd]}>Calculated</Text>
+                            {props.service == 1 ?
+                                <Text style={[styles.th, styles.durationTd]}>Duration</Text>
+                                :
+                                <Text></Text>
+                            }
+                            {props.service == 1 ?
+                                <Text style={[styles.th, styles.calcDurationTd]}>Calculated</Text>
+                                :
+                                <Text></Text>
+                            }
                             <Text style={[styles.th, styles.attemptsTd]}>Attempts</Text>
                             <Text style={[styles.th, styles.saTd]}>S. Atempts</Text>
                             <Text style={[styles.th, styles.opSumTd]}>Cost IN</Text>
@@ -50,10 +58,18 @@ export const FinancialReportsTable = (props) => {
                                     <Text
                                         numberOfLines={1}
                                         style={[styles.td, styles.countryTd]}>{elem.country}</Text>
-                                    <Text
-                                        style={[styles.td, styles.durationTd, !elem.point_name && styles.total]}>{elem.duration}</Text>
-                                    <Text
-                                        style={[styles.td, styles.calcDurationTd, !elem.point_name && styles.total]}>{elem.calc_duration}</Text>
+                                    {props.service == 1 ?
+                                        <Text
+                                            style={[styles.td, styles.durationTd, !elem.point_name && styles.total]}>{elem.duration}</Text>
+                                        :
+                                        <Text></Text>
+                                    }
+                                    {props.service == 1 ?
+                                        <Text
+                                            style={[styles.td, styles.calcDurationTd, !elem.point_name && styles.total]}>{elem.calc_duration}</Text>
+                                        :
+                                        <Text></Text>
+                                    }
                                     <Text
                                         style={[styles.td, styles.attemptsTd, !elem.point_name && styles.total]}>{elem.attempts}</Text>
                                     <Text
@@ -147,7 +163,7 @@ const styles = StyleSheet.create({
         width: 55
     },
     deltaProfitTd: {
-        width: 60
+        width: 65
     },
 
 })
