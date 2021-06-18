@@ -6,18 +6,13 @@ import { TopTenCountries } from '../screens/diagrams/TopTenCountries';
 import { TopTenRegions } from '../screens/diagrams/TopTenRegions';
 import { TrafficShare } from '../screens/diagrams/TrafficShare';
 
-export const TabContent = (props) => {
+import { TopTenCountriesStartPage } from "../screens/diagrams/TopTenCountriesStartPage";
 
-    const token = props.token,
-        url = props.url,
-        companyId = props.companyId,
-        companyName = props.companyName,
-        navigation = props.navigation,
-        service = props.service;
+export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0 }) => {
 
     let content = <Text></Text>;
 
-    switch (props.chosenTab) {
+    switch (chosenTab) {
         case 'Top 10 Regions In':
             content = <TopTenRegions
                 token={token}
@@ -120,6 +115,21 @@ export const TabContent = (props) => {
                 navigation={navigation}
                 period={"yesterday"}
                 service={service}
+            />
+            break;
+        //Start Page tabs:
+        case 'Top 10 Countries by Margin':
+            content = <TopTenCountriesStartPage
+                token={token}
+                url={url}
+                navigation={navigation}
+            />
+            break;
+        case 'Top 10 Countries by min.':
+            content = <TopTenCountriesStartPage
+                token={token}
+                url={url}
+                navigation={navigation}
             />
             break;
         default:

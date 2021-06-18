@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { Account } from '../Account';
 import { ChooseCompanyScreen } from '../ChooseCompanyScreen';
+import { StartPage } from '../StartPage';
 
 const Drawer = createDrawerNavigator();
 
@@ -11,7 +12,7 @@ const NavChooseCompany = ({ navigation, route }) => {
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Navigation Choose Company Loaded---")
+        console.log("---Navigation Loaded---")
         console.log("-params received: ", route.params);
     }, [params])
 
@@ -38,7 +39,7 @@ const NavChooseCompany = ({ navigation, route }) => {
                     color: '#000'
                 },
             }}
-            initialRouteName={'chooseVoiceCompany'}
+            initialRouteName={'startPage'}
         >
             <Drawer.Screen
                 name="account"
@@ -51,6 +52,18 @@ const NavChooseCompany = ({ navigation, route }) => {
                     url: params.url
                 }}
                 component={Account}
+            />
+            <Drawer.Screen
+                name="startPage"
+                options={{
+                    drawerLabel: 'Start Page',
+                    headerTitle: 'Start Page'
+                }}
+                initialParams={{
+                    token: params.token,
+                    url: params.url,
+                }}
+                component={StartPage}
             />
             <Drawer.Screen
                 name="chooseVoiceCompany"

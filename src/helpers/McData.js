@@ -97,6 +97,18 @@ export class McData {
         return await this._fetch(dataToSend, route, host);
     };
 
+    static async _getTopTenCountriesStartPage(token = '', host = '', criterion, interval, service) {
+        const dataToSend = {
+            "session_id": token,
+            "data": {
+                "criterion": criterion,
+                "interval": interval
+            }
+        }
+        const route = service == 'voice' ? 'start_page_top_countries_get' : 'start_page_top_countries_sms_get';
+        return await this._fetch(dataToSend, route, host);
+    };
+
     static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
         const dataToSend = {
             "session_id": token,
@@ -212,7 +224,7 @@ export class McData {
     };
 
     static async _fetch(data = {}, route = '', host = '') {
-        // console.log(`--${route}, dataToSend: `, data);
+        console.log(`--${route}, dataToSend: `, data);
         const response = await fetch(this.url + '/api/' + route, {
             method: 'POST',
             body: JSON.stringify(data),

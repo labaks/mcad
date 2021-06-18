@@ -5,7 +5,12 @@ import headerImage from '../../assets/round.png';
 export const DiagramsHeader = (props) => {
 
     const title = props.title ? props.title : "No records found";
-    const service = props.service == 1 ? "Voice" : "SMS";
+    let service;
+    if (props.service) {
+        service = props.service == 1 ? "Voice Diagrams" : "SMS Diagrams";
+    } else {
+        service = "Start Page";
+    }
 
     return (
         <View style={styles.wrapper}>
@@ -14,7 +19,7 @@ export const DiagramsHeader = (props) => {
                     style={styles.image}
                     source={headerImage} />
                 <View style={styles.textWrapper}>
-                    <Text style={styles.header}>{service} Diagrams</Text>
+                    <Text style={styles.header}>{service}</Text>
                     <Text style={[styles.diagramName, !props.title && styles.noRecords]}>{title}</Text>
                 </View>
             </View>
@@ -26,12 +31,16 @@ export const DiagramsHeader = (props) => {
                         onPress={props.onBackPressed}>
                         <Text style={styles.btnText}>Back</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.button, styles.bottomButton]}
-                        activeOpacity={.5}
-                        onPress={props.onRequestPressed}>
-                        <Text style={styles.btnText}>Request</Text>
-                    </TouchableOpacity>
+                    {props.onRequestPressed != null ?
+                        <TouchableOpacity
+                            style={[styles.button, styles.bottomButton]}
+                            activeOpacity={.5}
+                            onPress={props.onRequestPressed}>
+                            <Text style={styles.btnText}>Request</Text>
+                        </TouchableOpacity>
+                        :
+                        <View></View>
+                    }
                 </View>
                 :
                 <View></View>
