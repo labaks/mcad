@@ -98,16 +98,30 @@ export class McData {
     };
 
     static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
-        console.log("get traffic share service: ", service)
         const dataToSend = {
             "session_id": token,
             "data": {
+                "service_id": service,
                 "client_id": companyId,
                 "direction": direction,
-                // "service_id": service
             }
         }
-        return await this._fetch(dataToSend, 'traffic_share_get/', host);
+        if (service == 1) {
+            return await this._fetch(dataToSend, 'traffic_share_get/', host);
+        } else {
+            let response = { "data": [], "fields": [], "message": "", "status": 0 };
+            let responsePart;
+            const intervals = ["last_week", "last_month", "yesterday"];
+            for (let i in intervals) {
+                dataToSend.data.interval = intervals[i];
+                responsePart = await this._fetch(dataToSend, 'traffic_share_get/', host);
+                response.data.push(responsePart.data[0]);
+            }
+            response.fields = responsePart.fields;
+            response.message = responsePart.message;
+            response.status = responsePart.status;
+            return response;
+        }
     };
 
     static defineData(data, labels) {
