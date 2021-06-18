@@ -56,7 +56,7 @@ const NavChooseCompany = ({ navigation, route }) => {
                 name="chooseVoiceCompany"
                 options={{
                     drawerLabel: 'Voice Diagrams',
-                    headerTitle: ''
+                    headerTitle: 'Voice Diagrams'
                 }}
                 initialParams={{
                     token: params.token,
@@ -69,7 +69,7 @@ const NavChooseCompany = ({ navigation, route }) => {
                 name="chooseSMSCompany"
                 options={{
                     drawerLabel: 'SMS Diagrams',
-                    headerTitle: ''
+                    headerTitle: 'SMS Diagrams'
                 }}
                 initialParams={{
                     token: params.token,

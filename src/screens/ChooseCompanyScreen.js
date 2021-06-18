@@ -72,13 +72,6 @@ export const ChooseCompanyScreen = ({ navigation, route }) => {
                     navigation={navigation} />
                 :
                 <View style={styles.contentWrapper}>
-                    <View>
-                        {service == 1 ?
-                            <TitleText text="Voice Diagrams" />
-                            :
-                            <TitleText text="SMS Diagrams" />
-                        }
-                    </View>
                     <View style={styles.titleWrapper}>
                         <TitleText text="Choose the company" />
                     </View>

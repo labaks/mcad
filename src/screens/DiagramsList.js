@@ -69,7 +69,8 @@ export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, 
     };
 
     const onRequestPressed = () => {
-        navigation.setOptions({ headerTitle: '' });
+        let header = service == 1 ? 'Voice Diagrams' : 'SMS Diagrams';
+        navigation.setOptions({ headerTitle: header });
         onRequest(false);
     };
 
