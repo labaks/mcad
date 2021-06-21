@@ -93,19 +93,21 @@ export class McData {
                 "direction": direction,
             }
         }
-        const route = service == 1 ? 'top_countries_get' : 'sms_top_countries_get/';
+        const route = service == 1 ? 'top_countries_get/' : 'sms_top_countries_get/';
         return await this._fetch(dataToSend, route, host);
     };
 
     static async _getTopTenCountriesStartPage(token = '', host = '', criterion, interval, service) {
+        let cri = criterion;
+        if (service == 'sms' && criterion == 'duration') cri = 'attempts';
         const dataToSend = {
             "session_id": token,
             "data": {
-                "criterion": criterion,
+                "criterion": cri,
                 "interval": interval
             }
         }
-        const route = service == 'voice' ? 'start_page_top_countries_get' : 'start_page_top_countries_sms_get';
+        const route = service == 'voice' ? 'start_page_top_countries_get/' : 'start_page_top_countries_sms_get/';
         return await this._fetch(dataToSend, route, host);
     };
 

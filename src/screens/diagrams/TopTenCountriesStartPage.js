@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Switch } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
@@ -15,21 +15,22 @@ let dropDownAlert;
 export const TopTenCountriesStartPage = (props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [criterion, setCriterion] = useState('delta_price'); // voice - duration, sms - attempts
     const [interval, setInterval] = useState('yesterday');
     const [service, setService] = useState('voice');
-    const [serviceToggle, setServiceToggle] = useState(false);
-    const [intervalToggle, setIntervalToggle] = useState(false);
+    const [criterion, setCriterion] = useState(props.criterion);
     const title = "Top 10 Countries";
-    const unit = 'min.';
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log("---Top Ten Countries Start Page Loaded---")
-        _setReportData();
+        console.log("---Top Ten Countries Start Page Loaded---");
+        // _setReportData(interval, service);
     }, []);
 
-    const _setReportData = async () => {
+    useEffect(() => {
+        _setReportData(interval, service);
+    }, [interval, service, props.criterion]);
+
+    const _setReportData = async (interval, service) => {
         setLoading(true);
         const response = await McData._getTopTenCountriesStartPage(props.token, props.url, criterion, interval, service);
         if (response.status != 200) {
@@ -41,57 +42,51 @@ export const TopTenCountriesStartPage = (props) => {
         }
     };
 
-    const switchService = () => {
-        setServiceToggle(previousState => !previousState);
-        setService(serviceToggle ? "sms" : "voice");
-        console.log("service:", service);
-        _setReportData();
-    };
-
-    const switchInterval = () => {
-        setIntervalToggle(previousState => !previousState);
-        setInterval(intervalToggle ? "today" : "yesterday");
-        console.log("interval:", interval);
-        _setReportData();
-    };
-
     return (
         <View style={styles.container}>
+            <View style={styles.switcherWrapper}>
+                <View>
+                    <TouchableOpacity
+                        style={[styles.btn, interval == 'yesterday' && styles.activeBtn, { borderTopLeftRadius: 10 }]}
+                        activeOpacity={.5}
+                        onPress={() => setInterval("yesterday")}>
+                        <Text style={[styles.btnText, interval == 'yesterday' && styles.activeBtnText]}>Yesterday</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.btn, interval == 'today' && styles.activeBtn, { borderBottomLeftRadius: 10 }]}
+                        activeOpacity={.5}
+                        onPress={() => setInterval("today")}>
+                        <Text style={[styles.btnText, interval == 'today' && styles.activeBtnText]}>Today</Text>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity
+                        style={[styles.btn, service == 'voice' && styles.activeBtn, { borderTopRightRadius: 10 }]}
+                        activeOpacity={.5}
+                        onPress={() => setService("voice")}>
+                        <Text style={[styles.btnText, service == 'voice' && styles.activeBtnText]}>Voice</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.btn, service == 'sms' && styles.activeBtn, { borderBottomRightRadius: 10 }]}
+                        activeOpacity={.5}
+                        onPress={() => setService("sms")}>
+                        <Text style={[styles.btnText, service == 'sms' && styles.activeBtnText]}>SMS</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
             {loading ?
                 <Loader loading={loading} />
                 :
                 <View>
-                    <View style={styles.switcherWrapper}>
-                        <Text style={[styles.switcherLabel, !intervalToggle && styles.chosenSwithcerLabel]}>Yesterday</Text>
-                        <Switch
-                            style={styles.switcher}
-                            trackColor={{ false: '#4A6E49', true: '#4A6E49' }}
-                            thumbColor={intervalToggle ? "#edf2dc" : "#edf2dc"}
-                            ios_backgroundColor="#4A6E49"
-                            onValueChange={switchInterval}
-                            value={intervalToggle} />
-                        <Text style={[styles.switcherLabel, intervalToggle && styles.chosenSwithcerLabel]}>Today</Text>
-                    </View>
-                    <View style={styles.switcherWrapper}>
-                        <Text style={[styles.switcherLabel, !serviceToggle && styles.chosenSwithcerLabel]}>Voice</Text>
-                        <Switch
-                            style={styles.switcher}
-                            trackColor={{ false: '#4A6E49', true: '#4A6E49' }}
-                            thumbColor={serviceToggle ? "#edf2dc" : "#edf2dc"}
-                            ios_backgroundColor="#4A6E49"
-                            onValueChange={switchService}
-                            value={serviceToggle} />
-                        <Text style={[styles.switcherLabel, serviceToggle && styles.chosenSwithcerLabel]}>SMS</Text>
-                    </View>
                     <SummaryASRLegend />
                     <View style={styles.canvasWrapper}>
                         <Petals
                             data={data}
                             title={title}
-                            unit={unit}
+                            unit={service == 'voice' ? 'min.' : 'sms'}
                             height={300}
                             width={300}
-                            service={1} />
+                            service={service == 'voice' ? 1 : 2} />
                     </View>
                 </View>
             }
@@ -118,16 +113,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 5
     },
-    switcher: {
-        marginHorizontal: 10
+    btn: {
+        width: 150,
+        borderColor: '#4A6E49',
+        borderWidth: 1,
+        padding: 10,
+        alignItems: 'center',
+        margin: 1
     },
-    switcherLabel: {
-        fontSize: 15,
-        fontFamily: 'SF',
-        color: '#999'
+    btnText: {
+        color: '#666',
+        fontFamily: 'SFBold'
     },
-    chosenSwithcerLabel: {
-        fontFamily: 'SFBold',
-        color: 'black'
+    activeBtn: {
+        backgroundColor: '#4A6E49',
+    },
+    activeBtnText: {
+        color: 'white'
     }
 })

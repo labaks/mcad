@@ -123,6 +123,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 token={token}
                 url={url}
                 navigation={navigation}
+                criterion={'delta_price'}
             />
             break;
         case 'Top 10 Countries by min.':
@@ -130,6 +131,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 token={token}
                 url={url}
                 navigation={navigation}
+                criterion={'duration'}
             />
             break;
         default:

@@ -26,7 +26,7 @@ export const DiagramsHeader = (props) => {
             {props.showButtons ?
                 <View style={styles.btnsWrapper}>
                     <TouchableOpacity
-                        style={[styles.button, styles.topButton]}
+                        style={[styles.button, props.onRequestPressed != null && styles.topButton, props.onRequestPressed == null && styles.oneButton]}
                         activeOpacity={.5}
                         onPress={props.onBackPressed}>
                         <Text style={styles.btnText}>Back</Text>
@@ -111,6 +111,8 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0
     },
+    oneButton: {
+    },
     bottomButton: {
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0
@@ -120,5 +122,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 13,
         fontFamily: 'SFBold'
-    }
+    },
 })

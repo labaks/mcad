@@ -284,7 +284,8 @@ export const Petals = (props) => {
             if (props.service == 1) {
                 obj.durationStr = data[i].duration + " " + props.unit;
             } else {
-                obj.durationStr = data[i].sa + " " + props.unit;
+                let smsCount = data[i].sa != undefined ? data[i].sa : data[i].attempts;
+                obj.durationStr = smsCount + " " + props.unit;
             }
             obj.countryStrWidth = (await context.measureText(obj.countryStr)).width;
             obj.durationStrWidth = (await context.measureText(obj.durationStr)).width;
