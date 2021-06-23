@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
+import { ServiceSwithcer } from '../../components/diagramComponents/ServiceSwitcher';
 import { SummaryASRLegend } from '../../components/diagramComponents/SummaryASRLegend';
 
 import { Loader } from '../../components/Loader';
@@ -44,36 +45,12 @@ export const TopTenCountriesStartPage = (props) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.switcherWrapper}>
-                <View>
-                    <TouchableOpacity
-                        style={[styles.btn, interval == 'yesterday' && styles.activeBtn, { borderTopLeftRadius: 10 }]}
-                        activeOpacity={.5}
-                        onPress={() => setInterval("yesterday")}>
-                        <Text style={[styles.btnText, interval == 'yesterday' && styles.activeBtnText]}>Yesterday</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.btn, interval == 'today' && styles.activeBtn, { borderBottomLeftRadius: 10 }]}
-                        activeOpacity={.5}
-                        onPress={() => setInterval("today")}>
-                        <Text style={[styles.btnText, interval == 'today' && styles.activeBtnText]}>Today</Text>
-                    </TouchableOpacity>
-                </View>
-                <View>
-                    <TouchableOpacity
-                        style={[styles.btn, service == 'voice' && styles.activeBtn, { borderTopRightRadius: 10 }]}
-                        activeOpacity={.5}
-                        onPress={() => setService("voice")}>
-                        <Text style={[styles.btnText, service == 'voice' && styles.activeBtnText]}>Voice</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.btn, service == 'sms' && styles.activeBtn, { borderBottomRightRadius: 10 }]}
-                        activeOpacity={.5}
-                        onPress={() => setService("sms")}>
-                        <Text style={[styles.btnText, service == 'sms' && styles.activeBtnText]}>SMS</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            <ServiceSwithcer
+                interval={interval}
+                service={service}
+                setInterval={setInterval}
+                setService={setService}
+            />
             {loading ?
                 <Loader loading={loading} />
                 :
@@ -107,28 +84,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    switcherWrapper: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 5
-    },
-    btn: {
-        width: 150,
-        borderColor: '#4A6E49',
-        borderWidth: 1,
-        padding: 10,
-        alignItems: 'center',
-        margin: 1
-    },
-    btnText: {
-        color: '#666',
-        fontFamily: 'SFBold'
-    },
-    activeBtn: {
-        backgroundColor: '#4A6E49',
-    },
-    activeBtnText: {
-        color: 'white'
-    }
 })
