@@ -57,6 +57,7 @@ export const StartPage = ({ navigation, route }) => {
             listData[selectedDiagramsIds[i]].active = true;
         }
         setIsSubmited(false);
+        setChosenTab("");
     };
 
     const TabButton = ({ title }) => {

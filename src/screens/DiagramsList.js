@@ -66,6 +66,7 @@ export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, 
             listData[selectedDiagramsIds[i]].active = true;
         }
         setIsSubmited(false);
+        setChosenTab("");
     };
 
     const onRequestPressed = () => {
