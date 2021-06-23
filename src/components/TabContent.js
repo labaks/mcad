@@ -7,6 +7,7 @@ import { TopTenRegions } from '../screens/diagrams/TopTenRegions';
 import { TrafficShare } from '../screens/diagrams/TrafficShare';
 
 import { TopTenCountriesStartPage } from "../screens/diagrams/TopTenCountriesStartPage";
+import { TopTenTargets } from "../screens/diagrams/TopTenTargets";
 
 export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0 }) => {
 
@@ -132,6 +133,13 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 criterion={'duration'}
+            />
+            break;
+        case 'Top 10 Targets':
+            content = <TopTenTargets
+                token={token}
+                url={url}
+                navigation={navigation}
             />
             break;
         default:

@@ -111,6 +111,17 @@ export class McData {
         return await this._fetch(dataToSend, route, host);
     };
 
+    static async _getTopTenTargets(token = '', host = '', interval, service) {
+        const dataToSend = {
+            "session_id": token,
+            "data": {
+                "interval": interval
+            }
+        }
+        const route = service == 'voice' ? 'start_page_top_targets_get/' : 'start_page_top_targets_sms_get/';
+        return await this._fetch(dataToSend, route, host);
+    };
+
     static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
         const dataToSend = {
             "session_id": token,
@@ -237,7 +248,7 @@ export class McData {
             }
         });
         const json = await response.json();
-        // console.log("--response: ", json);
+        console.log("--response: ", json);
         return json;
     };
 
