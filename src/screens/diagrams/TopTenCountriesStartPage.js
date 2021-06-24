@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
-import { ServiceSwithcer } from '../../components/diagramComponents/ServiceSwitcher';
+import { ServiceSwitcher } from '../../components/diagramComponents/ServiceSwitcher';
 import { SummaryASRLegend } from '../../components/diagramComponents/SummaryASRLegend';
 
 import { Loader } from '../../components/Loader';
@@ -45,7 +45,7 @@ export const TopTenCountriesStartPage = (props) => {
 
     return (
         <View style={styles.container}>
-            <ServiceSwithcer
+            <ServiceSwitcher
                 interval={interval}
                 service={service}
                 setInterval={setInterval}

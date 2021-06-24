@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-export const ServiceSwithcer = (props) => {
+export const ServiceSwitcher = (props) => {
     return (
         <View style={styles.switcherWrapper}>
             <View>
