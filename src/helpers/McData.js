@@ -123,6 +123,19 @@ export class McData {
         return await this._fetch(dataToSend, route, host);
     };
 
+    static async _getCreditLimit(token = '', host = '', interval, service) {
+        const dataToSend = {
+            "session_id": token,
+            "data": {
+                "interval": interval,
+                // "limit": 10
+            }
+        }
+        let route = `start_page_credit_limit_report_`;
+        route += service == 'voice' ? 'get/' : 'sms_get/';
+        return await this._fetch(dataToSend, route, host);
+    };
+
     static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
         const dataToSend = {
             "session_id": token,

@@ -13,8 +13,11 @@ export const RoutesReport = (props) => {
             {data.length ?
                 <View style={styles.routesWrapper}>
                     {data.map((elem, index) => {
-                        let mins = elem.acd % 60 < 10 ? '0' + elem.acd % 60 : elem.acd % 60;
-                        let acdString = elem.acd ? ~~(elem.acd / 60) + ':' + mins : null;
+                        let acdString = null;
+                        if (!props.creditLimitCheck) {
+                            let mins = elem.acd % 60 < 10 ? '0' + elem.acd % 60 : elem.acd % 60;
+                            acdString = elem.acd ? ~~(elem.acd / 60) + ':' + mins : null;
+                        }
                         return (
                             <View
                                 key={index}
@@ -32,8 +35,17 @@ export const RoutesReport = (props) => {
                                     </View>
                                     <Text
                                         numberOfLines={1}
-                                        style={styles.spc_country}>{elem.country}</Text>
-                                    <Text style={[styles.spc_asr, { borderColor: elem.asrColor }]}>{elem.asr}%</Text>
+                                        style={[styles.spc_country, elem.closed && styles.closed]}>
+                                        {props.creditLimitCheck ?
+                                            elem.client_name
+                                            :
+                                            elem.country}
+                                    </Text>
+                                    {props.creditLimitCheck ?
+                                        <View></View>
+                                        :
+                                        <Text style={[styles.spc_asr, { borderColor: elem.asrColor }]}>{elem.asr}%</Text>
+                                    }
                                     {acdString != null ?
                                         <View style={[styles.spc_acd, { borderColor: elem.asrColor }]}>
                                             <Text style={styles.spc_acd_text}>{acdString}</Text>
@@ -45,9 +57,12 @@ export const RoutesReport = (props) => {
                                     <Text style={[
                                         styles.spc_target_price,
                                         {
-                                            right: acdString != null ? -125 : -83
+                                            left: acdString != null ? 200 : (props.creditLimitCheck ? 160 : 190)
                                         }
-                                    ]}>{elem.target_price}</Text>
+                                    ]}>{props.creditLimitCheck ?
+                                        elem.balance + ' ' + elem.currency_name
+                                        :
+                                        elem.target_price}</Text>
                                 </LinearGradient>
                                 <LinearGradient
                                     colors={['rgba(255,255,255,0)', 'rgba(255,255,255,.7)', 'rgba(255,255,255,0)']}
@@ -56,7 +71,7 @@ export const RoutesReport = (props) => {
                                         styles.spc_line_box,
                                         {
                                             backgroundColor: elem.asrColor,
-                                            paddingLeft: acdString != null ? 72 : 30
+                                            paddingLeft: acdString != null ? 72 : (props.creditLimitCheck ? 10 : 30)
                                         }
                                     ]}>
                                     <View style={[styles.spc_line, { width: elem.lineWidth }]}></View>
@@ -203,4 +218,7 @@ const styles = StyleSheet.create({
         height: 18.4,
         position: 'absolute',
     },
+    closed: {
+        color: 'red'
+    }
 })

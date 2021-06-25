@@ -8,6 +8,7 @@ import { TrafficShare } from '../screens/diagrams/TrafficShare';
 
 import { TopTenCountriesStartPage } from "../screens/diagrams/TopTenCountriesStartPage";
 import { TopTenTargets } from "../screens/diagrams/TopTenTargets";
+import { CreditLimitCheck } from '../screens/diagrams/CreditLimitCheck';
 
 export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0 }) => {
 
@@ -149,6 +150,13 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 target={'offers'}
+            />
+            break;
+        case 'Credit Limit Check':
+            content = <CreditLimitCheck
+                token={token}
+                url={url}
+                navigation={navigation}
             />
             break;
         default:
