@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
@@ -8,7 +8,7 @@ import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
 import { ServiceSwitcher } from '../../components/diagramComponents/ServiceSwitcher';
-import { Routes } from '../../components/diagramComponents/Routes';
+import { RoutesReport } from '../../components/diagramComponents/RoutesReport';
 
 let dropDownAlert;
 
@@ -17,6 +17,8 @@ export const TopTenTargets = (props) => {
     const [data, setData] = useState([]);
     const [interval, setInterval] = useState('yesterday');
     const [service, setService] = useState('voice');
+
+    const maxLineWidth = 130;
 
     let maxAttempts = 0;
 
@@ -60,7 +62,7 @@ export const TopTenTargets = (props) => {
     const getLineWidths = (data) => {
         let tempData = data;
         for (let i in data) {
-            tempData[i].lineWidth = 125 * data[i].attempts / maxAttempts;
+            tempData[i].lineWidth = maxLineWidth * data[i].attempts / maxAttempts;
             tempData[i].asrColor = getAsrRate(data[i].asr);
         }
         setData(tempData);
@@ -89,7 +91,7 @@ export const TopTenTargets = (props) => {
                 {loading ?
                     <Loader loading={loading} />
                     :
-                    <Routes data={data} />
+                    <RoutesReport data={data} />
                 }
             </View>
             <DropdownAlert

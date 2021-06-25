@@ -4,24 +4,29 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { NoRecords } from '../NoRecords';
 
-export const Routes = (props) => {
+export const RoutesReport = (props) => {
 
     const data = props.data;
 
     return (
-        <View>
+        <View style={{ alignSelf: 'stretch' }}>
             {data.length ?
                 <View style={styles.routesWrapper}>
                     {data.map((elem, index) => {
                         let mins = elem.acd % 60 < 10 ? '0' + elem.acd % 60 : elem.acd % 60;
-                        let acdString = ~~(elem.acd / 60) + ':' + mins;
+                        let acdString = elem.acd ? ~~(elem.acd / 60) + ':' + mins : null;
                         return (
                             <View
                                 key={index}
                                 style={styles.spc_box}>
                                 <LinearGradient
                                     colors={['#F6F7F4', '#cacdc8']}
-                                    style={styles.spc_text}>
+                                    style={[
+                                        styles.spc_text,
+                                        {
+                                            width: acdString != null ? '35%' : '45%'
+                                        }
+                                    ]}>
                                     <View style={[styles.spc_text_before, { backgroundColor: elem.asrColor }]}>
                                         <View style={styles.spc_text_before_blink}></View>
                                     </View>
@@ -29,13 +34,31 @@ export const Routes = (props) => {
                                         numberOfLines={1}
                                         style={styles.spc_country}>{elem.country}</Text>
                                     <Text style={[styles.spc_asr, { borderColor: elem.asrColor }]}>{elem.asr}%</Text>
-                                    <Text style={[styles.spc_acd, { borderColor: elem.asrColor }]}>{acdString} min</Text>
-                                    <Text style={styles.spc_target_price}>{elem.target_price}</Text>
+                                    {acdString != null ?
+                                        <View style={[styles.spc_acd, { borderColor: elem.asrColor }]}>
+                                            <Text style={styles.spc_acd_text}>{acdString}</Text>
+                                            <Text style={styles.spc_acd_text}>min</Text>
+                                        </View>
+                                        :
+                                        <View></View>
+                                    }
+                                    <Text style={[
+                                        styles.spc_target_price,
+                                        {
+                                            right: acdString != null ? -125 : -83
+                                        }
+                                    ]}>{elem.target_price}</Text>
                                 </LinearGradient>
                                 <LinearGradient
                                     colors={['rgba(255,255,255,0)', 'rgba(255,255,255,.7)', 'rgba(255,255,255,0)']}
                                     locations={[0, 0.5, 1]}
-                                    style={[styles.spc_line_box, { backgroundColor: elem.asrColor }]}>
+                                    style={[
+                                        styles.spc_line_box,
+                                        {
+                                            backgroundColor: elem.asrColor,
+                                            paddingLeft: acdString != null ? 72 : 30
+                                        }
+                                    ]}>
                                     <View style={[styles.spc_line, { width: elem.lineWidth }]}></View>
                                     <View style={[styles.spc_styling, { backgroundColor: elem.asrColor }]}>
                                         <LinearGradient
@@ -61,7 +84,8 @@ export const Routes = (props) => {
 const styles = StyleSheet.create({
     routesWrapper: {
         marginTop: 15,
-        width: '100%'
+        width: '100%',
+        alignSelf: 'stretch'
     },
     spc_box: {
         position: 'relative',
@@ -93,7 +117,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     spc_text: {
-        width: '40%',
+        width: '45%',
         height: 26,
         backgroundColor: 'white',
         marginLeft: 10,
@@ -101,6 +125,7 @@ const styles = StyleSheet.create({
         zIndex: 2,
         lineHeight: 26,
         position: 'relative',
+        overflow: 'visible'
     },
     spc_country: {
         height: 26,
@@ -108,6 +133,7 @@ const styles = StyleSheet.create({
         paddingRight: 9,
         fontFamily: 'SFBold',
         textAlignVertical: 'center',
+        lineHeight: 26,
     },
     spc_asr: {
         position: 'absolute',
@@ -124,30 +150,31 @@ const styles = StyleSheet.create({
         fontFamily: "SFBold",
         textAlignVertical: 'center',
         borderWidth: 1,
+        overflow: 'hidden'
     },
     spc_acd: {
         position: 'absolute',
         width: 40,
         height: 40,
         backgroundColor: '#F6F7F4',
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderRadius: 20,
         top: -7,
         right: -72,
         paddingVertical: 7,
+        zIndex: 3,
+        borderWidth: 1,
+        overflow: 'hidden'
+    },
+    spc_acd_text: {
         textAlign: 'center',
         textAlignVertical: 'center',
-        zIndex: 3,
         fontSize: 12,
         lineHeight: 13,
         fontFamily: "SFBold",
-        borderWidth: 1,
     },
     spc_line_box: {
         height: 26,
-        paddingLeft: 72,
+        overflow: 'visible',
     },
     spc_line: {
         height: 26,
@@ -157,9 +184,9 @@ const styles = StyleSheet.create({
         fontFamily: 'SFBold',
         fontSize: 12,
         position: 'absolute',
-        right: -125,
         height: 26,
         textAlignVertical: 'center',
+        lineHeight: 25,
     },
     spc_styling: {
         transform: [
