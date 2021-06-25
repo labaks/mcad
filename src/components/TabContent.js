@@ -140,6 +140,15 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 token={token}
                 url={url}
                 navigation={navigation}
+                target={'targets'}
+            />
+            break;
+        case 'Top 10 Offers':
+            content = <TopTenTargets
+                token={token}
+                url={url}
+                navigation={navigation}
+                target={'offers'}
             />
             break;
         default:

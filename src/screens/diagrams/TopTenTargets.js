@@ -18,19 +18,20 @@ export const TopTenTargets = (props) => {
     const [interval, setInterval] = useState('yesterday');
     const [service, setService] = useState('voice');
 
+    const target = props.target;
     const maxLineWidth = 130;
 
     let maxAttempts = 0;
 
     useEffect(() => {
         console.log("=====================================================");
-        console.log(`---Top 10 Targets---`);
+        console.log(`---Top 10 ${target}---`);
         // _setReportData();
     }, []);
 
     useEffect(() => {
         _setReportData(interval, service);
-    }, [interval, service]);
+    }, [interval, service, target]);
 
     useEffect(() => {
         maxAttempts = getMaxAttempts(data);
@@ -39,7 +40,7 @@ export const TopTenTargets = (props) => {
 
     const _setReportData = async (interval, service) => {
         setLoading(true);
-        const response = await McData._getTopTenTargets(props.token, props.url, interval, service);
+        const response = await McData._getTopTenTargets(props.token, props.url, interval, service, target);
         if (response.status != 200) {
             ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
             setLoading(false);

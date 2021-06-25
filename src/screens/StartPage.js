@@ -17,6 +17,7 @@ export const StartPage = ({ navigation, route }) => {
         { id: 0, title: 'Top 10 Countries by Margin', active: false },
         { id: 1, title: 'Top 10 Countries by min.', active: false },
         { id: 2, title: 'Top 10 Targets', active: false },
+        { id: 3, title: 'Top 10 Offers', active: false },
     ];
     const [listData, setListData] = useState(defaultListData);
 
