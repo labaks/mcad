@@ -14,7 +14,6 @@ export const RoutesReport = (props) => {
     useEffect(() => {
         console.log("=====================================================");
         console.log(`---Routes Report---`);
-        console.log("data.length", data.length)
         if (props.pagination) {
             initPagination(data);
         };
