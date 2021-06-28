@@ -1,12 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Icon } from 'native-base';
 
 import { NoRecords } from '../NoRecords';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const RoutesReport = (props) => {
 
-    const data = props.data;
+    const [data, setData] = useState(props.data);
+    const [page, setPage] = useState(0);
+
+    useEffect(() => {
+        console.log("=====================================================");
+        console.log(`---Routes Report---`);
+        console.log("data.length", data.length)
+        if (props.pagination) {
+            initPagination(data);
+        };
+    }, []);
+
+    const initPagination = (data) => {
+        setData(data.slice(0, 10));
+    };
+
+    const pagiBack = () => {
+        setData(props.data.slice((page - 1) * 10, page * 10));
+        setPage(page - 1);
+    };
+
+    const pagiForward = () => {
+        setData(props.data.slice((page + 1) * 10, (page + 2) * 10));
+        setPage(page + 1);
+    };
 
     return (
         <View style={{ alignSelf: 'stretch' }}>
@@ -88,6 +114,28 @@ export const RoutesReport = (props) => {
                             </View>
                         )
                     })}
+                    {props.pagination ?
+                        <View style={styles.pagination}>
+                            <TouchableOpacity
+                                style={[styles.pagiButton, page == 0 && styles.pagiDisabled]}
+                                disabled={page == 0}
+                                onPress={pagiBack}>
+                                <Icon
+                                    style={styles.pagiButtonIcon}
+                                    name={'chevron-back-outline'} />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.pagiButton, (page + 1) * 10 > props.data.length && styles.pagiDisabled]}
+                                disabled={(page + 1) * 10 > props.data.length}
+                                onPress={pagiForward}>
+                                <Icon
+                                    style={styles.pagiButtonIcon}
+                                    name={'chevron-forward-outline'} />
+                            </TouchableOpacity>
+                        </View>
+                        :
+                        <View></View>
+                    }
                 </View>
                 :
                 <NoRecords />
@@ -220,5 +268,26 @@ const styles = StyleSheet.create({
     },
     closed: {
         color: 'red'
+    },
+    pagination: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    pagiButton: {
+        padding: 5,
+        borderWidth: 1,
+        borderColor: '#808080',
+        borderRadius: 10,
+        marginHorizontal: 5,
+        backgroundColor: '#4B4B52',
+        textAlign: 'center',
+        textAlignVertical: 'center'
+    },
+    pagiDisabled: {
+        backgroundColor: '#4B4B5280',
+        borderColor: '#80808080',
+    },
+    pagiButtonIcon: {
+        color: 'white',
     }
 })

@@ -262,7 +262,7 @@ export class McData {
             }
         });
         const json = await response.json();
-        console.log("--response: ", json);
+        // console.log("--response: ", json);
         return json;
     };
 

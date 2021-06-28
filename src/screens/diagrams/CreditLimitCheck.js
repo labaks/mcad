@@ -34,7 +34,6 @@ export const CreditLimitCheck = (props) => {
 
     useEffect(() => {
         maxBalances = getMaxBalances(data);
-        console.log(`max balance = ${maxBalances[0]}, max credit = ${maxBalances[1]}`);
         getLineWidths(data);
     }, [data]);
 
@@ -71,7 +70,6 @@ export const CreditLimitCheck = (props) => {
                 maxLineWidth * Math.abs(data[i].balance_in_default_currency) / maxBalances[0]
                 :
                 maxLineWidth * Math.abs(data[i].credit_limit) / maxBalances[1];
-            console.log(`tempData[${i}].lineWidth: ${tempData[i].lineWidth}`)
             tempData[i].asrColor = getColorRate(data[i].percent);
         }
         setData(tempData);
@@ -102,7 +100,8 @@ export const CreditLimitCheck = (props) => {
                     :
                     <RoutesReport
                         data={data}
-                        creditLimitCheck={true} />
+                        creditLimitCheck={true}
+                        pagination={true} />
                 }
             </View>
             <DropdownAlert
