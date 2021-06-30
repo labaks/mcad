@@ -9,6 +9,7 @@ import { TrafficShare } from '../screens/diagrams/TrafficShare';
 import { TopTenCountriesStartPage } from "../screens/diagrams/TopTenCountriesStartPage";
 import { TopTenTargets } from "../screens/diagrams/TopTenTargets";
 import { CreditLimitCheck } from '../screens/diagrams/CreditLimitCheck';
+import { CallCharts } from '../screens/diagrams/CallCharts';
 
 export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0 }) => {
 
@@ -154,6 +155,13 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
             break;
         case 'Credit Limit Check':
             content = <CreditLimitCheck
+                token={token}
+                url={url}
+                navigation={navigation}
+            />
+            break;
+        case 'Call Charts':
+            content = <CallCharts
                 token={token}
                 url={url}
                 navigation={navigation}

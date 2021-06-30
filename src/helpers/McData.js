@@ -136,6 +136,17 @@ export class McData {
         return await this._fetch(dataToSend, route, host);
     };
 
+    static async _getCallCharts(token = '', host = '', interval, service) {
+        const dataToSend = {
+            "session_id": token,
+            "data": {
+                "interval": interval,
+            }
+        }
+        const route = service == 'voice' ? 'start_page_call_charts_get/' : 'start_page_sms_activity_get/';
+        return await this._fetch(dataToSend, route, host);
+    };
+
     static async _getTrafficShare(token = '', host = '', companyId, direction, service) {
         const dataToSend = {
             "session_id": token,
