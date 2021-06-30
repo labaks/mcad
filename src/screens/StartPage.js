@@ -14,12 +14,12 @@ export const StartPage = ({ navigation, route }) => {
     const [titles, setTitles] = useState([]);
     const [chosenTab, setChosenTab] = useState("");
     let defaultListData = [
-        { id: 0, title: 'Top 10 Countries by Margin', active: false },
-        { id: 1, title: 'Top 10 Countries by min.', active: false },
-        { id: 2, title: 'Top 10 Targets', active: false },
-        { id: 3, title: 'Top 10 Offers', active: false },
-        { id: 4, title: 'Credit Limit Check', active: false },
-        { id: 5, title: 'Call Charts', active: false },
+        { id: 0, title: 'Call Charts', active: false },
+        { id: 1, title: 'Top 10 Targets', active: false },
+        { id: 2, title: 'Top 10 Countries by Margin', active: false },
+        { id: 3, title: 'Top 10 Countries by min.', active: false },
+        { id: 4, title: 'Top 10 Offers', active: false },
+        { id: 5, title: 'Credit Limit Check', active: false },
     ];
     const [listData, setListData] = useState(defaultListData);
 
