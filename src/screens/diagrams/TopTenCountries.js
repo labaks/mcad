@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
@@ -19,6 +19,7 @@ export const TopTenCountries = (props) => {
     const [loading, setLoading] = useState(true);
     const title = "Top 10 Countries";
     const unit = props.service == 1 ? 'min.' : 'sms';
+    const windowWidth = Dimensions.get('window').width;
 
     const mock = {
         "data": [
@@ -76,8 +77,8 @@ export const TopTenCountries = (props) => {
                             data={data}
                             title={title}
                             unit={unit}
-                            height={300}
-                            width={300}
+                            height={windowWidth - 50}
+                            width={windowWidth - 50}
                             service={props.service} />
                     </View>
                 </View>
@@ -93,7 +94,7 @@ export const TopTenCountries = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 15,
+        marginTop: 10,
     },
     canvasWrapper: {
         justifyContent: 'center',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Dimensions } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
@@ -20,6 +20,7 @@ export const TopTenCountriesStartPage = (props) => {
     const [service, setService] = useState('voice');
     const [criterion, setCriterion] = useState(props.criterion);
     const title = "Top 10 Countries";
+    const windowWidth = Dimensions.get('window').width;
 
     useEffect(() => {
         console.log("=====================================================");
@@ -61,8 +62,8 @@ export const TopTenCountriesStartPage = (props) => {
                             data={data}
                             title={title}
                             unit={service == 'voice' ? 'min.' : 'sms'}
-                            height={300}
-                            width={300}
+                            height={windowWidth - 50}
+                            width={windowWidth - 50}
                             service={service == 'voice' ? 1 : 2} />
                     </View>
                 </View>

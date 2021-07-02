@@ -119,7 +119,7 @@ export const Petals = (props) => {
         }
     }
 
-    const topCountriesPlot = async (data, context, title, unit) => {
+    const topCountriesPlot = async (data, context) => {
 
         context.clearRect(0, 0, props.width, props.height)
 
@@ -183,8 +183,8 @@ export const Petals = (props) => {
                     context.textAlign = "center";
                     drawCircle(context, drawValues[i].circleX, drawValues[i].circleY, diameter / 25, "#FFFFFF", "#EEEEEE");
                     context.fillStyle = "#000000";
-                    context.fillText("ACD:", drawValues[i].circleX, drawValues[i].circleY - 6);
-                    context.fillText(drawValues[i].acdFormat, drawValues[i].circleX, drawValues[i].circleY + 8);
+                    context.fillText("ACD:", drawValues[i].circleX, drawValues[i].circleY - 3);
+                    context.fillText(drawValues[i].acdFormat, drawValues[i].circleX, drawValues[i].circleY + 4);
                 }
             }
             //Overlay edges:
@@ -195,22 +195,10 @@ export const Petals = (props) => {
             context.lineTo(drawValues[i].k, drawValues[i].l);
             context.stroke();
         }
-        // Top 10 Countries circle
+        // Center circle
         drawCircle(context, radius, radius, radius * 0.20, "#FFFFFF", "#EEEEEE");
-        // context.font = font1;
-        // context.fillStyle = "#000000";
-        // var titleParts = separateText(title);
-        // context.fillText(titleParts[0], radius, radius - 8);
-        // context.fillText(titleParts[1], radius, radius + 8);
 
         setLoading(false);
-    };
-
-    const separateText = (text) => {
-        var textParts = text.split(" ");
-        var topPart = textParts[0] + " " + textParts[1];
-        var bottomHalf = textParts[2];
-        return [topPart, bottomHalf];
     };
 
     const getColorIndexByRate = (rate) => {
@@ -248,13 +236,14 @@ export const Petals = (props) => {
     };
 
     const drawTextAlongArc = (context, measure, centerX, centerY, radius, distanceDiv, inverse, countries) => {
-        let resultRadius = radius;
+        let resultRadius = radius * 1.02;
         if (inverse) {
-            resultRadius = radius * -1.04; //Move baseline of inverted text to be on the same arc as normal text
+            resultRadius = -radius * 1.02; //Move baseline of inverted text to be on the same arc as normal text
             distanceDiv = -distanceDiv;
         }
         context.save();
         context.translate(centerX, centerY);
+        context.textBaseline = 'middle';
         if (countries) {
             context.rotate(measure.countryStart);
             for (let i = 0; i < measure.countryLen; i++) {

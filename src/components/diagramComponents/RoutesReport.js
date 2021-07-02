@@ -123,8 +123,8 @@ export const RoutesReport = (props) => {
                                     name={'chevron-back-outline'} />
                             </TouchableOpacity>
                             <TouchableOpacity
-                                style={[styles.pagiButton, (page + 1) * 10 > props.data.length && styles.pagiDisabled]}
-                                disabled={(page + 1) * 10 > props.data.length}
+                                style={[styles.pagiButton, (page + 1) * 10 >= props.data.length && styles.pagiDisabled]}
+                                disabled={(page + 1) * 10 >= props.data.length}
                                 onPress={pagiForward}>
                                 <Icon
                                     style={styles.pagiButtonIcon}
