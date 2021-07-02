@@ -59,6 +59,11 @@ export const SignUpScreen = ({ navigation }) => {
                     '',
                     error);
             });
+        if (formValues.url.toString().indexOf('https://') != -1) {
+            formValues.url = formValues.url.slice(8, formValues.url.length);
+        } else if (formValues.url.toString().indexOf('http://') != -1) {
+            formValues.url = formValues.url.slice(7, formValues.url.length);
+        }
         const loginResponse = await McData._login(formValues.url.toString(), formValues.login, formValues.password, ip);
         if (loginResponse.status == 200) {
             console.log("login ok");
