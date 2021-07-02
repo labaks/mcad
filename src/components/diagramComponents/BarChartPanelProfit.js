@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
-import { View, StyleSheet, Text } from 'react-native'
-import { BarChart, Grid, XAxis } from 'react-native-svg-charts'
-import * as scale from 'd3-scale'
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import { BarChart, Grid, XAxis } from 'react-native-svg-charts';
+import * as scale from 'd3-scale';
 
-import { Panel } from '../Panel'
-import { LegendUnit } from './LegendUnit'
-import { NoRecords } from '../NoRecords'
+import { Panel } from '../Panel';
+import { LegendUnit } from './LegendUnit';
+import { NoRecords } from '../NoRecords';
 
 var barHeight;
 

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'native-base';
 
 import { NoRecords } from '../NoRecords';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const RoutesReport = (props) => {
 

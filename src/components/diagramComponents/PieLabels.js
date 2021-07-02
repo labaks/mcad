@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native-svg'
+import { Text } from 'react-native-svg';
 
 export const PieLabels = ({ slices, height, width }) => {
     return slices.map((slice, index) => {

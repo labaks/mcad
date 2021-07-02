@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import PickerModal from 'react-native-picker-modal-view';
 

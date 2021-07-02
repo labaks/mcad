@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import { PiePanel } from '../../components/diagramComponents/PiePanel';

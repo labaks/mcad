@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, ImageBackground } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, ImageBackground } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
 import Constants from 'expo-constants';
 
@@ -10,7 +10,7 @@ import { Loader } from '../components/Loader';
 import { MainBtn } from '../components/MainBtn';
 
 import { BackButtonHandler } from '../helpers/BackButtonHandler';
-import { McData } from '../helpers/McData'
+import { McData } from '../helpers/McData';
 import { ErrorHandler } from '../helpers/ErrorHandler';
 
 let dropDownAlert;
