@@ -45,7 +45,6 @@ export const CallCharts = (props) => {
         for (let i in data) {
             if (data[i] > max) max = data[i];
         }
-        console.log("max:", max)
         return max;
     };
 
