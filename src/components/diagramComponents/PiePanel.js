@@ -22,7 +22,7 @@ export const PiePanel = (props) => {
             },
             {
                 key: 'other',
-                value: props.data.total_value == 0 ? 100 : (100 - clientValue).toFixed(2),
+                value: props.data.total_value == 0 ? 100 : parseFloat((100 - clientValue).toFixed(2)),
                 svg: { fill: otherColor }
             }
         ]
