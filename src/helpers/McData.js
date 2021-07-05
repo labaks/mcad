@@ -262,19 +262,23 @@ export class McData {
     };
 
     static async _fetch(data = {}, route = '', host = '') {
-        console.log(`--${route}, dataToSend: `, data);
-        const response = await fetch(this.url + '/api/' + route, {
-            method: 'POST',
-            body: JSON.stringify(data),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Host': host
-            }
-        });
-        const json = await response.json();
-        // console.log("--response: ", json);
-        return json;
+        // console.log(`--${route}, dataToSend: `, data);
+        try {
+            const response = await fetch(this.url + '/api/' + route, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Host': host
+                }
+            });
+            const json = await response.json();
+            // console.log("--response: ", json);
+            return json;
+        } catch (error) {
+            console.log(`--${route} error: ${error}`);
+        }
     };
 
 }
