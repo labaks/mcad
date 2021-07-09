@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
         fontFamily: 'SFBold',
         textAlignVertical: 'center',
         lineHeight: 26,
+        color: 'black'
     },
     spc_asr: {
         position: 'absolute',
