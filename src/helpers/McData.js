@@ -188,7 +188,8 @@ export class McData {
 
     static async _getFinSummary(token = '', host = '', companyId, period, service) {
         let start_date, end_date;
-        let today = yesterday = new Date();
+        let today = new Date();
+        let yesterday = new Date()
         yesterday.setDate(today.getDate() - 1);
         switch (period) {
             case "yesterday":
