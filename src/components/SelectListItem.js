@@ -1,23 +1,29 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 export const SelectListItem = (props) => {
 
     return (
-        <Text style={[styles.listItem, props.selected && styles.selected]}>{props.label}</Text>
+        <View style={[styles.listItemWrapper, props.selected && styles.selectedWrapper]}>
+            <Text style={[styles.listItem, props.selected && styles.selectedListItem ]}>{props.label}</Text>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
+    listItemWrapper: {
+        marginHorizontal: 30,
+        borderRadius: 30
+    },
     listItem: {
         paddingVertical: 12,
-        marginHorizontal: 30,
         alignSelf: 'stretch',
         textAlign: 'center'
     },
-    selected: {
-        fontWeight: 'bold',
-        backgroundColor: '#EEF3DC',
-        borderRadius: 30
+    selectedWrapper: {
+        backgroundColor: '#eef3dc'
+    },
+    selectedListItem: {
+        fontWeight: 'bold'
     }
 })
