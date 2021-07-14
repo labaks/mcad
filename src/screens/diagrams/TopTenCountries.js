@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
 import { SummaryASRLegend } from '../../components/diagramComponents/SummaryASRLegend';
@@ -11,8 +10,6 @@ import { Loader } from '../../components/Loader';
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
 
-let dropDownAlert;
-
 export const TopTenCountries = (props) => {
     const [reportDay, setReportDay] = useState("");
     const [data, setData] = useState([]);
@@ -20,27 +17,6 @@ export const TopTenCountries = (props) => {
     const title = "Top 10 Countries";
     const unit = props.service == 1 ? 'min.' : 'sms';
     const windowWidth = Dimensions.get('window').width;
-
-    const mock = {
-        "data": [
-            [16.67, 75, "Ukraine", 5, 4, 3, 2],
-            [12.3, 175, "USA", 7, 2, 12, 32],
-            [2.3, 15, "Portugal", 6, 12, 412, 56]
-        ],
-        "fields": [
-            "asr",
-            "acd",
-            "country",
-            "delta_price",
-            "tp_sum",
-            "op_sum",
-            "duration",
-        ],
-        "message": "OK",
-        "report_day": "2021-05-10",
-        "status": 200,
-        "time_elapsed": 0.166204
-    }
 
     useEffect(() => {
         console.log("=====================================================");
@@ -51,9 +27,8 @@ export const TopTenCountries = (props) => {
     const _setReportData = async () => {
         setLoading(true);
         const response = await McData._getTopTenCountries(props.token, props.url, props.companyId, props.direction, props.service);
-        // const response = mock;
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
+            ErrorHandler.handle(props.dropDownAlert, response, props.url, props.navigation);
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
@@ -83,10 +58,6 @@ export const TopTenCountries = (props) => {
                     </View>
                 </View>
             }
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
-            />
         </View>
     )
 }

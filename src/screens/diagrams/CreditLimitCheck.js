@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
 
@@ -9,8 +8,6 @@ import { McData } from '../../helpers/McData';
 
 import { ServiceSwitcher } from '../../components/diagramComponents/ServiceSwitcher';
 import { RoutesReport } from '../../components/diagramComponents/RoutesReport';
-
-let dropDownAlert;
 
 export const CreditLimitCheck = (props) => {
     const [loading, setLoading] = useState(true);
@@ -41,7 +38,7 @@ export const CreditLimitCheck = (props) => {
         setLoading(true);
         const response = await McData._getCreditLimit(props.token, props.url, interval, service);
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
+            ErrorHandler.handle(props.dropDownAlert, response, props.url, props.navigation)
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
@@ -87,35 +84,26 @@ export const CreditLimitCheck = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.contentWrapper}>
-                <ServiceSwitcher
-                    interval={interval}
-                    service={service}
-                    setInterval={setInterval}
-                    setService={setService}
-                />
-                {loading ?
-                    <Loader loading={loading} />
-                    :
-                    <RoutesReport
-                        data={data}
-                        creditLimitCheck={true}
-                        pagination={true} />
-                }
-            </View>
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
+        <View style={styles.contentWrapper}>
+            <ServiceSwitcher
+                interval={interval}
+                service={service}
+                setInterval={setInterval}
+                setService={setService}
             />
-        </View >
+            {loading ?
+                <Loader loading={loading} />
+                :
+                <RoutesReport
+                    data={data}
+                    creditLimitCheck={true}
+                    pagination={true} />
+            }
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     contentWrapper: {
         flex: 1,
         justifyContent: 'center',

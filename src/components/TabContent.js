@@ -11,7 +11,7 @@ import { TopTenTargets } from "../screens/diagrams/TopTenTargets";
 import { CreditLimitCheck } from '../screens/diagrams/CreditLimitCheck';
 import { CallCharts } from '../screens/diagrams/CallCharts';
 
-export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0 }) => {
+export const TabContent = ({ chosenTab, token, url, companyId, companyName, navigation, service = 0, dropDownAlert }) => {
 
     let content = <Text></Text>;
 
@@ -24,6 +24,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 direction={'in'}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Regions Out':
@@ -34,6 +35,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 direction={'out'}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Regions In, $':
@@ -45,6 +47,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 direction={'in'}
                 profit={true}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Regions Out, $':
@@ -56,6 +59,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 direction={'out'}
                 profit={true}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Countries In':
@@ -66,6 +70,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 direction={'in'}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Countries Out':
@@ -76,6 +81,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 direction={'out'}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Traffic Share In':
@@ -87,6 +93,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 direction={'in'}
                 companyName={companyName}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Traffic Share Out':
@@ -98,6 +105,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 direction={'out'}
                 companyName={companyName}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Financial Reports Today':
@@ -108,6 +116,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 period={"today"}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Financial Reports Yesterday':
@@ -118,6 +127,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 navigation={navigation}
                 period={"yesterday"}
                 service={service}
+                dropDownAlert={dropDownAlert}
             />
             break;
         //Start Page tabs:
@@ -127,6 +137,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 criterion={'delta_price'}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Countries by min.':
@@ -135,6 +146,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 criterion={'duration'}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Targets':
@@ -143,6 +155,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 target={'targets'}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Top 10 Offers':
@@ -151,6 +164,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 url={url}
                 navigation={navigation}
                 target={'offers'}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Credit Limit Check':
@@ -158,6 +172,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 token={token}
                 url={url}
                 navigation={navigation}
+                dropDownAlert={dropDownAlert}
             />
             break;
         case 'Call Charts':
@@ -165,6 +180,7 @@ export const TabContent = ({ chosenTab, token, url, companyId, companyName, navi
                 token={token}
                 url={url}
                 navigation={navigation}
+                dropDownAlert={dropDownAlert}
             />
             break;
         default:

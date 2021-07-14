@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
 
@@ -9,8 +8,6 @@ import { McData } from '../../helpers/McData';
 
 import { ServiceSwitcher } from '../../components/diagramComponents/ServiceSwitcher';
 import { AreaChartPanel } from '../../components/diagramComponents/AreaChartPanel';
-
-let dropDownAlert;
 
 export const CallCharts = (props) => {
     const [loading, setLoading] = useState(true);
@@ -28,7 +25,7 @@ export const CallCharts = (props) => {
         setLoading(true);
         const response = await McData._getCallCharts(props.token, props.url, interval, service);
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
+            ErrorHandler.handle(props.dropDownAlert, response, props.url, props.navigation)
             setLoading(false);
         } else {
             setData(removeNulls(response.data));
@@ -49,35 +46,26 @@ export const CallCharts = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.contentWrapper}>
-                <ServiceSwitcher
-                    interval={interval}
-                    service={service}
-                    setInterval={setInterval}
-                    setService={setService}
-                />
-                {loading ?
-                    <Loader loading={loading} />
-                    :
-                    <AreaChartPanel
-                        data={data}
-                        service={service}
-                        max={findMax(data)} />
-                }
-            </View>
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
+        <View style={styles.contentWrapper}>
+            <ServiceSwitcher
+                interval={interval}
+                service={service}
+                setInterval={setInterval}
+                setService={setService}
             />
-        </View >
+            {loading ?
+                <Loader loading={loading} />
+                :
+                <AreaChartPanel
+                    data={data}
+                    service={service}
+                    max={findMax(data)} />
+            }
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     contentWrapper: {
         flex: 1,
         justifyContent: 'center',

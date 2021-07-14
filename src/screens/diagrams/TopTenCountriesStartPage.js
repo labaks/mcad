@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Dimensions } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Petals } from '../../components/diagramComponents/Petals';
 import { ServiceSwitcher } from '../../components/diagramComponents/ServiceSwitcher';
@@ -10,8 +9,6 @@ import { Loader } from '../../components/Loader';
 
 import { ErrorHandler } from '../../helpers/ErrorHandler';
 import { McData } from '../../helpers/McData';
-
-let dropDownAlert;
 
 export const TopTenCountriesStartPage = (props) => {
     const [data, setData] = useState([]);
@@ -36,7 +33,7 @@ export const TopTenCountriesStartPage = (props) => {
         setLoading(true);
         const response = await McData._getTopTenCountriesStartPage(props.token, props.url, criterion, interval, service);
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation);
+            ErrorHandler.handle(props.dropDownAlert, response, props.url, props.navigation);
             setLoading(false);
         } else {
             setData(McData.defineData(response.data, response.fields));
@@ -68,10 +65,6 @@ export const TopTenCountriesStartPage = (props) => {
                     </View>
                 </View>
             }
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
-            />
         </View>
     )
 }

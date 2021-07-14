@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import { CheckboxList } from "../components/CheckboxList";
 import { DiagramsHeader } from '../components/DiagramsHeader';
 import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 import { TabContent } from '../components/TabContent';
+
+let dropDownAlert;
 
 export const StartPage = ({ navigation, route }) => {
     const [selectedDiagramsIds, setSelectedDiagramsIds] = useState([]);
@@ -129,10 +132,10 @@ export const StartPage = ({ navigation, route }) => {
                                 }} />
                         </Panel>
                         <View style={styles.buttonsContainer}>
-                                <MainBtn
-                                    disabled={!selectedDiagramsIds.length}
-                                    text="Submit"
-                                    onPress={selectDiagrams} />
+                            <MainBtn
+                                disabled={!selectedDiagramsIds.length}
+                                text="Submit"
+                                onPress={selectDiagrams} />
                         </View>
                     </View>
                     :
@@ -153,11 +156,16 @@ export const StartPage = ({ navigation, route }) => {
                                 chosenTab={chosenTab}
                                 token={route.params.token}
                                 url={route.params.url}
-                                navigation={navigation}/>
+                                navigation={navigation}
+                                dropDownAlert={dropDownAlert} />
                         </View>
                     </ScrollView>
                 }
             </View>
+            <DropdownAlert
+                ref={(ref) => { dropDownAlert = ref }}
+                closeInterval={3000}
+            />
         </View>
     )
 }

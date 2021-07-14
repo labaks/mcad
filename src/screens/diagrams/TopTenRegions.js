@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
 
 import { Loader } from '../../components/Loader';
 
@@ -10,27 +9,9 @@ import { McData } from '../../helpers/McData';
 import { BarChartPanelDuration } from '../../components/diagramComponents/BarChartPanelDuration';
 import { BarChartPanelProfit } from '../../components/diagramComponents/BarChartPanelProfit';
 
-let dropDownAlert;
-
 export const TopTenRegions = (props) => {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
-
-    const mock = {
-        "data": [
-            [15, "Ukraine", 3],
-            [12, "USA", 30],
-            [3, "Portugal", 6]
-        ],
-        "fields": [
-            "yesterday_duration",
-            "region",
-            "today_duration",
-        ],
-        "message": "OK",
-        "status": 200,
-        "time_elapsed": 0.166204
-    }
 
     useEffect(() => {
         console.log("=====================================================");
@@ -41,9 +22,8 @@ export const TopTenRegions = (props) => {
     const _setReportData = async () => {
         setLoading(true);
         const response = await McData._getTopTenRegions(props.token, props.url, props.companyId, props.direction, props.profit, props.service);
-        // const response = mock;
         if (response.status != 200) {
-            ErrorHandler.handle(dropDownAlert, response, props.url, props.navigation)
+            ErrorHandler.handle(props.dropDownAlert, response, props.url, props.navigation)
             setLoading(false);
         } else {
             setData(cutData(McData.defineData(response.data, response.fields), props.profit));
@@ -68,29 +48,20 @@ export const TopTenRegions = (props) => {
     };
 
     return (
-        <View style={styles.container}>
-            <View style={styles.contentWrapper}>
-                {loading ?
-                    <Loader loading={loading} />
+        <View style={styles.contentWrapper}>
+            {loading ?
+                <Loader loading={loading} />
+                :
+                props.profit ?
+                    <BarChartPanelProfit data={data} />
                     :
-                    props.profit ?
-                        <BarChartPanelProfit data={data} />
-                        :
-                        <BarChartPanelDuration data={data} />
-                }
-            </View>
-            <DropdownAlert
-                ref={(ref) => { dropDownAlert = ref }}
-                closeInterval={3000}
-            />
-        </View >
+                    <BarChartPanelDuration data={data} />
+            }
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
     contentWrapper: {
         flex: 1,
         justifyContent: 'center',

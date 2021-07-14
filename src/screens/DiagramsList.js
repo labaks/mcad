@@ -8,7 +8,7 @@ import { MainBtn } from '../components/MainBtn';
 import { Panel } from '../components/Panel';
 import { TabContent } from '../components/TabContent';
 
-export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, navigation }) => {
+export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, navigation, dropDownAlert }) => {
     const [selectedDiagramsIds, setSelectedDiagramsIds] = useState([]);
     const [isSubmited, setIsSubmited] = useState(false);
     const [titles, setTitles] = useState([]);
@@ -176,7 +176,8 @@ export const DiagramsList = ({ url, token, selectedCompany, service, onRequest, 
                                 companyId={selectedCompany.Id}
                                 companyName={selectedCompany.Name}
                                 navigation={navigation}
-                                service={service} />
+                                service={service}
+                                dropDownAlert={dropDownAlert} />
                         </View>
                     </ScrollView>
                 }

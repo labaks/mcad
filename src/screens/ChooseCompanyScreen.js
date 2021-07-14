@@ -69,7 +69,8 @@ export const ChooseCompanyScreen = ({ navigation, route }) => {
                     selectedCompany={selectedCompany}
                     service={service}
                     onRequest={onRequest}
-                    navigation={navigation} />
+                    navigation={navigation}
+                    dropDownAlert={dropDownAlert} />
                 :
                 <View style={styles.contentWrapper}>
                     <View style={styles.titleWrapper}>
