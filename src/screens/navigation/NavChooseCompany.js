@@ -33,6 +33,7 @@ const NavChooseCompany = ({ navigation, route }) => {
                     elevation: 0, // shadow under the header (android)
                     shadowOpacity: 0 // shadow under the header (ios)
                 },
+                headerTintColor: '#4A6E49',
                 headerTitleStyle: {
                     fontFamily: 'SF',
                     fontSize: 16,
